@@ -22,7 +22,7 @@ public struct FlickButton: View {
   private var onDrag: () -> Void
   private var backgroundColor: Color
   private var actionWhilePressing: Bool
-  private var actionTimer = Timer.publish(every: 0.2, on: .main, in: .common).autoconnect()
+  private var actionTimer = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
   private var directions: [Direction: (label: String, action: () -> Void)]
 
   @State private var isDragging: Bool = false
@@ -86,21 +86,19 @@ public struct FlickButton: View {
   public var body: some View {
     GeometryReader { geometry in
       ZStack {
+        backgroundColor
+          .cornerRadius(8)
+          .brightness(isDragging && currentDirection == nil ? -0.2 : 0.0)
         if !isDragging || currentDirection.flatMap { directions[$0] } == nil {
           Text(title)
             .bold()
             .foregroundColor(.primary)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(
-              backgroundColor
-            )
-            .cornerRadius(8)
-            .brightness(isDragging && currentDirection == nil ? -0.2 : 0.0)
           if let subtitle = subtitle {
             Text(subtitle)
               .bold()
               .foregroundColor(.secondary)
-              .font(.caption)
+              .font(.caption2)
               .position(x: geometry.size.width / 2, y: geometry.size.height * 3 / 4)
           }
         }
@@ -135,7 +133,7 @@ public struct FlickButton: View {
       ).onReceive(actionTimer) { _ in
         if isDragging && actionWhilePressing {
           directionsWhilePressing.append(currentDirection)
-          if directionsWhilePressing.count > 5 {
+          if directionsWhilePressing.count > 10 {
             if directionsWhilePressing.allSatisfy({ $0 == nil }) {
               action()
             } else {
@@ -154,11 +152,8 @@ public struct FlickButton: View {
             .bold()
             .foregroundColor(.primary)
             .frame(width: geometry.size.width, height: geometry.size.height, alignment: .center)
-            .background(
-              backgroundColor
-            )
+            .background(Color.blue)
             .cornerRadius(8)
-            .brightness(isDragging ? -0.3 : 0.0)
             .position(buttonLocation(on: geometry, for: direction))
         }
       }

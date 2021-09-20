@@ -11,7 +11,34 @@
 		D23F57BA265014890008532B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23F57B9265014890008532B /* AppDelegate.swift */; };
 		D23F57C02650148A0008532B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D23F57BF2650148A0008532B /* Assets.xcassets */; };
 		D23F57C62650148A0008532B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D23F57C42650148A0008532B /* LaunchScreen.storyboard */; };
+		D284CAE926F8B2B2000E5790 /* ProdKeyboard.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = D284CAE226F8B2B2000E5790 /* ProdKeyboard.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		D284CAF026F8B2DF000E5790 /* CalcKeyboard in Frameworks */ = {isa = PBXBuildFile; productRef = D284CAEF26F8B2DF000E5790 /* CalcKeyboard */; };
+		D284CAF426F94D45000E5790 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D284CAF326F94D45000E5790 /* Settings.bundle */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D284CAE726F8B2B2000E5790 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D23F57AE265014890008532B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D284CAE126F8B2B2000E5790;
+			remoteInfo = FlickCalcKeyboard;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		D284CAED26F8B2B2000E5790 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				D284CAE926F8B2B2000E5790 /* ProdKeyboard.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		D23F57B6265014890008532B /* Prod.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Prod.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -19,6 +46,9 @@
 		D23F57BF2650148A0008532B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D23F57C52650148A0008532B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D23F57C72650148A0008532B /* Info_Prod.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info_Prod.plist; sourceTree = "<group>"; };
+		D284CAE226F8B2B2000E5790 /* ProdKeyboard.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ProdKeyboard.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		D284CAE626F8B2B2000E5790 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D284CAF326F94D45000E5790 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -30,6 +60,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D284CADF26F8B2B2000E5790 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D284CAF026F8B2DF000E5790 /* CalcKeyboard in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -37,7 +75,9 @@
 			isa = PBXGroup;
 			children = (
 				D23F57B8265014890008532B /* App */,
+				D284CAE326F8B2B2000E5790 /* Keyboard */,
 				D23F57B7265014890008532B /* Products */,
+				D284CAEE26F8B2DF000E5790 /* Frameworks */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -47,6 +87,7 @@
 			isa = PBXGroup;
 			children = (
 				D23F57B6265014890008532B /* Prod.app */,
+				D284CAE226F8B2B2000E5790 /* ProdKeyboard.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -58,8 +99,24 @@
 				D23F57BF2650148A0008532B /* Assets.xcassets */,
 				D23F57C42650148A0008532B /* LaunchScreen.storyboard */,
 				D23F57C72650148A0008532B /* Info_Prod.plist */,
+				D284CAF326F94D45000E5790 /* Settings.bundle */,
 			);
 			path = App;
+			sourceTree = "<group>";
+		};
+		D284CAE326F8B2B2000E5790 /* Keyboard */ = {
+			isa = PBXGroup;
+			children = (
+				D284CAE626F8B2B2000E5790 /* Info.plist */,
+			);
+			path = Keyboard;
+			sourceTree = "<group>";
+		};
+		D284CAEE26F8B2DF000E5790 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -72,10 +129,12 @@
 				D23F57B2265014890008532B /* Sources */,
 				D23F57B3265014890008532B /* Frameworks */,
 				D23F57B4265014890008532B /* Resources */,
+				D284CAED26F8B2B2000E5790 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				D284CAE826F8B2B2000E5790 /* PBXTargetDependency */,
 			);
 			name = Prod;
 			packageProductDependencies = (
@@ -85,17 +144,40 @@
 			productReference = D23F57B6265014890008532B /* Prod.app */;
 			productType = "com.apple.product-type.application";
 		};
+		D284CAE126F8B2B2000E5790 /* ProdKeyboard */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D284CAEA26F8B2B2000E5790 /* Build configuration list for PBXNativeTarget "ProdKeyboard" */;
+			buildPhases = (
+				D284CADE26F8B2B2000E5790 /* Sources */,
+				D284CADF26F8B2B2000E5790 /* Frameworks */,
+				D284CAE026F8B2B2000E5790 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ProdKeyboard;
+			packageProductDependencies = (
+				D284CAEF26F8B2DF000E5790 /* CalcKeyboard */,
+			);
+			productName = FlickCalcKeyboard;
+			productReference = D284CAE226F8B2B2000E5790 /* ProdKeyboard.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		D23F57AE265014890008532B /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1250;
+				LastSwiftUpdateCheck = 1300;
 				LastUpgradeCheck = 1250;
 				TargetAttributes = {
 					D23F57B5265014890008532B = {
 						CreatedOnToolsVersion = 12.5;
+					};
+					D284CAE126F8B2B2000E5790 = {
+						CreatedOnToolsVersion = 13.0;
 					};
 				};
 			};
@@ -116,6 +198,7 @@
 			projectRoot = "";
 			targets = (
 				D23F57B5265014890008532B /* Prod */,
+				D284CAE126F8B2B2000E5790 /* ProdKeyboard */,
 			);
 		};
 /* End PBXProject section */
@@ -126,7 +209,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				D23F57C62650148A0008532B /* LaunchScreen.storyboard in Resources */,
+				D284CAF426F94D45000E5790 /* Settings.bundle in Resources */,
 				D23F57C02650148A0008532B /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D284CAE026F8B2B2000E5790 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -141,7 +232,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D284CADE26F8B2B2000E5790 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D284CAE826F8B2B2000E5790 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D284CAE126F8B2B2000E5790 /* ProdKeyboard */;
+			targetProxy = D284CAE726F8B2B2000E5790 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		D23F57C42650148A0008532B /* LaunchScreen.storyboard */ = {
@@ -277,6 +383,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = U376YN5H26;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = App/Info_Prod.plist;
@@ -284,7 +391,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.tarunon.prod.FlickCalcKeyboard;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tarunon.flickcalckeyboard.prod;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -297,6 +404,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = U376YN5H26;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = App/Info_Prod.plist;
@@ -304,8 +412,66 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.tarunon.prod.FlickCalcKeyboard;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tarunon.flickcalckeyboard.prod;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		D284CAEB26F8B2B2000E5790 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
+				DEVELOPMENT_TEAM = U376YN5H26;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Keyboard/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = FlickCalc;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tarunon.flickcalckeyboard.prod.extension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D284CAEC26F8B2B2000E5790 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
+				DEVELOPMENT_TEAM = U376YN5H26;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Keyboard/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = FlickCalc;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tarunon.flickcalckeyboard.prod.extension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -332,6 +498,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		D284CAEA26F8B2B2000E5790 /* Build configuration list for PBXNativeTarget "ProdKeyboard" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D284CAEB26F8B2B2000E5790 /* Debug */,
+				D284CAEC26F8B2B2000E5790 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
@@ -346,6 +521,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = D21F969F265016C9003FD064 /* XCRemoteSwiftPackageReference "." */;
 			productName = App;
+		};
+		D284CAEF26F8B2DF000E5790 /* CalcKeyboard */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CalcKeyboard;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

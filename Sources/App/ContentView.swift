@@ -14,7 +14,7 @@ struct ContentView: View {
   var body: some View {
     VStack(spacing: 0.0) {
       ZStack(alignment: .topTrailing) {
-        CalcHistoryView(text: text)
+        CalcHistoryView(text: $text)
         Button {
           text = ""
         } label: {
@@ -23,10 +23,6 @@ struct ContentView: View {
         }
         .foregroundColor(.primary)
         .zIndex(1)
-      }
-      CalcKeyboardView { line in
-        text.append(line)
-        text.append("\n")
       }
     }
   }

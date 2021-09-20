@@ -13,6 +13,14 @@ class CalcKeyboardViewModel: ObservableObject {
   @Published var startIndex: Int = 0
   @Published var endIndex: Int = 0
 
+  var action: (CalcAction) -> Void
+
+  init(
+    action: @escaping (CalcAction) -> Void
+  ) {
+    self.action = action
+  }
+
   func input(token: Token) {
     tokens.removeSubrange(startIndex..<endIndex)
     endIndex = startIndex
@@ -70,20 +78,28 @@ class CalcKeyboardViewModel: ObservableObject {
   }
 
   func shiftToLeft() {
-    startIndex -= 1
-    if startIndex < 0 {
-      startIndex = 0
+    if tokens.isEmpty {
+      action(.moveCursor(offset: -1))
+    } else {
+      startIndex -= 1
+      if startIndex < 0 {
+        startIndex = 0
+      }
+      endIndex = startIndex
     }
-    endIndex = startIndex
   }
 
   func shiftToRight() {
-    startIndex = endIndex
-    startIndex += 1
-    if startIndex > tokens.count {
-      startIndex = tokens.count
+    if tokens.isEmpty {
+      action(.moveCursor(offset: 1))
+    } else {
+      startIndex = endIndex
+      startIndex += 1
+      if startIndex > tokens.count {
+        startIndex = tokens.count
+      }
+      endIndex = startIndex
     }
-    endIndex = startIndex
   }
 
   func shiftToEnd() {
@@ -92,7 +108,9 @@ class CalcKeyboardViewModel: ObservableObject {
   }
 
   func deleteLeft() {
-    if startIndex < endIndex {
+    if tokens.isEmpty {
+      action(.deleteLeft(line: false))
+    } else if startIndex < endIndex {
       tokens.removeSubrange(startIndex..<endIndex)
       endIndex = startIndex
     } else if startIndex > 0 {
@@ -103,7 +121,9 @@ class CalcKeyboardViewModel: ObservableObject {
   }
 
   func deleteLeftAll() {
-    if startIndex < endIndex {
+    if tokens.isEmpty {
+      action(.deleteLeft(line: true))
+    } else if startIndex < endIndex {
       tokens.removeSubrange(startIndex..<endIndex)
       endIndex = startIndex
     } else {
@@ -116,7 +136,9 @@ class CalcKeyboardViewModel: ObservableObject {
   }
 
   func deleteRight() {
-    if startIndex < endIndex {
+    if tokens.isEmpty {
+      action(.deleteRight(line: false))
+    } else if startIndex < endIndex {
       tokens.removeSubrange(startIndex..<endIndex)
       endIndex = startIndex
     } else if startIndex < tokens.count {
@@ -125,7 +147,9 @@ class CalcKeyboardViewModel: ObservableObject {
   }
 
   func deleteRightAll() {
-    if startIndex < endIndex {
+    if tokens.isEmpty {
+      action(.deleteRight(line: true))
+    } else if startIndex < endIndex {
       tokens.removeSubrange(startIndex..<endIndex)
       endIndex = startIndex
     } else {
@@ -135,17 +159,37 @@ class CalcKeyboardViewModel: ObservableObject {
     }
   }
 
-  func calc() throws -> String {
+  func parse() throws -> String {
     if tokens.isEmpty {
       throw CalcError.tokensEmpty
     }
-    return "\(tokens.map { $0.rawValue }.joined()) = ???"
+    return "\(tokens.map { $0.rawValue }.joined()) = ???\n"
+  }
+
+  func calculate() {
+    shiftToEnd()
+    formatBrackets(withCompletion: true)
+    do {
+      try action(.insertText(parse()))
+      clearAll()
+    } catch (let error) {
+      switch error {
+      case CalcError.tokensEmpty:
+        action(.insertText("\n"))
+      default:
+        print(error)
+      }
+    }
   }
 
   func clearAll() {
     startIndex = 0
     endIndex = 0
     tokens = []
+  }
+
+  func exit() {
+    action(.exit)
   }
 
   var text: String {
