@@ -5,6 +5,7 @@
 //  Created by tarunon on 2021/09/19.
 //
 
+import Combine
 import SwiftUI
 
 public struct FlickButton: View {
@@ -15,24 +16,32 @@ public struct FlickButton: View {
     case right
   }
 
-  private var label: String
+  private var title: String
+  private var subtitle: String?
   private var action: () -> Void
   private var onDrag: () -> Void
   private var backgroundColor: Color
+  private var actionWhilePressing: Bool
+  private var actionTimer = Timer.publish(every: 0.2, on: .main, in: .common).autoconnect()
   private var directions: [Direction: (label: String, action: () -> Void)]
 
   @State private var isDragging: Bool = false
   @State private var currentDirection: Direction? = nil
+  @State private var directionsWhilePressing: [Direction?] = []
 
   public init(
-    label: String,
+    title: String,
+    subtitle: String? = nil,
     action: @escaping () -> Void,
+    actionWhilePressing: Bool = false,
     onDrag: @escaping () -> Void,
     backgroundColor: Color = .white,
     directions: [Direction: (label: String, action: () -> Void)]
   ) {
-    self.label = label
+    self.title = title
+    self.subtitle = subtitle
     self.action = action
+    self.actionWhilePressing = actionWhilePressing
     self.onDrag = onDrag
     self.backgroundColor = backgroundColor
     self.directions = directions
@@ -78,14 +87,22 @@ public struct FlickButton: View {
     GeometryReader { geometry in
       ZStack {
         if !isDragging || currentDirection.flatMap { directions[$0] } == nil {
-          Text(label)
+          Text(title)
             .bold()
+            .foregroundColor(.primary)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(
               backgroundColor
             )
             .cornerRadius(8)
             .brightness(isDragging && currentDirection == nil ? -0.2 : 0.0)
+          if let subtitle = subtitle {
+            Text(subtitle)
+              .bold()
+              .foregroundColor(.secondary)
+              .font(.caption)
+              .position(x: geometry.size.width / 2, y: geometry.size.height * 3 / 4)
+          }
         }
       }
       .gesture(
@@ -94,6 +111,9 @@ public struct FlickButton: View {
             onDrag()
             isDragging = true
             currentDirection = calcDirection(geometry: geometry, value: value)
+            if directionsWhilePressing.last != currentDirection {
+              directionsWhilePressing = [currentDirection]
+            }
           }
           .onEnded { value in
             switch currentDirection {
@@ -110,12 +130,29 @@ public struct FlickButton: View {
             }
             isDragging = false
             currentDirection = nil
+            directionsWhilePressing = []
           }
-      )
+      ).onReceive(actionTimer) { _ in
+        if isDragging && actionWhilePressing {
+          directionsWhilePressing.append(currentDirection)
+          if directionsWhilePressing.count > 5 {
+            if directionsWhilePressing.allSatisfy({ $0 == nil }) {
+              action()
+            } else {
+              for direction in [Direction.up, .left, .right, .down] {
+                if directionsWhilePressing.allSatisfy({ $0 == direction }) {
+                  directions[direction]?.action()
+                }
+              }
+            }
+          }
+        }
+      }
       ForEach(directions.map { $0 }, id: \.key) { (direction, value) in
         if currentDirection == direction {
           Text(value.label)
             .bold()
+            .foregroundColor(.primary)
             .frame(width: geometry.size.width, height: geometry.size.height, alignment: .center)
             .background(
               backgroundColor
