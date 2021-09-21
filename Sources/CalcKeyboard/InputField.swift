@@ -9,10 +9,12 @@ import Builder
 import SwiftUI
 import UIKit
 
+@MainActor
 @objc protocol InputFieldControllerDelegate: NSObjectProtocol {
   @objc optional func inputFieldDidChangeSelection(_ controller: InputFieldController)
 }
 
+@MainActor
 struct TextMarker: View {
   class ViewModel: ObservableObject {
     @Published var hide: Bool = false
@@ -57,6 +59,7 @@ struct TextMarker: View {
   }
 }
 
+@MainActor
 class InputFieldController: UIViewController, UIGestureRecognizerDelegate, UITextFieldDelegate {
   lazy var textField: UITextField = build {
     let textField = UITextField()
@@ -71,7 +74,7 @@ class InputFieldController: UIViewController, UIGestureRecognizerDelegate, UITex
 
   lazy var textMarker = UIHostingController(
     rootView: TextMarker(
-      flushing: false
+      flushing: true
     ))
   lazy var dragGestureRecognizer: UILongPressGestureRecognizer = build {
     let dragGestureRecognizer = UILongPressGestureRecognizer(
@@ -86,12 +89,8 @@ class InputFieldController: UIViewController, UIGestureRecognizerDelegate, UITex
     view = textField
     addChild(textMarker)
     view.addSubview(textMarker.view)
+    textMarker.view.frame = .init(x: 7.0, y: 3.0, width: 2.0, height: 22.0)
     textMarker.didMove(toParent: self)
-  }
-
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-    updateCursor()
   }
 
   var cursor: NSRange? {
@@ -166,6 +165,7 @@ class InputFieldController: UIViewController, UIGestureRecognizerDelegate, UITex
   }
 }
 
+@MainActor
 class TextFieldCoordinator: NSObject, InputFieldControllerDelegate {
   @Binding var cursor: NSRange
 
@@ -181,6 +181,7 @@ class TextFieldCoordinator: NSObject, InputFieldControllerDelegate {
   }
 }
 
+@MainActor
 struct InputField: UIViewControllerRepresentable {
   typealias UIViewControllerType = InputFieldController
 

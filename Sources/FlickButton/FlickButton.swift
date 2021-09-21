@@ -99,7 +99,7 @@ public struct FlickButton: View {
               .bold()
               .foregroundColor(.secondary)
               .font(.caption2)
-              .position(x: geometry.size.width / 2, y: geometry.size.height * 3 / 4)
+              .position(x: geometry.size.width / 2, y: geometry.size.height * 4 / 5)
           }
         }
       }

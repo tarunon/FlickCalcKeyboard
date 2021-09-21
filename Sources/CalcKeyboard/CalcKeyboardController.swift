@@ -57,13 +57,13 @@ public class CalcKeyboardController: UIInputViewController {
   lazy var keyboardHeight: [NSLayoutConstraint] = [
     build {
       let constraint = self.inputView!.heightAnchor.constraint(
-        lessThanOrEqualToConstant: min(256.0, UIScreen.main.bounds.height * 3 / 4))
+        lessThanOrEqualToConstant: min(256.0, UIScreen.main.bounds.height * 3 / 5))
       constraint.priority = .defaultHigh
       return constraint
     },
     build {
       let constraint = self.inputView!.heightAnchor.constraint(
-        equalToConstant: min(256.0, UIScreen.main.bounds.height * 3 / 4))
+        equalToConstant: min(256.0, UIScreen.main.bounds.height * 3 / 5))
       constraint.priority = .defaultHigh
       return constraint
     },
@@ -92,7 +92,7 @@ public class CalcKeyboardController: UIInputViewController {
   ) {
     super.viewWillTransition(to: size, with: coordinator)
     keyboardHeight.forEach {
-      $0.constant = min(256.0, UIScreen.main.bounds.height * 3 / 4)
+      $0.constant = min(256.0, UIScreen.main.bounds.height * 3 / 5)
     }
     self.inputView?.setNeedsLayout()
     coordinator.animate { _ in
