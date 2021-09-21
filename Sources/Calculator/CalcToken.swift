@@ -149,7 +149,7 @@ public struct ModToken: InfixOperatorToken {
     if rhs == 0 {
       throw CalcError.runtimeError(reason: "0 division error.")
     }
-    guard lhs.imaginary.isSubnormal && rhs.imaginary.isSubnormal else {
+    guard (lhs.imaginary.isZero || lhs.imaginary.isSubnormal) && (rhs.imaginary.isZero || rhs.imaginary.isSubnormal) else {
       throw CalcError.runtimeError(reason: "Modulo of complex numbers is not supported.")
     }
     return .init(lhs.real.truncatingRemainder(dividingBy: rhs.real))
@@ -174,7 +174,7 @@ public struct RootToken: InfixOperatorToken, PrefixOperatorToken {
   public static let instance = Self()
 
   public func operation(lhs: Complex<Double>, rhs: Complex<Double>) throws -> Complex<Double> {
-    guard lhs.imaginary.isSubnormal && lhs.real.truncatingRemainder(dividingBy: 1).isSubnormal else {
+    guard (lhs.imaginary.isZero || lhs.imaginary.isSubnormal) && (lhs.real.truncatingRemainder(dividingBy: 1).isZero || lhs.real.truncatingRemainder(dividingBy: 1).isSubnormal) else {
       throw CalcError.runtimeError(reason: "Root operator require index as integer.")
     }
     return .root(rhs, Int(lhs.real))

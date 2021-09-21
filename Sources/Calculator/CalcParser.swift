@@ -152,10 +152,22 @@ enum CalcParsers {
   }
 }
 
-public func calc(tokens: [CalcToken]) throws -> Complex<Double> {
+public func calc(tokens: [CalcToken]) throws -> String {
   let (head, tail) = try CalcParsers.expr(precedence: .low).parse(tokens)
   guard tail.isEmpty else {
     throw ParseError.cantUseAllTokens
   }
-  return try head.result
+  let result = try head.result
+  switch ((result.real.isZero || result.real.isSubnormal), (result.imaginary.isZero || result.imaginary.isSubnormal)) {
+  case (_, true):
+    return Decimal(result.real).description
+  case (true, false):
+    return Decimal(result.imaginary).description + "i"
+  case (false, false):
+    if result.imaginary < 0 {
+      return Decimal(result.real).description + Decimal(result.imaginary).description + "i"
+    } else {
+      return Decimal(result.real).description + "+" + Decimal(result.imaginary).description + "i"
+    }
+  }
 }
