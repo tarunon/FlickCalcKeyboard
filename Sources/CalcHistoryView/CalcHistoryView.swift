@@ -9,6 +9,7 @@ import CalcKeyboard
 import Foundation
 import SwiftUI
 
+@MainActor
 class CalcTextView: UITextView {
   lazy var keyboard = CalcKeyboardController()
   override var inputViewController: UIInputViewController? {
@@ -31,6 +32,7 @@ class CalcTextView: UITextView {
   }
 }
 
+@MainActor
 public class CalcHistoryViewCoordinator: NSObject, UITextViewDelegate {
   @Binding var text: String
 
@@ -43,6 +45,7 @@ public class CalcHistoryViewCoordinator: NSObject, UITextViewDelegate {
   }
 }
 
+@MainActor
 public struct CalcHistoryView: UIViewRepresentable {
   @Binding var text: String
 

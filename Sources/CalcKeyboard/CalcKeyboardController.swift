@@ -9,6 +9,7 @@ import Builder
 import SwiftUI
 import UIKit
 
+@MainActor
 public class CalcKeyboardController: UIInputViewController {
   lazy var keyboardViewController = UIHostingController(
     rootView: CalcKeyboardView(

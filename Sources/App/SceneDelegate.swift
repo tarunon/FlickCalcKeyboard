@@ -8,6 +8,7 @@
 import SwiftUI
 import UIKit
 
+@MainActor
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
   var window: UIWindow?

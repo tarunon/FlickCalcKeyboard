@@ -9,6 +9,7 @@ import CalcHistoryView
 import CalcKeyboard
 import SwiftUI
 
+@MainActor
 struct ContentView: View {
   @State var text: String = ""
   var body: some View {

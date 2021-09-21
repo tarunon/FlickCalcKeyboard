@@ -8,6 +8,7 @@
 import Combine
 import SwiftUI
 
+@MainActor
 public struct FlickButton: View {
   public enum Direction: String, Hashable {
     case up

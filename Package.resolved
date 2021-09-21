@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Builder",
+        "repositoryURL": "https://github.com/tarunon/Builder.git",
+        "state": {
+          "branch": "main",
+          "revision": "eee2e61d1a58f0f1005ebff2405aba0d084c43a9",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}
