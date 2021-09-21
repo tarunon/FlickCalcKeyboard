@@ -7,4 +7,6 @@
 
 public enum CalcError: Error {
   case tokensEmpty
+  case parseError(reason: String)
+  case runtimeError(reason: String)
 }

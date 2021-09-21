@@ -7,6 +7,7 @@
 
 import FlickButton
 import SwiftUI
+import Calculator
 
 @MainActor
 public struct CalcKeyboardView: View {
@@ -80,7 +81,7 @@ public struct CalcKeyboardView: View {
             title: "%",
             subtitle: "^ √ !",
             action: {
-              viewModel.input(token: .mod)
+              viewModel.input(token: ModToken.instance)
             },
             onDrag: {
               draggingLine = 0
@@ -90,22 +91,19 @@ public struct CalcKeyboardView: View {
               .up: (
                 label: "^",
                 action: {
-                  viewModel.input(token: .pow)
+                  viewModel.input(token: PowToken.instance)
                 }
               ),
               .right: (
                 label: "√",
                 action: {
-                  viewModel.input(token: .sqrt)
-                  viewModel.input(token: .bracketOpen)
-                  viewModel.input(token: .bracketClose)
-                  viewModel.shiftToLeft()
+                  viewModel.input(token: RootToken.instance)
                 }
               ),
               .down: (
                 label: "!",
                 action: {
-                  viewModel.input(token: .factorial)
+                  viewModel.input(token: GammaToken.instance)
                 }
               ),
             ]
@@ -114,7 +112,7 @@ public struct CalcKeyboardView: View {
             title: "π",
             subtitle: "e i",
             action: {
-              viewModel.input(token: .pi)
+              viewModel.input(token: ConstToken.pi)
             },
             onDrag: {
               draggingLine = 0
@@ -124,13 +122,13 @@ public struct CalcKeyboardView: View {
               .up: (
                 label: "e",
                 action: {
-                  viewModel.input(token: .napier)
+                  viewModel.input(token: ConstToken.napier)
                 }
               ),
               .right: (
                 label: "i",
                 action: {
-                  viewModel.input(token: .complex)
+                  viewModel.input(token: ConstToken.complex)
                 }
               ),
             ]
@@ -165,7 +163,7 @@ public struct CalcKeyboardView: View {
           FlickButton(
             title: "1",
             action: {
-              viewModel.input(token: ._1)
+              viewModel.input(token: DigitToken._1)
             },
             onDrag: {
               draggingLine = 1
@@ -177,7 +175,7 @@ public struct CalcKeyboardView: View {
             title: "4",
             subtitle: "sin",
             action: {
-              viewModel.input(token: ._4)
+              viewModel.input(token: DigitToken._4)
             },
             onDrag: {
               draggingLine = 1
@@ -187,36 +185,36 @@ public struct CalcKeyboardView: View {
               .up: (
                 label: "sinh",
                 action: {
-                  viewModel.input(token: .sinh)
-                  viewModel.input(token: .bracketOpen)
-                  viewModel.input(token: .bracketClose)
+                  viewModel.input(token: FunctionToken.sinh)
+                  viewModel.input(token: BracketToken.open)
+                  viewModel.input(token: BracketToken.close)
                   viewModel.shiftToLeft()
                 }
               ),
               .left: (
                 label: "sin",
                 action: {
-                  viewModel.input(token: .sin)
-                  viewModel.input(token: .bracketOpen)
-                  viewModel.input(token: .bracketClose)
+                  viewModel.input(token: FunctionToken.sin)
+                  viewModel.input(token: BracketToken.open)
+                  viewModel.input(token: BracketToken.close)
                   viewModel.shiftToLeft()
                 }
               ),
               .right: (
                 label: "asin",
                 action: {
-                  viewModel.input(token: .asin)
-                  viewModel.input(token: .bracketOpen)
-                  viewModel.input(token: .bracketClose)
+                  viewModel.input(token: FunctionToken.asin)
+                  viewModel.input(token: BracketToken.open)
+                  viewModel.input(token: BracketToken.close)
                   viewModel.shiftToLeft()
                 }
               ),
               .down: (
                 label: "asinh",
                 action: {
-                  viewModel.input(token: .asinh)
-                  viewModel.input(token: .bracketOpen)
-                  viewModel.input(token: .bracketClose)
+                  viewModel.input(token: FunctionToken.asinh)
+                  viewModel.input(token: BracketToken.open)
+                  viewModel.input(token: BracketToken.close)
                   viewModel.shiftToLeft()
                 }
               ),
@@ -225,7 +223,7 @@ public struct CalcKeyboardView: View {
           FlickButton(
             title: "7",
             action: {
-              viewModel.input(token: ._7)
+              viewModel.input(token: DigitToken._7)
             },
             onDrag: {
               draggingLine = 1
@@ -247,14 +245,14 @@ public struct CalcKeyboardView: View {
               .left: (
                 label: "(",
                 action: {
-                  viewModel.input(token: .bracketOpen)
+                  viewModel.input(token: BracketToken.open)
                   viewModel.formatBrackets(withCompletion: false)
                 }
               ),
               .right: (
                 label: ")",
                 action: {
-                  viewModel.input(token: .bracketClose)
+                  viewModel.input(token: BracketToken.close)
                   viewModel.formatBrackets(withCompletion: false)
                 }
               ),
@@ -266,7 +264,7 @@ public struct CalcKeyboardView: View {
             title: "2",
             subtitle: "cos",
             action: {
-              viewModel.input(token: ._2)
+              viewModel.input(token: DigitToken._2)
             },
             onDrag: {
               draggingLine = 2
@@ -276,9 +274,9 @@ public struct CalcKeyboardView: View {
               .up: (
                 label: "cosh",
                 action: {
-                  viewModel.input(token: .cosh)
-                  viewModel.input(token: .bracketOpen)
-                  viewModel.input(token: .bracketClose)
+                  viewModel.input(token: FunctionToken.cosh)
+                  viewModel.input(token: BracketToken.open)
+                  viewModel.input(token: BracketToken.close)
                   viewModel.shiftToLeft()
 
                 }
@@ -286,18 +284,18 @@ public struct CalcKeyboardView: View {
               .left: (
                 label: "cos",
                 action: {
-                  viewModel.input(token: .cos)
-                  viewModel.input(token: .bracketOpen)
-                  viewModel.input(token: .bracketClose)
+                  viewModel.input(token: FunctionToken.cos)
+                  viewModel.input(token: BracketToken.open)
+                  viewModel.input(token: BracketToken.close)
                   viewModel.shiftToLeft()
                 }
               ),
               .right: (
                 label: "acos",
                 action: {
-                  viewModel.input(token: .acos)
-                  viewModel.input(token: .bracketOpen)
-                  viewModel.input(token: .bracketClose)
+                  viewModel.input(token: FunctionToken.acos)
+                  viewModel.input(token: BracketToken.open)
+                  viewModel.input(token: BracketToken.close)
                   viewModel.shiftToLeft()
 
                 }
@@ -305,9 +303,9 @@ public struct CalcKeyboardView: View {
               .down: (
                 label: "acosh",
                 action: {
-                  viewModel.input(token: .acosh)
-                  viewModel.input(token: .bracketOpen)
-                  viewModel.input(token: .bracketClose)
+                  viewModel.input(token: FunctionToken.acosh)
+                  viewModel.input(token: BracketToken.open)
+                  viewModel.input(token: BracketToken.close)
                   viewModel.shiftToLeft()
 
                 }
@@ -317,7 +315,7 @@ public struct CalcKeyboardView: View {
           FlickButton(
             title: "5",
             action: {
-              viewModel.input(token: ._5)
+              viewModel.input(token: DigitToken._5)
             },
             onDrag: {
               draggingLine = 2
@@ -329,7 +327,7 @@ public struct CalcKeyboardView: View {
             title: "8",
             subtitle: "log",
             action: {
-              viewModel.input(token: ._8)
+              viewModel.input(token: DigitToken._8)
             },
             onDrag: {
               draggingLine = 2
@@ -340,9 +338,9 @@ public struct CalcKeyboardView: View {
                 label: "ln",
                 action: {
 
-                  viewModel.input(token: .ln)
-                  viewModel.input(token: .bracketOpen)
-                  viewModel.input(token: .bracketClose)
+                  viewModel.input(token: FunctionToken.ln)
+                  viewModel.input(token: BracketToken.open)
+                  viewModel.input(token: BracketToken.close)
                   viewModel.shiftToLeft()
                 }
               ),
@@ -350,9 +348,9 @@ public struct CalcKeyboardView: View {
                 label: "lg",
                 action: {
 
-                  viewModel.input(token: .lg)
-                  viewModel.input(token: .bracketOpen)
-                  viewModel.input(token: .bracketClose)
+                  viewModel.input(token: FunctionToken.lg)
+                  viewModel.input(token: BracketToken.open)
+                  viewModel.input(token: BracketToken.close)
                   viewModel.shiftToLeft()
                 }
               ),
@@ -362,7 +360,7 @@ public struct CalcKeyboardView: View {
             title: "0",
             subtitle: "00...",
             action: {
-              viewModel.input(token: ._0)
+              viewModel.input(token: DigitToken._0)
             },
             onDrag: {
               draggingLine = 2
@@ -372,25 +370,25 @@ public struct CalcKeyboardView: View {
               .left: (
                 label: "00",
                 action: {
-                  viewModel.input(token: ._0)
-                  viewModel.input(token: ._0)
+                  viewModel.input(token: DigitToken._0)
+                  viewModel.input(token: DigitToken._0)
                 }
               ),
               .up: (
                 label: "000",
                 action: {
-                  viewModel.input(token: ._0)
-                  viewModel.input(token: ._0)
-                  viewModel.input(token: ._0)
+                  viewModel.input(token: DigitToken._0)
+                  viewModel.input(token: DigitToken._0)
+                  viewModel.input(token: DigitToken._0)
                 }
               ),
               .right: (
                 label: "0000",
                 action: {
-                  viewModel.input(token: ._0)
-                  viewModel.input(token: ._0)
-                  viewModel.input(token: ._0)
-                  viewModel.input(token: ._0)
+                  viewModel.input(token: DigitToken._0)
+                  viewModel.input(token: DigitToken._0)
+                  viewModel.input(token: DigitToken._0)
+                  viewModel.input(token: DigitToken._0)
                 }
               ),
             ]
@@ -400,7 +398,7 @@ public struct CalcKeyboardView: View {
           FlickButton(
             title: "3",
             action: {
-              viewModel.input(token: ._3)
+              viewModel.input(token: DigitToken._3)
             },
             onDrag: {
               draggingLine = 3
@@ -412,7 +410,7 @@ public struct CalcKeyboardView: View {
             title: "6",
             subtitle: "tan",
             action: {
-              viewModel.input(token: ._6)
+              viewModel.input(token: DigitToken._6)
             },
             onDrag: {
               draggingLine = 3
@@ -422,36 +420,36 @@ public struct CalcKeyboardView: View {
               .up: (
                 label: "tanh",
                 action: {
-                  viewModel.input(token: .tanh)
-                  viewModel.input(token: .bracketOpen)
-                  viewModel.input(token: .bracketClose)
+                  viewModel.input(token: FunctionToken.tanh)
+                  viewModel.input(token: BracketToken.open)
+                  viewModel.input(token: BracketToken.close)
                   viewModel.shiftToLeft()
                 }
               ),
               .left: (
                 label: "tan",
                 action: {
-                  viewModel.input(token: .tan)
-                  viewModel.input(token: .bracketOpen)
-                  viewModel.input(token: .bracketClose)
+                  viewModel.input(token: FunctionToken.tan)
+                  viewModel.input(token: BracketToken.open)
+                  viewModel.input(token: BracketToken.close)
                   viewModel.shiftToLeft()
                 }
               ),
               .right: (
                 label: "atan",
                 action: {
-                  viewModel.input(token: .atan)
-                  viewModel.input(token: .bracketOpen)
-                  viewModel.input(token: .bracketClose)
+                  viewModel.input(token: FunctionToken.atan)
+                  viewModel.input(token: BracketToken.open)
+                  viewModel.input(token: BracketToken.close)
                   viewModel.shiftToLeft()
                 }
               ),
               .down: (
                 label: "atanh",
                 action: {
-                  viewModel.input(token: .atanh)
-                  viewModel.input(token: .bracketOpen)
-                  viewModel.input(token: .bracketClose)
+                  viewModel.input(token: FunctionToken.atanh)
+                  viewModel.input(token: BracketToken.open)
+                  viewModel.input(token: BracketToken.close)
                   viewModel.shiftToLeft()
                 }
               ),
@@ -460,7 +458,7 @@ public struct CalcKeyboardView: View {
           FlickButton(
             title: "9",
             action: {
-              viewModel.input(token: ._9)
+              viewModel.input(token: DigitToken._9)
             },
             onDrag: {
               draggingLine = 3
@@ -516,7 +514,7 @@ public struct CalcKeyboardView: View {
             title: "+",
             subtitle: "- × ÷",
             action: {
-              viewModel.input(token: .add)
+              viewModel.input(token: AddToken.instance)
             },
             onDrag: {
               draggingLine = 4
@@ -526,19 +524,19 @@ public struct CalcKeyboardView: View {
               .up: (
                 label: "×",
                 action: {
-                  viewModel.input(token: .mul)
+                  viewModel.input(token: MulToken.instance)
                 }
               ),
               .left: (
                 label: "-",
                 action: {
-                  viewModel.input(token: .sub)
+                  viewModel.input(token: SubToken.instance)
                 }
               ),
               .down: (
                 label: "÷",
                 action: {
-                  viewModel.input(token: .div)
+                  viewModel.input(token: DivToken.instance)
                 }
               ),
             ]
