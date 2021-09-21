@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Calculator
 
 @MainActor
 class CalcKeyboardViewModel: ObservableObject {

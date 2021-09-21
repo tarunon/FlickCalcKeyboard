@@ -33,8 +33,12 @@ let package = Package(
       name: "CalcHistoryView",
       dependencies: ["CalcKeyboard"]),
     .target(
+      name: "Calculator",
+      dependencies: []
+    ),
+    .target(
       name: "CalcKeyboard",
-      dependencies: ["FlickButton", "Builder"]),
+      dependencies: ["FlickButton", "Calculator", "Builder"]),
     .testTarget(
       name: "AppTests",
       dependencies: ["App"]),

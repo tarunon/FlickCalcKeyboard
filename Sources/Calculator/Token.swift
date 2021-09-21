@@ -5,7 +5,7 @@
 //  Created by tarunon on 2021/09/20.
 //
 
-enum Token: String, Hashable {
+public enum Token: String, Hashable {
   case _0 = "0"
   case _1 = "1"
   case _2 = "2"
@@ -45,7 +45,7 @@ enum Token: String, Hashable {
   case bracketOpen = "("
   case bracketClose = ")"
 
-  var isNumeric: Bool {
+  public var isNumeric: Bool {
     switch self {
     case ._0, ._1, ._2, ._3, ._4, ._5, ._6, ._7, ._8, ._9, .dot:
       return true
@@ -54,7 +54,7 @@ enum Token: String, Hashable {
     }
   }
 
-  var isConstant: Bool {
+  public var isConstant: Bool {
     switch self {
     case .pi, .napier, .complex:
       return true

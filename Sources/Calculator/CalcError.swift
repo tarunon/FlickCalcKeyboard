@@ -5,6 +5,6 @@
 //  Created by tarunon on 2021/09/20.
 //
 
-enum CalcError: Error {
+public enum CalcError: Error {
   case tokensEmpty
 }
