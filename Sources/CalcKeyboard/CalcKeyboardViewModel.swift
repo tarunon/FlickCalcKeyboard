@@ -160,18 +160,11 @@ class CalcKeyboardViewModel: ObservableObject {
     }
   }
 
-  func parse() throws -> String {
-    if tokens.isEmpty {
-      throw CalcError.tokensEmpty
-    }
-    return "\(tokens.map { $0.rawValue }.joined()) = ???\n"
-  }
-
   func calculate() {
     shiftToEnd()
     formatBrackets(withCompletion: true)
     do {
-      try action(.insertText(parse()))
+      try action(.insertText("\(tokens.map { $0.rawValue }.joined()) = \(calc(tokens: tokens))\n"))
       clearAll()
     } catch (let error) {
       switch error {

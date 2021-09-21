@@ -15,6 +15,20 @@ public protocol NumberToken: CalcToken {
   var number: Complex<Double> { get throws }
 }
 
+public enum Precedence: Int {
+  case low
+  case middle
+  case high
+
+  func next() -> Precedence? {
+    switch self {
+    case .low: return .middle
+    case .middle: return .high
+    case .high: return nil
+    }
+  }
+}
+
 public enum DigitToken: String, NumberToken {
   case _0 = "0"
   case _1 = "1"
@@ -57,25 +71,25 @@ public enum ConstToken: String, NumberToken {
 }
 
 public protocol InfixOperatorToken: CalcToken {
-  var precedence: Int { get }
+  var precedence: Precedence { get }
 
   func operation(lhs: Complex<Double>, rhs: Complex<Double>) throws -> Complex<Double>
 }
 
 public protocol PrefixOperatorToken: CalcToken {
-  var precedence: Int { get }
+  var precedence: Precedence { get }
 
   func operation(rhs: Complex<Double>) throws -> Complex<Double>
 }
 
 public protocol PostfixOperatorToken: CalcToken {
-  var precedence: Int { get }
+  var precedence: Precedence { get }
 
   func operation(lhs: Complex<Double>) throws -> Complex<Double>
 }
 
 public struct AddToken: InfixOperatorToken {
-  public let precedence = 10
+  public let precedence = Precedence.low
   public let rawValue: String = "+"
 
   public static let instance = Self()
@@ -86,7 +100,7 @@ public struct AddToken: InfixOperatorToken {
 }
 
 public struct SubToken: InfixOperatorToken, PrefixOperatorToken {
-  public let precedence = 10
+  public let precedence = Precedence.low
   public let rawValue: String = "-"
 
   public static let instance = Self()
@@ -101,7 +115,7 @@ public struct SubToken: InfixOperatorToken, PrefixOperatorToken {
 }
 
 public struct MulToken: InfixOperatorToken {
-  public let precedence = 20
+  public let precedence = Precedence.middle
   public let rawValue: String = "×"
 
   public static let instance = Self()
@@ -112,7 +126,7 @@ public struct MulToken: InfixOperatorToken {
 }
 
 public struct DivToken: InfixOperatorToken {
-  public let precedence = 20
+  public let precedence = Precedence.middle
   public let rawValue: String = "÷"
 
   public static let instance = Self()
@@ -126,7 +140,7 @@ public struct DivToken: InfixOperatorToken {
 }
 
 public struct ModToken: InfixOperatorToken {
-  public let precedence = 50
+  public let precedence = Precedence.high
   public let rawValue: String = "%"
 
   public static let instance = Self()
@@ -143,7 +157,7 @@ public struct ModToken: InfixOperatorToken {
 }
 
 public struct PowToken: InfixOperatorToken {
-  public let precedence = 50
+  public let precedence = Precedence.high
   public let rawValue: String = "^"
 
   public static let instance = Self()
@@ -154,7 +168,7 @@ public struct PowToken: InfixOperatorToken {
 }
 
 public struct RootToken: InfixOperatorToken, PrefixOperatorToken {
-  public let precedence = 30
+  public let precedence = Precedence.high
   public let rawValue: String = "√"
 
   public static let instance = Self()
@@ -172,7 +186,7 @@ public struct RootToken: InfixOperatorToken, PrefixOperatorToken {
 }
 
 public struct GammaToken: PostfixOperatorToken {
-  public let precedence = 70
+  public let precedence = Precedence.high
   public let rawValue: String = "!"
 
   public static let instance = Self()
