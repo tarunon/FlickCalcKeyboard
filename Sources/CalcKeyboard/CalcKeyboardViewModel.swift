@@ -94,7 +94,7 @@ class CalcKeyboardViewModel: ObservableObject {
     do {
       shiftToEnd()
       formatBrackets(withCompletion: true)
-      memory += try calc(tokens: tokens)
+      memory += try Calculator.calc(tokens: tokens)
     } catch (let error) {
       print(error)
     }
@@ -104,7 +104,7 @@ class CalcKeyboardViewModel: ObservableObject {
     do {
       shiftToEnd()
       formatBrackets(withCompletion: true)
-      memory -= try calc(tokens: tokens)
+      memory -= try Calculator.calc(tokens: tokens)
     } catch (let error) {
       print(error)
     }
@@ -220,8 +220,8 @@ class CalcKeyboardViewModel: ObservableObject {
     shiftToEnd()
     formatBrackets(withCompletion: true)
     do {
-      let answer = try calc(tokens: tokens)
-      action(.insertText("\(tokens.map { $0.rawValue }.joined()) = \(CalcFormatter.format(answer))\n"))
+      let answer = try Calculator.calc(tokens: tokens)
+      action(.insertText("\(CalcFormatter.format(tokens)) = \(CalcFormatter.format(answer))\n"))
       answerHistory.append(answer)
       latestTokens = tokens
       clearAll()
@@ -246,21 +246,21 @@ class CalcKeyboardViewModel: ObservableObject {
   }
 
   var text: String {
-    tokens.map { $0.rawValue }.joined()
+    CalcFormatter.format(tokens)
   }
 
   var cursor: NSRange {
     get {
       return NSRange(
-        location: tokens[0..<startIndex].map { $0.rawValue }.joined().count,
-        length: tokens[startIndex..<endIndex].map { $0.rawValue }.joined().count
+        location: CalcFormatter.format(tokens[0..<startIndex]).count,
+        length: CalcFormatter.format(tokens[startIndex..<endIndex]).count
       )
     }
     set {
       setStart: do {
         for i in 0...tokens.count {
           if newValue.lowerBound
-            <= tokens[0..<i].map({ $0.rawValue }).joined().count
+            <= CalcFormatter.format(tokens[0..<i]).count
           {
             startIndex = i
             break setStart
@@ -272,7 +272,7 @@ class CalcKeyboardViewModel: ObservableObject {
       setEnd: do {
         for i in 0..<tokens.count {
           if newValue.upperBound
-            <= tokens[0..<i].map({ $0.rawValue }).joined().count
+            <= CalcFormatter.format(tokens[0..<i]).count
           {
             endIndex = i
             break setEnd

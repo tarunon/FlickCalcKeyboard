@@ -47,4 +47,8 @@ public enum CalcFormatter {
       return real + (complex.imaginary < 0 ? "-" : "+") + imaginary + "i"
     }
   }
+
+  public static func format<C: Collection>(_ tokens: C) -> String where C.Element == CalcToken {
+    tokens.map { $0.rawValue }.joined()
+  }
 }

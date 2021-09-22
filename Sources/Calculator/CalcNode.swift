@@ -53,7 +53,7 @@ struct DigitsNode: CalcNode {
   }
 
   var description: String {
-    digits.map { $0.rawValue }.joined()
+    CalcFormatter.format(digits)
   }
 }
 
