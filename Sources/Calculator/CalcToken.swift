@@ -53,10 +53,21 @@ public enum DigitToken: String, NumberToken {
   }
 }
 
-public enum ConstToken: String, NumberToken {
-  case pi = "π"
-  case napier = "e"
-  case complex = "i"
+public enum ConstToken: NumberToken {
+  case pi
+  case napier
+  case complex
+  case answer(answer: Complex<Double>, index: Int)
+
+  public var rawValue: String {
+    switch self {
+    case .pi: return "π"
+    case .napier: return "e"
+    case .complex: return "i"
+    case .answer(let answer, _):
+      return "(\(CalcFormatter.format(answer)))"
+    }
+  }
   
   public var number: Complex<Double> {
     switch self {
@@ -66,6 +77,8 @@ public enum ConstToken: String, NumberToken {
       return .init(.exp(1))
     case .complex:
       return .init(imaginary: 1.0)
+    case .answer(let answer, _):
+      return answer
     }
   }
 }
@@ -132,9 +145,6 @@ public struct DivToken: InfixOperatorToken {
   public static let instance = Self()
 
   public func operation(lhs: Complex<Double>, rhs: Complex<Double>) throws -> Complex<Double> {
-    if rhs == 0 {
-      throw CalcError.runtimeError(reason: "0 division error.")
-    }
     return lhs / rhs
   }
 }
@@ -146,9 +156,6 @@ public struct ModToken: InfixOperatorToken {
   public static let instance = Self()
 
   public func operation(lhs: Complex<Double>, rhs: Complex<Double>) throws -> Complex<Double> {
-    if rhs == 0 {
-      throw CalcError.runtimeError(reason: "0 division error.")
-    }
     guard (lhs.imaginary.isZero || lhs.imaginary.isSubnormal) && (rhs.imaginary.isZero || rhs.imaginary.isSubnormal) else {
       throw CalcError.runtimeError(reason: "Modulo of complex numbers is not supported.")
     }
@@ -192,61 +199,10 @@ public struct GammaToken: PostfixOperatorToken {
   public static let instance = Self()
 
   public func operation(lhs: Complex<Double>) throws -> Complex<Double> {
-    let xr = lhs.real
-    let xi = lhs.imaginary
-    var wr: Double
-    var wi : Double
-    if xr < 0 {
-        wr = 1 - xr
-        wi = -xi
-    } else {
-        wr = xr
-        wi = xi
+    guard lhs.imaginary.isZero || lhs.imaginary.isSubnormal else {
+      throw CalcError.runtimeError(reason: "Gamma operator of complex numbers is not supporeted.")
     }
-    var ur = wr + 6.00009857740312429
-    var vr = ur * (wr + 4.99999857982434025) - wi * wi
-    var vi = wi * (wr + 4.99999857982434025) + ur * wi
-    var yr = ur * 13.2280130755055088 + vr * 66.2756400966213521 + 0.293729529320536228
-    var yi = wi * 13.2280130755055088 + vi * 66.2756400966213521
-    ur = vr * (wr + 4.00000003016801681) - vi * wi
-    var ui = vi * (wr + 4.00000003016801681) + vr * wi
-    vr = ur * (wr + 2.99999999944915534) - ui * wi
-    vi = ui * (wr + 2.99999999944915534) + ur * wi
-    yr += ur * 91.1395751189899762 + vr * 47.3821439163096063
-    yi += ui * 91.1395751189899762 + vi * 47.3821439163096063
-    ur = vr * (wr + 2.00000000000603851) - vi * wi
-    ui = vi * (wr + 2.00000000000603851) + vr * wi
-    vr = ur * (wr + 0.999999999999975753) - ui * wi
-    vi = ui * (wr + 0.999999999999975753) + ur * wi
-    yr += ur * 10.5400280458730808 + vr
-    yi += ui * 10.5400280458730808 + vi
-    ur = vr * wr - vi * wi
-    ui = vi * wr + vr * wi
-    let t = ur * ur + ui * ui
-    vr = yr * ur + yi * ui + t * 0.0327673720261526849
-    vi = yi * ur - yr * ui
-    yr = wr + 7.31790632447016203
-    ur = Double.log(yr * yr + wi * wi) * 0.5 - 1
-    ui = Double.atan2(y: wi, x: yr)
-    yr = Double.exp(ur * (wr - 0.5) - ui * wi - 3.48064577727581257) / t
-    yi = ui * (wr - 0.5) + ur * wi
-    ur = yr * Double.cos(yi)
-    ui = yr * Double.sin(yi)
-    yr = ur * vr - ui * vi
-    yi = ui * vr + ur * vi
-    if xr < 0 {
-      wr = xr * 3.14159265358979324
-      wi = Double.exp(xi * 3.14159265358979324)
-      vi = 1 / wi
-      ur = (vi + wi) * Double.sin(wr)
-      ui = (vi - wi) * Double.cos(wr)
-      vr = ur * yr + ui * yi
-      vi = ui * yr - ur * yi
-      ur = 6.2831853071795862 / (vr * vr + vi * vi)
-      yr = ur * vr
-      yi = ur * vi
-    }
-    return Complex<Double>.init(yr, yi)
+    return Complex(.gamma(lhs.real + 1.0))
   }
 }
 

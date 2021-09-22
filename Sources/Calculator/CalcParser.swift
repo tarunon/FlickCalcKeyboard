@@ -162,25 +162,13 @@ enum CalcParsers {
   }
 }
 
-public func calc(tokens: [CalcToken]) throws -> String {
+public func calc(tokens: [CalcToken]) throws -> Complex<Double> {
   do {
     let (head, tail) = try CalcParsers.expr(precedence: .low).parse(tokens.reversed())
     guard tail.isEmpty else {
       throw CalcError.parseError(reason: "Invalid tokens contained `\(tail.map { $0.rawValue }.joined())`")
     }
-    let result = try head.result
-    switch ((result.real.isZero || result.real.isSubnormal), (result.imaginary.isZero || result.imaginary.isSubnormal)) {
-    case (_, true):
-      return Decimal(result.real).description
-    case (true, false):
-      return Decimal(result.imaginary).description + "i"
-    case (false, false):
-      if result.imaginary < 0 {
-        return Decimal(result.real).description + Decimal(result.imaginary).description + "i"
-      } else {
-        return Decimal(result.real).description + "+" + Decimal(result.imaginary).description + "i"
-      }
-    }
+    return try head.result
   } catch (let error) {
     switch error {
     case ParseError.isEmpty:

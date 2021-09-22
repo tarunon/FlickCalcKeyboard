@@ -41,7 +41,10 @@ let package = Package(
     ),
     .target(
       name: "CalcKeyboard",
-      dependencies: ["FlickButton", "Calculator", "Builder"]),
+      dependencies: [
+        .productItem(name: "Numerics", package: "swift-numerics", condition: .when(platforms: [.iOS])),
+        "FlickButton", "Calculator", "Builder"
+      ]),
     .testTarget(
       name: "AppTests",
       dependencies: ["App"]),

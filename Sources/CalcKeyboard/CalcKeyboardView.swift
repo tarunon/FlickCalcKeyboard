@@ -49,8 +49,9 @@ public struct CalcKeyboardView: View {
         VStack(spacing: 4.0) {
           FlickButton(
             title: "M+",
-            subtitle: "M-",
+            subtitle: "M- MR MC",
             action: {
+              viewModel.memoryAdd()
             },
             onDrag: {
               draggingLine = 0
@@ -60,19 +61,19 @@ public struct CalcKeyboardView: View {
               .up: (
                 label: "M-",
                 action: {
-
+                  viewModel.memorySub()
                 }
               ),
               .right: (
                 label: "MR",
                 action: {
-
+                  viewModel.inputMemory()
                 }
               ),
               .down: (
                 label: "MC",
                 action: {
-
+                  viewModel.memoryClear()
                 }
               ),
             ]
@@ -147,13 +148,13 @@ public struct CalcKeyboardView: View {
               .up: (
                 label: "ans",
                 action: {
-
+                  viewModel.inputAnswer()
                 }
               ),
               .right: (
                 label: "ret",
                 action: {
-
+                  viewModel.inputRetry()
                 }
               ),
             ]
@@ -238,7 +239,7 @@ public struct CalcKeyboardView: View {
               viewModel.formatBrackets(withCompletion: false)
             },
             onDrag: {
-              draggingLine = 3
+              draggingLine = 1
             },
             backgroundColor: lightButtonColor,
             directions: [
@@ -344,6 +345,15 @@ public struct CalcKeyboardView: View {
                   viewModel.shiftToLeft()
                 }
               ),
+              .up: (
+                label: "log",
+                action: {
+                  viewModel.input(token: FunctionToken.log)
+                  viewModel.input(token: BracketToken.open)
+                  viewModel.input(token: BracketToken.close)
+                  viewModel.shiftToLeft()
+                }
+              ),
               .right: (
                 label: "lg",
                 action: {
@@ -358,7 +368,7 @@ public struct CalcKeyboardView: View {
           )
           FlickButton(
             title: "0",
-            subtitle: "00...",
+            subtitle: "00",
             action: {
               viewModel.input(token: DigitToken._0)
             },
@@ -472,7 +482,7 @@ public struct CalcKeyboardView: View {
               viewModel.inputAutoDot()
             },
             onDrag: {
-              draggingLine = 1
+              draggingLine = 3
             },
             backgroundColor: lightButtonColor,
             directions: [:]

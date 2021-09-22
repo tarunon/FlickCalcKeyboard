@@ -7,6 +7,7 @@
 
 import Calculator
 import SwiftUI
+import Numerics
 
 @MainActor
 class CalcKeyboardViewModel: ObservableObject {
@@ -15,6 +16,10 @@ class CalcKeyboardViewModel: ObservableObject {
   @Published var endIndex: Int = 0
 
   var action: (CalcAction) -> Void
+
+  var answerHistory: [Complex<Double>] = []
+  var latestTokens: [CalcToken] = []
+  var memory: Complex<Double> = 0
 
   init(
     action: @escaping (CalcAction) -> Void
@@ -56,6 +61,57 @@ class CalcKeyboardViewModel: ObservableObject {
     } else {
       input(token: BracketToken.open)
     }
+  }
+
+  func inputAnswer() {
+    tokens.removeSubrange(startIndex..<endIndex)
+    endIndex = startIndex
+    if let answer = answerHistory.last {
+      if startIndex == 0 {
+        input(token: ConstToken.answer(answer: answer, index: answerHistory.count - 1))
+      } else if case .answer(_, let index) = tokens[startIndex - 1] as? ConstToken {
+        deleteLeft()
+        let nextIndex = index == 0 ? answerHistory.count - 1 : index - 1
+        input(token: ConstToken.answer(answer: answerHistory[nextIndex], index: nextIndex))
+      } else {
+        input(token: ConstToken.answer(answer: answer, index: answerHistory.count - 1))
+      }
+    }
+  }
+
+  func inputRetry() {
+    clearAll()
+    tokens = latestTokens
+    endIndex = latestTokens.count
+    startIndex = latestTokens.count
+  }
+
+  func inputMemory() {
+    input(token: ConstToken.answer(answer: memory, index: 0))
+  }
+
+  func memoryAdd() {
+    do {
+      shiftToEnd()
+      formatBrackets(withCompletion: true)
+      memory += try calc(tokens: tokens)
+    } catch (let error) {
+      print(error)
+    }
+  }
+
+  func memorySub() {
+    do {
+      shiftToEnd()
+      formatBrackets(withCompletion: true)
+      memory -= try calc(tokens: tokens)
+    } catch (let error) {
+      print(error)
+    }
+  }
+
+  func memoryClear() {
+    memory = 0
   }
 
   func formatBrackets(withCompletion: Bool) {
@@ -164,7 +220,10 @@ class CalcKeyboardViewModel: ObservableObject {
     shiftToEnd()
     formatBrackets(withCompletion: true)
     do {
-      try action(.insertText("\(tokens.map { $0.rawValue }.joined()) = \(calc(tokens: tokens))\n"))
+      let answer = try calc(tokens: tokens)
+      action(.insertText("\(tokens.map { $0.rawValue }.joined()) = \(CalcFormatter.format(answer))\n"))
+      answerHistory.append(answer)
+      latestTokens = tokens
       clearAll()
     } catch (let error) {
       switch error {
