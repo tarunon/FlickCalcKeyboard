@@ -7,7 +7,7 @@
 
 import Numerics
 
-protocol CalcNode {
+protocol CalcNode: CustomStringConvertible {
   var result: Complex<Double> { get throws }
 }
 
@@ -19,19 +19,19 @@ extension NumberToken where Self: CalcNode {
   }
 }
 
-extension DigitToken: CalcNode, CustomStringConvertible {
+extension DigitToken: CalcNode {
   public var description: String {
     rawValue
   }
 }
 
-extension ConstToken: CalcNode, CustomStringConvertible {
+extension ConstToken: CalcNode {
   public var description: String {
     rawValue
   }
 }
 
-struct DigitsNode: CalcNode, CustomStringConvertible {
+struct DigitsNode: CalcNode {
   var digits: [DigitToken]
 
   var result: Complex<Double> {
@@ -57,7 +57,21 @@ struct DigitsNode: CalcNode, CustomStringConvertible {
   }
 }
 
-enum OperationNode: CalcNode, CustomStringConvertible {
+struct GroupNode: CalcNode {
+  var nodes: [CalcNode]
+  
+  var result: Complex<Double> {
+    get throws {
+      try nodes.map { try $0.result }.reduce(1, *)
+    }
+  }
+  
+  var description: String {
+    "(" + nodes.map { "\($0)" }.joined(separator: "*") + ")"
+  }
+}
+
+enum OperationNode: CalcNode {
   case infix(lhs: CalcNode, rhs: CalcNode, token: InfixOperatorToken)
   case prefix(rhs: CalcNode, token: PrefixOperatorToken)
   case postfix(lhs: CalcNode, token: PostfixOperatorToken)
@@ -87,7 +101,7 @@ enum OperationNode: CalcNode, CustomStringConvertible {
   }
 }
 
-struct FunctionNode: CalcNode, CustomStringConvertible {
+struct FunctionNode: CalcNode {
   var node: CalcNode
   var token: FunctionToken
 

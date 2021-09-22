@@ -12,13 +12,11 @@ enum ParseError: Error {
   case isEmpty
   case typeMissmatch
   case conditionFailure
-  case cantUseAllTokens
 }
 
-struct Parser<Input, Output> {
+struct Parser<Input: RangeReplaceableCollection, Output> {
   var parse: (Input) throws -> (Output, Input)
 }
-
 
 extension Parser {
   static func pure(_ value: Output) -> Parser {
@@ -29,6 +27,10 @@ extension Parser {
     return .init(parse: { _ in throw ParseError.isEmpty })
   }
 
+  func map<T>(_ f: @escaping (Output) throws -> T) -> Parser<Input, T> {
+    flatMap { try Parser<Input, T>.pure(f($0)) }
+  }
+  
   func flatMap<T>(_ f: @escaping (Output) throws -> Parser<Input, T>) -> Parser<Input, T> {
     return Parser<Input, T> { input throws in
       let (result, input2) = try self.parse(input)
@@ -36,16 +38,52 @@ extension Parser {
     }
   }
 
-  func map<T>(_ f: @escaping (Output) throws -> T) -> Parser<Input, T> {
-    flatMap { try Parser<Input, T>.pure(f($0)) }
+  func mapError(_ f: @escaping (Error) -> Error) -> Parser {
+    flatMapError { throw f($0) }
+  }
+  
+  func flatMapError(_ f: @escaping (Error) throws -> Parser) -> Parser {
+    .init(parse: { input throws in
+      do {
+        return try self.parse(input)
+      } catch (let error) {
+        return try f(error).parse(input)
+      }
+    })
+  }
+  
+  func assert(_ condition: @escaping (Output) -> Bool) -> Parser {
+    self.map {
+      guard condition($0) else {
+        throw ParseError.conditionFailure
+      }
+      return $0
+    }
   }
 
-  static func ?? (lhs: Parser, rhs: Parser) -> Parser {
-    return Parser { input in
-      do {
-        return try lhs.parse(input)
-      } catch {
-        return try rhs.parse(input)
+  static func ?? (lhs: Parser, rhs: @autoclosure @escaping () -> Parser) -> Parser {
+    return lhs.flatMapError { _ in rhs() }
+  }
+
+  static func satisfy(to type: Output.Type = Output.self) -> Parser {
+    return Parser { input throws in
+      if input.isEmpty {
+        throw ParseError.isEmpty
+      }
+      var tail = input
+      guard let head = tail.removeFirst() as? Output else {
+        throw ParseError.typeMissmatch
+      }
+      return (head, tail)
+    }
+  }
+  
+  func many(allowEmpty: Bool) -> Parser<Input, [Output]> {
+    if allowEmpty {
+      return many(allowEmpty: false) ?? .pure([])
+    } else {
+      return flatMap { output in
+        return many(allowEmpty: true).map { [output] + $0 }
       }
     }
   }
@@ -55,119 +93,104 @@ extension Parser {
 
 enum CalcParsers {
   typealias CalcParser<Output> = Parser<[CalcToken], Output>
-  static func uncons<T>(_ list: [CalcToken], headType: T.Type = T.self) throws -> (head: T, tail: [CalcToken]) {
-    if list.isEmpty {
-      throw ParseError.isEmpty
-    }
-    var tail = list
-    if let head = tail.removeFirst() as? T {
-      return (head: head, tail: tail)
-    }
-    throw ParseError.typeMissmatch
-  }
-
-  static func satisfy<T>(to type: T.Type, condition: @escaping (T) -> Bool = { _ in true }) -> CalcParser<T> {
-    return CalcParser<T> { input throws in
-      let result = try uncons(input, headType: T.self)
-      if condition(result.head) {
-        return result
-      } else {
-        throw ParseError.conditionFailure
-      }
-    }
-  }
-
-  static func many<A>(_ p: CalcParser<A>) -> CalcParser<[A]> {
-    many1(p) ?? CalcParser.pure([])
-  }
-
-  static func many1<A>(_ p: CalcParser<A>) -> CalcParser<[A]> {
-    return p.map { a in return { (list: [A]) in [a] + list } }.flatMap { f in
-      many(p).map { f($0) }
-    }
-  }
 
   static func digit() -> CalcParser<DigitToken> {
-    satisfy(to: DigitToken.self)
-  }
-
-  static func digits() -> CalcParser<DigitsNode> {
-    many1(digit()).map(DigitsNode.init)
+    .satisfy()
   }
 
   static func const() -> CalcParser<ConstToken> {
-    satisfy(to: ConstToken.self)
+    .satisfy()
+  }
+
+  static func bracket(open: Bool) -> CalcParser<BracketToken> {
+    .satisfy().assert { $0 == (open ? .open : .close) }
+  }
+
+  static func infixOperator(precedence: Precedence) -> CalcParser<InfixOperatorToken> {
+    .satisfy().assert { $0.precedence == precedence }
+  }
+
+  static func prefixOperator(precedence: Precedence) -> CalcParser<PrefixOperatorToken> {
+    .satisfy().assert { $0.precedence == precedence }
+  }
+
+  static func postfixOperator(precedence: Precedence) -> CalcParser<PostfixOperatorToken> {
+    .satisfy().assert { $0.precedence == precedence }
+  }
+  
+  static func function() -> CalcParser<FunctionToken> {
+    .satisfy()
+  }
+
+  static func digits() -> CalcParser<DigitsNode> {
+    digit().many(allowEmpty: false).map { DigitsNode(digits: $0.reversed()) }
   }
 
   static func number() -> CalcParser<CalcNode> {
     digits().map { $0 as CalcNode } ?? const().map { $0 as CalcNode }
   }
-
-  static func monomial() -> CalcParser<CalcNode> {
-    number().flatMap { x in
-      monomial().map { y in OperationNode.infix(lhs: x, rhs: y, token: MulToken.instance) }
-    } ?? number()
-  }
-
-  static func bracket(open: Bool) -> CalcParser<BracketToken> {
-    satisfy(to: BracketToken.self, condition: { $0 == (open ? .open : .close) })
-  }
-
-  static func infixOperator(precedence: Precedence) -> CalcParser<InfixOperatorToken> {
-    satisfy(to: InfixOperatorToken.self, condition: { $0.precedence == precedence })
-  }
-
-  static func prefixOperator(precedence: Precedence) -> CalcParser<PrefixOperatorToken> {
-    satisfy(to: PrefixOperatorToken.self, condition: { $0.precedence == precedence })
-  }
-
-  static func postfixOperator(precedence: Precedence) -> CalcParser<PostfixOperatorToken> {
-    satisfy(to: PostfixOperatorToken.self, condition: { $0.precedence == precedence })
-  }
-
+  
   static func expr(precedence: Precedence) -> CalcParser<CalcNode> {
-    (precedence.next().map(expr(precedence:)) ?? factor()).flatMap { lhs in
+    (precedence.next().map(expr(precedence:)) ?? factor()).flatMap { rhs in
       infixOperator(precedence: precedence).flatMap { token in
-        expr(precedence: precedence).map { rhs in
+        expr(precedence: precedence).map { lhs in
           OperationNode.infix(lhs: lhs, rhs: rhs, token: token)
         }
       } ??
-      postfixOperator(precedence: precedence).map { token in
-        OperationNode.postfix(lhs: lhs, token: token)
-      }
-      ?? .pure(lhs)
-    } ?? prefixOperator(precedence: precedence).flatMap { token in
-      expr(precedence: precedence).map { rhs in
+      prefixOperator(precedence: precedence).map { token in
         OperationNode.prefix(rhs: rhs, token: token)
+      }
+      ?? .pure(rhs)
+    } ?? postfixOperator(precedence: precedence).flatMap { token in
+      expr(precedence: precedence).map { lhs in
+        OperationNode.postfix(lhs: lhs, token: token)
       }
     }
   }
 
   static func factor() -> CalcParser<CalcNode> {
-    bracket(open: true).flatMap { _ in
+    (bracket(open: false).flatMap { _ in
       expr(precedence: .low).flatMap { node in
-        bracket(open: false).map { _ in node }
+        bracket(open: true).map { _ in node }
       }
-    } ?? monomial()
+    }.flatMap { node in
+      function().map { token in
+        FunctionNode(node: node, token: token)
+      }.flatMapError { _ in .pure(node) }
+    } ??
+     number()).many(allowEmpty: false).map { GroupNode(nodes: $0.reversed()) }
   }
 }
 
 public func calc(tokens: [CalcToken]) throws -> String {
-  let (head, tail) = try CalcParsers.expr(precedence: .low).parse(tokens)
-  guard tail.isEmpty else {
-    throw ParseError.cantUseAllTokens
-  }
-  let result = try head.result
-  switch ((result.real.isZero || result.real.isSubnormal), (result.imaginary.isZero || result.imaginary.isSubnormal)) {
-  case (_, true):
-    return Decimal(result.real).description
-  case (true, false):
-    return Decimal(result.imaginary).description + "i"
-  case (false, false):
-    if result.imaginary < 0 {
-      return Decimal(result.real).description + Decimal(result.imaginary).description + "i"
-    } else {
-      return Decimal(result.real).description + "+" + Decimal(result.imaginary).description + "i"
+  do {
+    let (head, tail) = try CalcParsers.expr(precedence: .low).parse(tokens.reversed())
+    guard tail.isEmpty else {
+      throw CalcError.parseError(reason: "Invalid tokens contained `\(tail.map { $0.rawValue }.joined())`")
+    }
+    let result = try head.result
+    switch ((result.real.isZero || result.real.isSubnormal), (result.imaginary.isZero || result.imaginary.isSubnormal)) {
+    case (_, true):
+      return Decimal(result.real).description
+    case (true, false):
+      return Decimal(result.imaginary).description + "i"
+    case (false, false):
+      if result.imaginary < 0 {
+        return Decimal(result.real).description + Decimal(result.imaginary).description + "i"
+      } else {
+        return Decimal(result.real).description + "+" + Decimal(result.imaginary).description + "i"
+      }
+    }
+  } catch (let error) {
+    switch error {
+    case ParseError.isEmpty:
+      throw CalcError.tokensEmpty
+    case ParseError.typeMissmatch:
+      throw CalcError.parseError(reason: "")
+    case ParseError.conditionFailure:
+      throw CalcError.parseError(reason: "")
+    default:
+      throw error
     }
   }
 }
