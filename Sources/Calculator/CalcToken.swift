@@ -12,7 +12,7 @@ public protocol CalcToken {
 }
 
 public protocol NumberToken: CalcToken {
-  var number: Complex<Double> { get throws }
+  func number() throws -> Complex<Double>
 }
 
 public enum Precedence: Int {
@@ -41,14 +41,12 @@ public enum DigitToken: String, NumberToken {
   case _8 = "8"
   case _9 = "9"
   case dot = "."
-  
-  public var number: Complex<Double> {
-    get throws {
-      if self == .dot {
-        throw CalcError.runtimeError(reason: "Token `.` cannot be evaluated.")
-      } else {
-        return .init(Double(rawValue)!)
-      }
+
+  public func number() throws -> Complex<Double> {
+    if self == .dot {
+      throw CalcError.runtimeError(reason: "Token `.` cannot be evaluated.")
+    } else {
+      return .init(Double(rawValue)!)
     }
   }
 }
@@ -68,8 +66,8 @@ public enum ConstToken: NumberToken {
       return "(\(CalcFormatter.format(answer)))"
     }
   }
-  
-  public var number: Complex<Double> {
+
+  public func number() throws -> Complex<Double> {
     switch self {
     case .pi:
       return .init(.pi)
@@ -156,7 +154,10 @@ public struct ModToken: InfixOperatorToken {
   public static let instance = Self()
 
   public func operation(lhs: Complex<Double>, rhs: Complex<Double>) throws -> Complex<Double> {
-    guard (lhs.imaginary.isZero || lhs.imaginary.isSubnormal) && (rhs.imaginary.isZero || rhs.imaginary.isSubnormal) else {
+    guard
+      (lhs.imaginary.isZero || lhs.imaginary.isSubnormal)
+        && (rhs.imaginary.isZero || rhs.imaginary.isSubnormal)
+    else {
       throw CalcError.runtimeError(reason: "`K%i` operation is not supported.")
     }
     return .init(lhs.real.truncatingRemainder(dividingBy: rhs.real))
@@ -181,7 +182,11 @@ public struct RootToken: InfixOperatorToken, PrefixOperatorToken {
   public static let instance = Self()
 
   public func operation(lhs: Complex<Double>, rhs: Complex<Double>) throws -> Complex<Double> {
-    guard (lhs.imaginary.isZero || lhs.imaginary.isSubnormal) && (lhs.real.truncatingRemainder(dividingBy: 1).isZero || lhs.real.truncatingRemainder(dividingBy: 1).isSubnormal) else {
+    guard
+      (lhs.imaginary.isZero || lhs.imaginary.isSubnormal)
+        && (lhs.real.truncatingRemainder(dividingBy: 1).isZero
+          || lhs.real.truncatingRemainder(dividingBy: 1).isSubnormal)
+    else {
       throw CalcError.runtimeError(reason: "`i√K`, `0.1√K` operations are not supported.")
     }
     return .root(rhs, Int(lhs.real))
@@ -224,8 +229,10 @@ public struct FunctionToken: CalcToken {
   public static let tanh = Self(rawValue: "tanh", operation: Complex<Double>.tanh)
   public static let atan = Self(rawValue: "atan", operation: Complex<Double>.atan)
   public static let atanh = Self(rawValue: "atanh", operation: Complex<Double>.atanh)
-  public static let log = Self(rawValue: "log", operation: { Complex<Double>.log($0) / Complex.log(10) })
-  public static let lg = Self(rawValue: "lg", operation: { Complex<Double>.log($0) / Complex.log(2) })
+  public static let log = Self(
+    rawValue: "log", operation: { Complex<Double>.log($0) / Complex.log(10) })
+  public static let lg = Self(
+    rawValue: "lg", operation: { Complex<Double>.log($0) / Complex.log(2) })
   public static let ln = Self(rawValue: "ln", operation: Complex<Double>.log(_:))
 
   public let rawValue: String

@@ -9,7 +9,7 @@ let package = Package(
     .macOS(.v10_15)
   ],
   dependencies: [
-    .package(url: "https://github.com/apple/swift-format", branch: "swift-5.5-branch")
+    .package(url: "https://github.com/apple/swift-format", branch: "0.50500.0")
   ],
   targets: [
     .target(

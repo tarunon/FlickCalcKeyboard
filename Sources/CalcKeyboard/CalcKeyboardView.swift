@@ -5,9 +5,9 @@
 //  Created by tarunon on 2021/09/19.
 //
 
+import Calculator
 import FlickButton
 import SwiftUI
-import Calculator
 
 @MainActor
 public struct CalcKeyboardView: View {

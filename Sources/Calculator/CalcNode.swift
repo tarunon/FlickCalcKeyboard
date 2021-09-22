@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by tarunon on 2021/09/21.
 //
@@ -8,14 +8,12 @@
 import Numerics
 
 protocol CalcNode: CustomStringConvertible {
-  var result: Complex<Double> { get throws }
+  func result() throws -> Complex<Double>
 }
 
 extension NumberToken where Self: CalcNode {
-  var result: Complex<Double> {
-    get throws {
-      try number
-    }
+  func result() throws -> Complex<Double> {
+    try number()
   }
 }
 
@@ -34,22 +32,21 @@ extension ConstToken: CalcNode {
 struct DigitsNode: CalcNode {
   var digits: [DigitToken]
 
-  var result: Complex<Double> {
-    get throws {
-      let segments = digits.split(separator: .dot)
-      if segments.count > 2 {
-        throw CalcError.runtimeError(
-          reason:
-            "Too much `.` contains a number segment."
-        )
-      }
-      let result = try segments[0].map { try $0.number }.reduce(0) { $0 * 10 + $1 }
-      if segments.count == 2 {
-        return result + (try segments[1].map { try $0.number }.reversed().reduce(0) { $0 / 10 + $1 })
-          / 10
-      }
-      return result
+  func result() throws -> Complex<Double> {
+    let segments = digits.split(separator: .dot)
+    if segments.count > 2 {
+      throw CalcError.runtimeError(
+        reason:
+          "Too much `.` contains a number segment."
+      )
     }
+    let result = try segments[0].map { try $0.number() }.reduce(0) { $0 * 10 + $1 }
+    if segments.count == 2 {
+      return result
+        + (try segments[1].map { try $0.number() }.reversed().reduce(0) { $0 / 10 + $1 })
+        / 10
+    }
+    return result
   }
 
   var description: String {
@@ -59,13 +56,11 @@ struct DigitsNode: CalcNode {
 
 struct GroupNode: CalcNode {
   var nodes: [CalcNode]
-  
-  var result: Complex<Double> {
-    get throws {
-      try nodes.map { try $0.result }.reduce(1, *)
-    }
+
+  func result() throws -> Complex<Double> {
+    try nodes.map { try $0.result() }.reduce(1, *)
   }
-  
+
   var description: String {
     "(" + nodes.map { "\($0)" }.joined(separator: "*") + ")"
   }
@@ -76,17 +71,16 @@ enum OperationNode: CalcNode {
   case prefix(rhs: CalcNode, token: PrefixOperatorToken)
   case postfix(lhs: CalcNode, token: PostfixOperatorToken)
 
-  var result: Complex<Double> {
-    get throws {
-      switch self {
-      case .infix(let lhs, let rhs, let token):
-        return try token.operation(lhs: lhs.result, rhs: rhs.result)
-      case .prefix(let rhs, let token):
-        return try token.operation(rhs: rhs.result)
-      case .postfix(let lhs, let token):
-        return try token.operation(lhs: lhs.result)
-      }
+  func result() throws -> Complex<Double> {
+    switch self {
+    case .infix(let lhs, let rhs, let token):
+      return try token.operation(lhs: lhs.result(), rhs: rhs.result())
+    case .prefix(let rhs, let token):
+      return try token.operation(rhs: rhs.result())
+    case .postfix(let lhs, let token):
+      return try token.operation(lhs: lhs.result())
     }
+
   }
 
   var description: String {
@@ -105,10 +99,8 @@ struct FunctionNode: CalcNode {
   var node: CalcNode
   var token: FunctionToken
 
-  var result: Complex<Double> {
-    get throws {
-      try token.operation(node.result)
-    }
+  func result() throws -> Complex<Double> {
+    try token.operation(node.result())
   }
 
   var description: String {

@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by tarunon on 2021/09/22.
 //
@@ -12,9 +12,10 @@ public enum Calculator {
     do {
       let (head, tail) = try CalcParsers.expr(precedence: .low).parse(tokens.reversed())
       guard tail.isEmpty else {
-        throw CalcError.parseError(reason: "Parse error occured arround `\(tail.map { $0.rawValue }.joined())`")
+        throw CalcError.parseError(
+          reason: "Parse error occured arround `\(tail.map { $0.rawValue }.joined())`")
       }
-      return try head.result
+      return try head.result()
     } catch (let error) {
       switch error {
       case ParseError.isEmpty:

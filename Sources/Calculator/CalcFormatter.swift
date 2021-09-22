@@ -1,12 +1,12 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by tarunon on 2021/09/22.
 //
 
-import Numerics
 import Foundation
+import Numerics
 
 public enum CalcFormatter {
   public static func format(_ complex: Complex<Double>) -> String {

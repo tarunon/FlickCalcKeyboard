@@ -1,6 +1,6 @@
 //
 //  CalcParser.swift
-//  
+//
 //
 //  Created by tarunon on 2021/09/21.
 //
@@ -30,7 +30,7 @@ extension Parser {
   func map<T>(_ f: @escaping (Output) throws -> T) -> Parser<Input, T> {
     flatMap { try Parser<Input, T>.pure(f($0)) }
   }
-  
+
   func flatMap<T>(_ f: @escaping (Output) throws -> Parser<Input, T>) -> Parser<Input, T> {
     return Parser<Input, T> { input throws in
       let (result, input2) = try self.parse(input)
@@ -41,7 +41,7 @@ extension Parser {
   func mapError(_ f: @escaping (Error) -> Error) -> Parser {
     flatMapError { throw f($0) }
   }
-  
+
   func flatMapError(_ f: @escaping (Error) throws -> Parser) -> Parser {
     .init(parse: { input throws in
       do {
@@ -51,7 +51,7 @@ extension Parser {
       }
     })
   }
-  
+
   func assert(_ condition: @escaping (Output) -> Bool) -> Parser {
     self.map {
       guard condition($0) else {
@@ -78,7 +78,7 @@ extension Parser {
       return (head, tail)
     }
   }
-  
+
   func many(allowEmpty: Bool) -> Parser<Input, [Output]> {
     if allowEmpty {
       return many(allowEmpty: false) ?? .pure([])
@@ -89,8 +89,6 @@ extension Parser {
     }
   }
 }
-
-
 
 enum CalcParsers {
   typealias CalcParser<Output> = Parser<[CalcToken], Output>
@@ -118,7 +116,7 @@ enum CalcParsers {
   static func postfixOperator(precedence: Precedence) -> CalcParser<PostfixOperatorToken> {
     .satisfy().assert { $0.precedence == precedence }
   }
-  
+
   static func function() -> CalcParser<FunctionToken> {
     .satisfy()
   }
@@ -130,23 +128,23 @@ enum CalcParsers {
   static func number() -> CalcParser<CalcNode> {
     digits().map { $0 as CalcNode } ?? const().map { $0 as CalcNode }
   }
-  
+
   static func expr(precedence: Precedence) -> CalcParser<CalcNode> {
     (precedence.next().map(expr(precedence:)) ?? factor()).flatMap { rhs in
       infixOperator(precedence: precedence).flatMap { token in
         expr(precedence: precedence).map { lhs in
           OperationNode.infix(lhs: lhs, rhs: rhs, token: token)
         }
-      } ??
-      prefixOperator(precedence: precedence).map { token in
+      } ?? prefixOperator(precedence: precedence).map { token in
         OperationNode.prefix(rhs: rhs, token: token)
       }
-      ?? .pure(rhs)
-    } ?? postfixOperator(precedence: precedence).flatMap { token in
-      expr(precedence: precedence).map { lhs in
-        OperationNode.postfix(lhs: lhs, token: token)
-      }
+        ?? .pure(rhs)
     }
+      ?? postfixOperator(precedence: precedence).flatMap { token in
+        expr(precedence: precedence).map { lhs in
+          OperationNode.postfix(lhs: lhs, token: token)
+        }
+      }
   }
 
   static func factor() -> CalcParser<CalcNode> {
@@ -158,7 +156,6 @@ enum CalcParsers {
       function().map { token in
         FunctionNode(node: node, token: token)
       }.flatMapError { _ in .pure(node) }
-    } ??
-     number()).many(allowEmpty: false).map { GroupNode(nodes: $0.reversed()) }
+    } ?? number()).many(allowEmpty: false).map { GroupNode(nodes: $0.reversed()) }
   }
 }
