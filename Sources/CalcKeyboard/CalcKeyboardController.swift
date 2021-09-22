@@ -91,6 +91,11 @@ public class CalcKeyboardController: UIInputViewController {
     didMove(toParent: keyboardViewController)
   }
 
+  public override func viewWillLayoutSubviews() {
+    view.frame.size.width = view.superview?.frame.width ?? 0.0
+    super.viewWillLayoutSubviews()
+  }
+
   public override func viewWillTransition(
     to size: CGSize,
     with coordinator: UIViewControllerTransitionCoordinator
