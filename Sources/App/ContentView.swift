@@ -5,8 +5,7 @@
 //  Created by tarunon on 2021/05/15.
 //
 
-import CalcHistoryView
-import CalcKeyboard
+import CalcEditorView
 import SwiftUI
 
 @MainActor
@@ -15,7 +14,7 @@ struct ContentView: View {
   var body: some View {
     VStack(spacing: 0.0) {
       ZStack(alignment: .topTrailing) {
-        CalcHistoryView(text: $text)
+        CalcEditorView(text: $text)
         Button {
           text = ""
         } label: {
@@ -26,11 +25,5 @@ struct ContentView: View {
         .zIndex(1)
       }
     }
-  }
-}
-
-struct ContentView_Previews: PreviewProvider {
-  static var previews: some View {
-    ContentView()
   }
 }

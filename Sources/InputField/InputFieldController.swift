@@ -1,8 +1,8 @@
 //
-//  InputField.swift
+//  InputFieldController.swift
 //
 //
-//  Created by tarunon on 2021/09/20.
+//  Created by tarunon on 2021/09/22.
 //
 
 import Builder
@@ -12,51 +12,6 @@ import UIKit
 @MainActor
 @objc protocol InputFieldControllerDelegate: NSObjectProtocol {
   @objc optional func inputFieldDidChangeSelection(_ controller: InputFieldController)
-}
-
-@MainActor
-struct TextMarker: View {
-  class ViewModel: ObservableObject {
-    @Published var hide: Bool = false
-    var wait: Bool = true
-
-    func toggle() {
-      if wait {
-        wait.toggle()
-      } else {
-        hide.toggle()
-      }
-    }
-
-    func reset() {
-      wait = true
-      hide = false
-    }
-  }
-
-  var flushing: Bool
-  private var blinkTimer = Timer.publish(every: 0.5, on: .main, in: .common).autoconnect()
-  @ObservedObject var viewModel = ViewModel()
-
-  init(flushing: Bool) {
-    self.flushing = flushing
-    self.viewModel.reset()
-  }
-
-  var body: some View {
-    ZStack(alignment: .trailing) {
-      ZStack(alignment: .leading) {
-        Color.blue.opacity(0.2).frame(maxWidth: .infinity, maxHeight: .infinity)
-        Color.blue.frame(width: 2.0)
-      }
-      Color.blue.frame(width: 2.0)
-    }
-    .onReceive(blinkTimer) { _ in
-      viewModel.toggle()
-    }
-    .opacity(flushing && viewModel.hide ? 0.0 : 1.0)
-    .animation(Animation.easeInOut(duration: 0.1), value: viewModel.hide)
-  }
 }
 
 @MainActor
@@ -153,6 +108,7 @@ class InputFieldController: UIViewController, UIGestureRecognizerDelegate, UITex
       textMarker.view.frame = rect.applying(
         .identity.translatedBy(x: inputOrigin.x / 2, y: inputOrigin.y / 2)
       )
+      // Notes: √ change line height.
       textMarker.view.frame.origin.y = 3.0
       textMarker.view.frame.size.height = 22.0
       textMarker.rootView = .init(flushing: start == end)
@@ -187,49 +143,5 @@ class InputFieldController: UIViewController, UIGestureRecognizerDelegate, UITex
     shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer
   ) -> Bool {
     true
-  }
-}
-
-@MainActor
-class TextFieldCoordinator: NSObject, InputFieldControllerDelegate {
-  @Binding var cursor: NSRange
-
-  init(cursor: Binding<NSRange>) {
-    _cursor = cursor
-    super.init()
-  }
-
-  func inputFieldDidChangeSelection(_ controller: InputFieldController) {
-    if let cursor = controller.cursor {
-      self.cursor = cursor
-    }
-  }
-}
-
-@MainActor
-struct InputField: UIViewControllerRepresentable {
-  typealias UIViewControllerType = InputFieldController
-
-  var text: String
-  var errorMessage: String
-  @Binding var cursor: NSRange
-
-  func makeCoordinator() -> TextFieldCoordinator {
-    TextFieldCoordinator(cursor: $cursor)
-  }
-
-  func makeUIViewController(context: Context) -> InputFieldController {
-    let controller = InputFieldController()
-    controller.delegate = context.coordinator
-    controller.cursor = cursor
-    controller.textField.text = text
-    controller.errorMessage = errorMessage
-    return controller
-  }
-
-  func updateUIViewController(_ uiViewController: InputFieldController, context: Context) {
-    uiViewController.textField.text = text
-    uiViewController.errorMessage = errorMessage
-    uiViewController.cursor = cursor
   }
 }

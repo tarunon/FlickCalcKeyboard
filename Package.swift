@@ -11,9 +11,11 @@ let package = Package(
   products: [
     .library(
       name: "App",
+      type: .static,
       targets: ["App"]),
     .library(
       name: "CalcKeyboard",
+      type: .static,
       targets: ["CalcKeyboard"]),
   ],
   dependencies: [
@@ -26,12 +28,15 @@ let package = Package(
     // Targets can depend on other targets in this package, and on products in packages this package depends on.
     .target(
       name: "App",
-      dependencies: ["CalcKeyboard", "CalcHistoryView"]),
+      dependencies: ["CalcEditorView"]),
     .target(
       name: "FlickButton",
       dependencies: []),
     .target(
-      name: "CalcHistoryView",
+      name: "InputField",
+      dependencies: ["Builder"]),
+    .target(
+      name: "CalcEditorView",
       dependencies: ["CalcKeyboard"]),
     .target(
       name: "Calculator",
@@ -43,7 +48,7 @@ let package = Package(
       name: "CalcKeyboard",
       dependencies: [
         .productItem(name: "Numerics", package: "swift-numerics", condition: .when(platforms: [.iOS])),
-        "FlickButton", "Calculator", "Builder"
+        "FlickButton", "Calculator", "Builder", "InputField"
       ]),
     .testTarget(
       name: "AppTests",

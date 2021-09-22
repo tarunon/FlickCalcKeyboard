@@ -1,5 +1,5 @@
 //
-//  CalcHistoryView.swift
+//  CalcEditorView.swift
 //
 //
 //  Created by tarunon on 2021/09/20.
@@ -34,7 +34,7 @@ class CalcTextView: UITextView {
 }
 
 @MainActor
-public class CalcHistoryViewCoordinator: NSObject, UITextViewDelegate {
+public class CalcEditorViewCoordinator: NSObject, UITextViewDelegate {
   @Binding var text: String
 
   init(text: Binding<String>) {
@@ -47,15 +47,15 @@ public class CalcHistoryViewCoordinator: NSObject, UITextViewDelegate {
 }
 
 @MainActor
-public struct CalcHistoryView: UIViewRepresentable {
+public struct CalcEditorView: UIViewRepresentable {
   @Binding var text: String
 
   public init(text: Binding<String>) {
     self._text = text
   }
 
-  public func makeCoordinator() -> CalcHistoryViewCoordinator {
-    CalcHistoryViewCoordinator(text: $text)
+  public func makeCoordinator() -> CalcEditorViewCoordinator {
+    CalcEditorViewCoordinator(text: $text)
   }
 
   public func makeUIView(context: Context) -> UITextView {
