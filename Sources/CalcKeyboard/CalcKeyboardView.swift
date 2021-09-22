@@ -26,13 +26,13 @@ public struct CalcKeyboardView: View {
 
   var darkButtonColor: Color {
     colorScheme == .dark
-      ? Color(.sRGB, red: 79 / 256, green: 84 / 256, blue: 88 / 256, opacity: 1.0)
+      ? .black
       : Color(.sRGB, red: 181 / 256, green: 184 / 256, blue: 194 / 256, opacity: 1.0)
   }
 
   var lightButtonColor: Color {
     colorScheme == .light
-      ? Color.white : Color(.sRGB, red: 128 / 256, green: 127 / 256, blue: 127 / 256, opacity: 1.0)
+      ? Color.white : Color(.sRGB, red: 79 / 256, green: 84 / 256, blue: 88 / 256, opacity: 1.0)
   }
 
   public var body: some View {
@@ -47,8 +47,8 @@ public struct CalcKeyboardView: View {
       )
       .padding(4.0)
       .frame(height: 36.0, alignment: .top)
-      HStack(spacing: 4.0) {
-        VStack(spacing: 4.0) {
+      HStack(spacing: 0.0) {
+        VStack(spacing: 0.0) {
           FlickButton(
             title: "M+",
             subtitle: "M- MR MC",
@@ -79,7 +79,8 @@ public struct CalcKeyboardView: View {
                 }
               ),
             ]
-          )
+          ).zIndex(1)
+          Divider().background(.primary)
           FlickButton(
             title: "%",
             subtitle: "^ √ !",
@@ -110,7 +111,8 @@ public struct CalcKeyboardView: View {
                 }
               ),
             ]
-          )
+          ).zIndex(1)
+          Divider().background(.primary)
           FlickButton(
             title: "π",
             subtitle: "e i",
@@ -135,7 +137,8 @@ public struct CalcKeyboardView: View {
                 }
               ),
             ]
-          )
+          ).zIndex(1)
+          Divider().background(.primary)
           FlickButton(
             title: "🌐\u{FE0E}",
             subtitle: "ans ret",
@@ -160,9 +163,10 @@ public struct CalcKeyboardView: View {
                 }
               ),
             ]
-          )
+          ).zIndex(1)
         }.zIndex(draggingLine == 0 ? 1 : 0)
-        VStack(spacing: 4.0) {
+        Divider().background(.secondary)
+        VStack(spacing: 0.0) {
           FlickButton(
             title: "1",
             action: {
@@ -173,7 +177,8 @@ public struct CalcKeyboardView: View {
             },
             backgroundColor: lightButtonColor,
             directions: [:]
-          )
+          ).zIndex(1)
+          Divider().background(.secondary)
           FlickButton(
             title: "4",
             subtitle: "sin",
@@ -222,7 +227,8 @@ public struct CalcKeyboardView: View {
                 }
               ),
             ]
-          )
+          ).zIndex(1)
+          Divider().background(.secondary)
           FlickButton(
             title: "7",
             action: {
@@ -233,7 +239,8 @@ public struct CalcKeyboardView: View {
             },
             backgroundColor: lightButtonColor,
             directions: [:]
-          )
+          ).zIndex(1)
+          Divider().background(.secondary)
           FlickButton(
             title: "()",
             action: {
@@ -260,9 +267,10 @@ public struct CalcKeyboardView: View {
                 }
               ),
             ]
-          )
+          ).zIndex(1)
         }.zIndex(draggingLine == 1 ? 1 : 0)
-        VStack(spacing: 4.0) {
+        Divider().background(.secondary)
+        VStack(spacing: 0.0) {
           FlickButton(
             title: "2",
             subtitle: "cos",
@@ -314,7 +322,8 @@ public struct CalcKeyboardView: View {
                 }
               ),
             ]
-          )
+          ).zIndex(1)
+          Divider().background(.secondary)
           FlickButton(
             title: "5",
             action: {
@@ -325,7 +334,8 @@ public struct CalcKeyboardView: View {
             },
             backgroundColor: lightButtonColor,
             directions: [:]
-          )
+          ).zIndex(1)
+          Divider().background(.secondary)
           FlickButton(
             title: "8",
             subtitle: "log",
@@ -367,7 +377,8 @@ public struct CalcKeyboardView: View {
                 }
               ),
             ]
-          )
+          ).zIndex(1)
+          Divider().background(.secondary)
           FlickButton(
             title: "0",
             subtitle: "00",
@@ -404,9 +415,10 @@ public struct CalcKeyboardView: View {
                 }
               ),
             ]
-          )
+          ).zIndex(1)
         }.zIndex(draggingLine == 2 ? 1 : 0)
-        VStack(spacing: 4.0) {
+        Divider().background(.secondary)
+        VStack(spacing: 0.0) {
           FlickButton(
             title: "3",
             action: {
@@ -417,7 +429,8 @@ public struct CalcKeyboardView: View {
             },
             backgroundColor: lightButtonColor,
             directions: [:]
-          )
+          ).zIndex(1)
+          Divider().background(.secondary)
           FlickButton(
             title: "6",
             subtitle: "tan",
@@ -466,7 +479,8 @@ public struct CalcKeyboardView: View {
                 }
               ),
             ]
-          )
+          ).zIndex(1)
+          Divider().background(.secondary)
           FlickButton(
             title: "9",
             action: {
@@ -477,7 +491,8 @@ public struct CalcKeyboardView: View {
             },
             backgroundColor: lightButtonColor,
             directions: [:]
-          )
+          ).zIndex(1)
+          Divider().background(.secondary)
           FlickButton(
             title: ".",
             action: {
@@ -488,9 +503,10 @@ public struct CalcKeyboardView: View {
             },
             backgroundColor: lightButtonColor,
             directions: [:]
-          )
+          ).zIndex(1)
         }.zIndex(draggingLine == 3 ? 1 : 0)
-        VStack(spacing: 4.0) {
+        Divider().background(.secondary)
+        VStack(spacing: 0.0) {
           FlickButton(
             title: "⌫",
             action: {
@@ -521,7 +537,8 @@ public struct CalcKeyboardView: View {
                 }
               ),
             ]
-          )
+          ).zIndex(1)
+          Divider().background(.primary)
           FlickButton(
             title: "+",
             subtitle: "- × ÷",
@@ -552,7 +569,8 @@ public struct CalcKeyboardView: View {
                 }
               ),
             ]
-          )
+          ).zIndex(1)
+          Divider().background(.primary)
           FlickButton(
             title: "→",
             action: {
@@ -571,7 +589,8 @@ public struct CalcKeyboardView: View {
                 }
               )
             ]
-          )
+          ).zIndex(1)
+          Divider().background(.primary)
           FlickButton(
             title: "=",
             action: {
@@ -583,12 +602,14 @@ public struct CalcKeyboardView: View {
             backgroundColor: .blue,
             directions: [:]
           )
+          .zIndex(1)
         }
         .zIndex(draggingLine == 4 ? 1 : 0)
       }
-      .padding(EdgeInsets(top: 0.0, leading: 4.0, bottom: 4.0, trailing: 4.0))
+      .padding(0.0)
       .frame(maxWidth: .infinity, maxHeight: 280.0, alignment: .bottom)
     }
+    .clipped()
     .background(
       colorScheme == .dark
         ? Color(.sRGB, red: 70 / 256, green: 75 / 256, blue: 75 / 256, opacity: 1.0)

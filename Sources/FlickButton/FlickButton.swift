@@ -74,13 +74,13 @@ public struct FlickButton: View {
     let center = CGPoint(x: geometry.size.width / 2, y: geometry.size.height / 2)
     switch direction {
     case .up:
-      return center.applying(.identity.translatedBy(x: 0, y: -50))
+      return center.applying(.identity.translatedBy(x: 0, y: -geometry.size.height))
     case .down:
-      return center.applying(.identity.translatedBy(x: 0, y: 50))
+      return center.applying(.identity.translatedBy(x: 0, y: geometry.size.height))
     case .left:
-      return center.applying(.identity.translatedBy(x: -50, y: 0))
+      return center.applying(.identity.translatedBy(x: -geometry.size.width, y: 0))
     case .right:
-      return center.applying(.identity.translatedBy(x: 50, y: 0))
+      return center.applying(.identity.translatedBy(x: geometry.size.width, y: 0))
     }
   }
 
@@ -88,7 +88,6 @@ public struct FlickButton: View {
     GeometryReader { geometry in
       ZStack {
         backgroundColor
-          .cornerRadius(8)
           .brightness(isDragging && currentDirection == nil ? -0.2 : 0.0)
         if !isDragging || currentDirection.flatMap { directions[$0] } == nil {
           Text(title)
@@ -149,13 +148,38 @@ public struct FlickButton: View {
       }
       ForEach(directions.map { $0 }, id: \.key) { (direction, value) in
         if currentDirection == direction {
-          Text(value.label)
-            .bold()
-            .foregroundColor(.primary)
-            .frame(width: geometry.size.width, height: geometry.size.height, alignment: .center)
-            .background(Color.blue)
-            .cornerRadius(8)
-            .position(buttonLocation(on: geometry, for: direction))
+          ZStack {
+            Path { path in
+              path.move(to: .init(x: geometry.size.width / 2, y: geometry.size.height / 2))
+              switch direction {
+              case .up:
+                path.addLine(to: .init(x: 0.0, y: 0.0))
+                path.addLine(to: .init(x: geometry.size.width, y: 0.0))
+              case .down:
+                path.addLine(to: .init(x: geometry.size.width, y: geometry.size.height))
+                path.addLine(to: .init(x: geometry.size.width, y: geometry.size.height + 1.0))
+                path.addLine(to: .init(x: 0.0, y: geometry.size.height + 1.0))
+                path.addLine(to: .init(x: 0.0, y: geometry.size.height))
+              case .left:
+                path.addLine(to: .init(x: 0.0, y: 0.0))
+                path.addLine(to: .init(x: 0.0, y: geometry.size.height))
+              case .right:
+                path.addLine(to: .init(x: geometry.size.width, y: geometry.size.height))
+                path.addLine(to: .init(x: geometry.size.width + 1.0, y: geometry.size.height))
+                path.addLine(to: .init(x: geometry.size.width + 1.0, y: 0.0))
+                path.addLine(to: .init(x: geometry.size.width, y: 0.0))
+              }
+              path.addLine(to: .init(x: geometry.size.width / 2, y: geometry.size.height / 2))
+              path.closeSubpath()
+            }
+            .fill(Color.blue)
+            Text(value.label)
+              .bold()
+              .foregroundColor(.primary)
+              .frame(width: geometry.size.width, height: geometry.size.height, alignment: .center)
+              .background(Color.blue)
+              .position(buttonLocation(on: geometry, for: direction))
+          }
         }
       }
     }.zIndex(isDragging ? 1 : 0)
