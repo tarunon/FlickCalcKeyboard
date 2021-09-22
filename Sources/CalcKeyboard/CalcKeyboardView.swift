@@ -38,6 +38,7 @@ public struct CalcKeyboardView: View {
     VStack(spacing: 0.0) {
       InputField(
         text: viewModel.text,
+        errorMessage: viewModel.errorMessage,
         cursor: .init(
           get: { viewModel.cursor },
           set: { viewModel.cursor = $0 }

@@ -40,7 +40,7 @@ struct DigitsNode: CalcNode {
       if segments.count > 2 {
         throw CalcError.runtimeError(
           reason:
-            "Too much token `.` contains a number segment in `\(digits.map { $0.rawValue }.joined())`"
+            "Too much `.` contains a number segment."
         )
       }
       let result = try segments[0].map { try $0.number }.reduce(0) { $0 * 10 + $1 }

@@ -157,7 +157,7 @@ public struct ModToken: InfixOperatorToken {
 
   public func operation(lhs: Complex<Double>, rhs: Complex<Double>) throws -> Complex<Double> {
     guard (lhs.imaginary.isZero || lhs.imaginary.isSubnormal) && (rhs.imaginary.isZero || rhs.imaginary.isSubnormal) else {
-      throw CalcError.runtimeError(reason: "Modulo of complex numbers is not supported.")
+      throw CalcError.runtimeError(reason: "`K%i` operation is not supported.")
     }
     return .init(lhs.real.truncatingRemainder(dividingBy: rhs.real))
   }
@@ -182,7 +182,7 @@ public struct RootToken: InfixOperatorToken, PrefixOperatorToken {
 
   public func operation(lhs: Complex<Double>, rhs: Complex<Double>) throws -> Complex<Double> {
     guard (lhs.imaginary.isZero || lhs.imaginary.isSubnormal) && (lhs.real.truncatingRemainder(dividingBy: 1).isZero || lhs.real.truncatingRemainder(dividingBy: 1).isSubnormal) else {
-      throw CalcError.runtimeError(reason: "Root operator require index as integer.")
+      throw CalcError.runtimeError(reason: "`i√K`, `0.1√K` operations are not supported.")
     }
     return .root(rhs, Int(lhs.real))
   }
@@ -200,7 +200,7 @@ public struct GammaToken: PostfixOperatorToken {
 
   public func operation(lhs: Complex<Double>) throws -> Complex<Double> {
     guard lhs.imaginary.isZero || lhs.imaginary.isSubnormal else {
-      throw CalcError.runtimeError(reason: "Gamma operator of complex numbers is not supporeted.")
+      throw CalcError.runtimeError(reason: "`i!` operation is not supported.")
     }
     return Complex(.gamma(lhs.real + 1.0))
   }

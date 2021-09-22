@@ -85,6 +85,18 @@ class InputFieldController: UIViewController, UIGestureRecognizerDelegate, UITex
   }
   var delegate: InputFieldControllerDelegate?
 
+  var errorMessage: String = "" {
+    didSet {
+      textField.attributedPlaceholder = NSAttributedString(
+        string: errorMessage,
+        attributes: [
+          .foregroundColor: UIColor.systemRed
+        ]
+      )
+      textMarker.view.isHidden = !errorMessage.isEmpty
+    }
+  }
+
   override func loadView() {
     view = textField
     addChild(textMarker)
@@ -130,6 +142,8 @@ class InputFieldController: UIViewController, UIGestureRecognizerDelegate, UITex
       ).origin
       textMarker.view.frame = rect.applying(
         .identity.translatedBy(x: inputOrigin.x / 2, y: inputOrigin.y / 2))
+      textMarker.view.frame.origin.y = 3.0
+      textMarker.view.frame.size.height = 22.0
       textMarker.rootView = .init(flushing: start == end)
     }
   }
@@ -186,6 +200,7 @@ struct InputField: UIViewControllerRepresentable {
   typealias UIViewControllerType = InputFieldController
 
   var text: String
+  var errorMessage: String
   @Binding var cursor: NSRange
 
   func makeCoordinator() -> TextFieldCoordinator {
@@ -196,11 +211,14 @@ struct InputField: UIViewControllerRepresentable {
     let controller = InputFieldController()
     controller.delegate = context.coordinator
     controller.cursor = cursor
+    controller.textField.text = text
+    controller.errorMessage = errorMessage
     return controller
   }
 
   func updateUIViewController(_ uiViewController: InputFieldController, context: Context) {
     uiViewController.textField.text = text
+    uiViewController.errorMessage = errorMessage
     uiViewController.cursor = cursor
   }
 }

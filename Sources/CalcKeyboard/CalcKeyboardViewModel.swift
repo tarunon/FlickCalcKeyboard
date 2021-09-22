@@ -12,6 +12,7 @@ import Numerics
 @MainActor
 class CalcKeyboardViewModel: ObservableObject {
   @Published var tokens: [CalcToken] = []
+  @Published var error: CalcError?
   @Published var startIndex: Int = 0
   @Published var endIndex: Int = 0
 
@@ -28,6 +29,7 @@ class CalcKeyboardViewModel: ObservableObject {
   }
 
   func input(token: CalcToken) {
+    error = nil
     tokens.removeSubrange(startIndex..<endIndex)
     endIndex = startIndex
     tokens.insert(token, at: startIndex)
@@ -96,7 +98,8 @@ class CalcKeyboardViewModel: ObservableObject {
       formatBrackets(withCompletion: true)
       memory += try Calculator.calc(tokens: tokens)
     } catch (let error) {
-      print(error)
+      clearAll()
+      self.error = error as? CalcError
     }
   }
 
@@ -106,7 +109,8 @@ class CalcKeyboardViewModel: ObservableObject {
       formatBrackets(withCompletion: true)
       memory -= try Calculator.calc(tokens: tokens)
     } catch (let error) {
-      print(error)
+      clearAll()
+      self.error = error as? CalcError
     }
   }
 
@@ -230,7 +234,8 @@ class CalcKeyboardViewModel: ObservableObject {
       case CalcError.tokensEmpty:
         action(.insertText("\n"))
       default:
-        print(error)
+        clearAll()
+        self.error = error as? CalcError
       }
     }
   }
@@ -247,6 +252,15 @@ class CalcKeyboardViewModel: ObservableObject {
 
   var text: String {
     CalcFormatter.format(tokens)
+  }
+
+  var errorMessage: String {
+    switch error {
+    case nil, .tokensEmpty:
+      return ""
+    case .runtimeError(let reason), .parseError(let reason):
+      return reason
+    }
   }
 
   var cursor: NSRange {

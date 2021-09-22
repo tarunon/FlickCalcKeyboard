@@ -10,8 +10,8 @@ import Numerics
 
 enum ParseError: Error {
   case isEmpty
-  case typeMissmatch
-  case conditionFailure
+  case typeMissmatch(expect: Any.Type, actual: Any)
+  case conditionFailure(value: Any)
 }
 
 struct Parser<Input: RangeReplaceableCollection, Output> {
@@ -55,7 +55,7 @@ extension Parser {
   func assert(_ condition: @escaping (Output) -> Bool) -> Parser {
     self.map {
       guard condition($0) else {
-        throw ParseError.conditionFailure
+        throw ParseError.conditionFailure(value: $0)
       }
       return $0
     }
@@ -71,8 +71,9 @@ extension Parser {
         throw ParseError.isEmpty
       }
       var tail = input
-      guard let head = tail.removeFirst() as? Output else {
-        throw ParseError.typeMissmatch
+      let head = tail.removeFirst()
+      guard let head = head as? Output else {
+        throw ParseError.typeMissmatch(expect: Output.self, actual: head)
       }
       return (head, tail)
     }
