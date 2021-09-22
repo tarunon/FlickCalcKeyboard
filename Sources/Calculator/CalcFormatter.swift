@@ -29,7 +29,8 @@ public enum CalcFormatter {
           .precision(
             .fractionLength(0...10)
           )
-          .sign(strategy: .never))
+          .sign(strategy: .never)
+      )
     switch (real, imaginary) {
     case ("NaN", _), (_, "NaN"):
       return "NaN"

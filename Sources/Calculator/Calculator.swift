@@ -13,7 +13,8 @@ public enum Calculator {
       let (head, tail) = try CalcParsers.expr(precedence: .low).parse(tokens.reversed())
       guard tail.isEmpty else {
         throw CalcError.parseError(
-          reason: "Parse error occured arround `\(tail.map { $0.rawValue }.joined())`")
+          reason: "Parse error occured arround `\(tail.map { $0.rawValue }.joined())`"
+        )
       }
       return try head.result()
     } catch (let error) {

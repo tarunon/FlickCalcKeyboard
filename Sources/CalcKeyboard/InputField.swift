@@ -67,7 +67,9 @@ class InputFieldController: UIViewController, UIGestureRecognizerDelegate, UITex
     textField.borderStyle = .roundedRect
     textField.text = ""
     textField.selectedTextRange = textField.textRange(
-      from: textField.beginningOfDocument, to: textField.endOfDocument)
+      from: textField.beginningOfDocument,
+      to: textField.endOfDocument
+    )
     textField.addGestureRecognizer(self.dragGestureRecognizer)
     return textField
   }
@@ -75,10 +77,13 @@ class InputFieldController: UIViewController, UIGestureRecognizerDelegate, UITex
   lazy var textMarker = UIHostingController(
     rootView: TextMarker(
       flushing: true
-    ))
+    )
+  )
   lazy var dragGestureRecognizer: UILongPressGestureRecognizer = build {
     let dragGestureRecognizer = UILongPressGestureRecognizer(
-      target: self, action: #selector(self.didDrag(_:)))
+      target: self,
+      action: #selector(self.didDrag(_:))
+    )
     dragGestureRecognizer.minimumPressDuration = 0.0
     dragGestureRecognizer.delegate = self
     return dragGestureRecognizer
@@ -120,9 +125,13 @@ class InputFieldController: UIViewController, UIGestureRecognizerDelegate, UITex
     set {
       guard let newValue = newValue,
         let start = textField.position(
-          from: textField.beginningOfDocument, offset: newValue.lowerBound),
+          from: textField.beginningOfDocument,
+          offset: newValue.lowerBound
+        ),
         let end = textField.position(
-          from: textField.beginningOfDocument, offset: newValue.upperBound),
+          from: textField.beginningOfDocument,
+          offset: newValue.upperBound
+        ),
         let range = textField.textRange(from: start, to: end)
       else {
         textField.selectedTextRange = nil
@@ -138,10 +147,12 @@ class InputFieldController: UIViewController, UIGestureRecognizerDelegate, UITex
     {
       let rect = textField.caretRect(for: start).union(textField.caretRect(for: end))
       let inputOrigin = textField.textInputView.convert(
-        textField.textInputView.frame, to: textField
+        textField.textInputView.frame,
+        to: textField
       ).origin
       textMarker.view.frame = rect.applying(
-        .identity.translatedBy(x: inputOrigin.x / 2, y: inputOrigin.y / 2))
+        .identity.translatedBy(x: inputOrigin.x / 2, y: inputOrigin.y / 2)
+      )
       textMarker.view.frame.origin.y = 3.0
       textMarker.view.frame.size.height = 22.0
       textMarker.rootView = .init(flushing: start == end)

@@ -230,9 +230,13 @@ public struct FunctionToken: CalcToken {
   public static let atan = Self(rawValue: "atan", operation: Complex<Double>.atan)
   public static let atanh = Self(rawValue: "atanh", operation: Complex<Double>.atanh)
   public static let log = Self(
-    rawValue: "log", operation: { Complex<Double>.log($0) / Complex.log(10) })
+    rawValue: "log",
+    operation: { Complex<Double>.log($0) / Complex.log(10) }
+  )
   public static let lg = Self(
-    rawValue: "lg", operation: { Complex<Double>.log($0) / Complex.log(2) })
+    rawValue: "lg",
+    operation: { Complex<Double>.log($0) / Complex.log(2) }
+  )
   public static let ln = Self(rawValue: "ln", operation: Complex<Double>.log(_:))
 
   public let rawValue: String

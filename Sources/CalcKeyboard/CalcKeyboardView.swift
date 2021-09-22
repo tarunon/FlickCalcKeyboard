@@ -591,6 +591,7 @@ public struct CalcKeyboardView: View {
     .background(
       colorScheme == .dark
         ? Color(.sRGB, red: 70 / 256, green: 75 / 256, blue: 75 / 256, opacity: 1.0)
-        : Color(.sRGB, red: 214 / 256, green: 216 / 256, blue: 222 / 256, opacity: 1.0))
+        : Color(.sRGB, red: 214 / 256, green: 216 / 256, blue: 222 / 256, opacity: 1.0)
+    )
   }
 }

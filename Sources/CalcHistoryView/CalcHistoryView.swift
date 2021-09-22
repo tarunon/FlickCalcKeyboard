@@ -19,7 +19,8 @@ class CalcTextView: UITextView {
       size: .init(
         width: windowSize.width,
         height: min(
-          300.0, windowSize.height * 3 / 5
+          300.0,
+          windowSize.height * 3 / 5
         )
       )
     )
