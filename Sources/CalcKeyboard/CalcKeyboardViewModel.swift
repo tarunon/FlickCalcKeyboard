@@ -83,6 +83,7 @@ class CalcKeyboardViewModel: ObservableObject {
 
   func inputRetry() {
     clearAll()
+    error = nil
     tokens = latestTokens
     endIndex = latestTokens.count
     startIndex = latestTokens.count
@@ -234,6 +235,7 @@ class CalcKeyboardViewModel: ObservableObject {
       case CalcError.tokensEmpty:
         action(.insertText("\n"))
       default:
+        latestTokens = tokens
         clearAll()
         self.error = error as? CalcError
       }
