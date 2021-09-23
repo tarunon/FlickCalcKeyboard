@@ -10,8 +10,8 @@
 		D21F96A1265016C9003FD064 /* App in Frameworks */ = {isa = PBXBuildFile; productRef = D21F96A0265016C9003FD064 /* App */; };
 		D23F57BA265014890008532B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23F57B9265014890008532B /* AppDelegate.swift */; };
 		D23F57C02650148A0008532B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D23F57BF2650148A0008532B /* Assets.xcassets */; };
-		D23F57C62650148A0008532B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D23F57C42650148A0008532B /* LaunchScreen.storyboard */; };
 		D24F2B9926FCE09500F24F1D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D284CAF926FC4117000E5790 /* Localizable.strings */; };
+		D24F2B9C26FCE25900F24F1D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D24F2B9A26FCE25900F24F1D /* LaunchScreen.storyboard */; };
 		D284CAE926F8B2B2000E5790 /* ProdKeyboard.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = D284CAE226F8B2B2000E5790 /* ProdKeyboard.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		D284CAF026F8B2DF000E5790 /* CalcKeyboard in Frameworks */ = {isa = PBXBuildFile; productRef = D284CAEF26F8B2DF000E5790 /* CalcKeyboard */; };
 		D284CAF426F94D45000E5790 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D284CAF326F94D45000E5790 /* Settings.bundle */; };
@@ -46,8 +46,9 @@
 		D23F57B6265014890008532B /* Prod.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Prod.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D23F57B9265014890008532B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D23F57BF2650148A0008532B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		D23F57C52650148A0008532B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D23F57C72650148A0008532B /* Info_Prod.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info_Prod.plist; sourceTree = "<group>"; };
+		D24F2B9B26FCE25900F24F1D /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		D24F2B9E26FCE25E00F24F1D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		D284CAE226F8B2B2000E5790 /* ProdKeyboard.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ProdKeyboard.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		D284CAE626F8B2B2000E5790 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D284CAF326F94D45000E5790 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
@@ -102,7 +103,7 @@
 				D23F57B9265014890008532B /* AppDelegate.swift */,
 				D284CAF926FC4117000E5790 /* Localizable.strings */,
 				D23F57BF2650148A0008532B /* Assets.xcassets */,
-				D23F57C42650148A0008532B /* LaunchScreen.storyboard */,
+				D24F2B9A26FCE25900F24F1D /* LaunchScreen.storyboard */,
 				D23F57C72650148A0008532B /* Info_Prod.plist */,
 				D284CAF326F94D45000E5790 /* Settings.bundle */,
 			);
@@ -214,8 +215,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D23F57C62650148A0008532B /* LaunchScreen.storyboard in Resources */,
 				D284CAF726FC4117000E5790 /* Localizable.strings in Resources */,
+				D24F2B9C26FCE25900F24F1D /* LaunchScreen.storyboard in Resources */,
 				D284CAF426F94D45000E5790 /* Settings.bundle in Resources */,
 				D23F57C02650148A0008532B /* Assets.xcassets in Resources */,
 			);
@@ -258,10 +259,11 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		D23F57C42650148A0008532B /* LaunchScreen.storyboard */ = {
+		D24F2B9A26FCE25900F24F1D /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				D23F57C52650148A0008532B /* Base */,
+				D24F2B9B26FCE25900F24F1D /* en */,
+				D24F2B9E26FCE25E00F24F1D /* ja */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -444,7 +446,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = U376YN5H26;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Keyboard/Info.plist;
@@ -471,7 +473,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = U376YN5H26;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Keyboard/Info.plist;
