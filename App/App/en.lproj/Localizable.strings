@@ -1,0 +1,10 @@
+/* 
+  Localizable.strings
+  Prod
+
+  Created by tarunon on 2021/09/23.
+  
+*/
+"com.tarunon.flickcalckeyboard.error_message.parse_error" = "Parse error occured";
+"com.tarunon.flickcalckeyboard.error_message.runtime_error" = "Failure by unsupported operation";
+

@@ -258,8 +258,17 @@ class CalcKeyboardViewModel: ObservableObject {
     switch error {
     case nil, .tokensEmpty:
       return ""
-    case .runtimeError(let reason), .parseError(let reason):
-      return reason
+    case .parseError(let tokens):
+      return NSLocalizedString(
+        "com.tarunon.flickcalckeyboard.error_message.parse_error",
+        comment: ""
+      ) + "(\(CalcFormatter.format(tokens)))"
+    case .runtimeError(let reason):
+      return NSLocalizedString(
+        "com.tarunon.flickcalckeyboard.error_message.runtime_error",
+        comment: ""
+      ) + "(\(reason))"
+
     }
   }
 

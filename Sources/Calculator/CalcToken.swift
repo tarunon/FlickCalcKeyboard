@@ -44,7 +44,7 @@ public enum DigitToken: String, NumberToken {
 
   public func number() throws -> Complex<Double> {
     if self == .dot {
-      throw CalcError.runtimeError(reason: "Token `.` cannot be evaluated.")
+      throw CalcError.runtimeError(self)
     } else {
       return .init(Double(rawValue)!)
     }
@@ -158,7 +158,7 @@ public struct ModToken: InfixOperatorToken {
       (lhs.imaginary.isZero || lhs.imaginary.isSubnormal)
         && (rhs.imaginary.isZero || rhs.imaginary.isSubnormal)
     else {
-      throw CalcError.runtimeError(reason: "`K%i` operation is not supported.")
+      throw CalcError.runtimeError("(\(CalcFormatter.format(lhs)))%(\(CalcFormatter.format(rhs)))")
     }
     return .init(lhs.real.truncatingRemainder(dividingBy: rhs.real))
   }
@@ -187,7 +187,7 @@ public struct RootToken: InfixOperatorToken, PrefixOperatorToken {
         && (lhs.real.truncatingRemainder(dividingBy: 1).isZero
           || lhs.real.truncatingRemainder(dividingBy: 1).isSubnormal)
     else {
-      throw CalcError.runtimeError(reason: "`i√K`, `0.1√K` operations are not supported.")
+      throw CalcError.runtimeError("(\(CalcFormatter.format(lhs)))√(\(CalcFormatter.format(rhs)))")
     }
     return .root(rhs, Int(lhs.real))
   }
@@ -205,7 +205,7 @@ public struct GammaToken: PostfixOperatorToken {
 
   public func operation(lhs: Complex<Double>) throws -> Complex<Double> {
     guard lhs.imaginary.isZero || lhs.imaginary.isSubnormal else {
-      throw CalcError.runtimeError(reason: "`i!` operation is not supported.")
+      throw CalcError.runtimeError("(\(CalcFormatter.format(lhs)))!")
     }
     return Complex(.gamma(lhs.real + 1.0))
   }

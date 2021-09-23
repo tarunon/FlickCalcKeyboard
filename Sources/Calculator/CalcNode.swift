@@ -35,10 +35,7 @@ struct DigitsNode: CalcNode {
   func result() throws -> Complex<Double> {
     let segments = digits.split(separator: .dot)
     if segments.count > 2 {
-      throw CalcError.runtimeError(
-        reason:
-          "Too much `.` contains a number segment."
-      )
+      throw CalcError.runtimeError(description)
     }
     let result = try segments[0].map { try $0.number() }.reduce(0) { $0 * 10 + $1 }
     if segments.count == 2 {

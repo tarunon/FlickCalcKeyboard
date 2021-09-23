@@ -14,6 +14,7 @@
 		D284CAD426F8A255000E5790 /* StgKeyboard.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = D284CACD26F8A255000E5790 /* StgKeyboard.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		D284CADD26F8A486000E5790 /* CalcKeyboard in Frameworks */ = {isa = PBXBuildFile; productRef = D284CADC26F8A486000E5790 /* CalcKeyboard */; };
 		D284CAF226F94D33000E5790 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D284CAF126F94D33000E5790 /* Settings.bundle */; };
+		D284CB0326FC45C0000E5790 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D284CB0526FC45C0000E5790 /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,8 @@
 		D284CACD26F8A255000E5790 /* StgKeyboard.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = StgKeyboard.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		D284CAD126F8A255000E5790 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D284CAF126F94D33000E5790 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		D284CB0426FC45C0000E5790 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		D284CB0626FC45C2000E5790 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +99,7 @@
 			isa = PBXGroup;
 			children = (
 				D23F57B9265014890008532B /* AppDelegate.swift */,
+				D284CB0526FC45C0000E5790 /* Localizable.strings */,
 				D23F57BF2650148A0008532B /* Assets.xcassets */,
 				D23F57C42650148A0008532B /* LaunchScreen.storyboard */,
 				D23F57C72650148A0008532B /* Info_Stg.plist */,
@@ -188,6 +192,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ja,
 			);
 			mainGroup = D23F57AD265014890008532B;
 			packageReferences = (
@@ -209,6 +214,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D23F57C62650148A0008532B /* LaunchScreen.storyboard in Resources */,
+				D284CB0326FC45C0000E5790 /* Localizable.strings in Resources */,
 				D284CAF226F94D33000E5790 /* Settings.bundle in Resources */,
 				D23F57C02650148A0008532B /* Assets.xcassets in Resources */,
 			);
@@ -256,6 +262,15 @@
 				D23F57C52650148A0008532B /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		D284CB0526FC45C0000E5790 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D284CB0426FC45C0000E5790 /* en */,
+				D284CB0626FC45C2000E5790 /* ja */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
