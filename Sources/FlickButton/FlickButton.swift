@@ -96,12 +96,14 @@ public struct FlickButton: View {
           Text(title)
             .bold()
             .foregroundColor(.primary)
+            .dynamicTypeSize(DynamicTypeSize.xSmall...DynamicTypeSize.xLarge)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
           if let subtitle = subtitle {
             Text(subtitle)
               .bold()
               .foregroundColor(.secondary)
               .font(.caption2)
+              .dynamicTypeSize(DynamicTypeSize.xSmall...DynamicTypeSize.xLarge)
               .position(x: geometry.size.width / 2, y: geometry.size.height * 4 / 5)
           }
         }
@@ -179,6 +181,7 @@ public struct FlickButton: View {
             Text(value.label)
               .bold()
               .foregroundColor(.primary)
+              .dynamicTypeSize(DynamicTypeSize.xSmall...DynamicTypeSize.xLarge)
               .frame(width: geometry.size.width, height: geometry.size.height, alignment: .center)
               .background(Color.blue)
               .position(buttonLocation(on: geometry, for: direction))

@@ -36,12 +36,15 @@ class InputFieldController: UIViewController, UIGestureRecognizerDelegate, UITex
     textField.translatesAutoresizingMaskIntoConstraints = false
     textField.delegate = self
     textField.borderStyle = .none
+    textField.font = UIFont.preferredFont(forTextStyle: .body)
+    textField.adjustsFontForContentSizeCategory = true
     textField.text = ""
     textField.selectedTextRange = textField.textRange(
       from: textField.beginningOfDocument,
       to: textField.endOfDocument
     )
     textField.addGestureRecognizer(self.dragGestureRecognizer)
+    textField.setContentCompressionResistancePriority(.required, for: .vertical)
     return textField
   }
 
@@ -94,11 +97,13 @@ class InputFieldController: UIViewController, UIGestureRecognizerDelegate, UITex
     view = scrollView
     scrollView.addSubview(textField)
     NSLayoutConstraint.activate([
-      textField.topAnchor.constraint(equalTo: scrollView.topAnchor),
       textField.leftAnchor.constraint(equalTo: scrollView.leftAnchor, constant: 5.0),
       textField.rightAnchor.constraint(equalTo: scrollView.rightAnchor, constant: 5.0),
-      textField.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
       textField.centerYAnchor.constraint(equalTo: scrollView.centerYAnchor),
+      textField.heightAnchor.constraint(
+        equalTo: scrollView.frameLayoutGuide.heightAnchor,
+        constant: -8.0
+      ),
       textField.widthAnchor.constraint(
         greaterThanOrEqualTo: scrollView.widthAnchor,
         constant: -10.0

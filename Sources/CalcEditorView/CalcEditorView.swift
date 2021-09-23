@@ -56,7 +56,8 @@ public struct CalcEditorView: UIViewRepresentable {
   public func makeUIView(context: Context) -> UITextView {
     let textView = CalcTextView()
     textView.text = text
-    textView.font = UIFont.systemFont(ofSize: UIFont.labelFontSize)
+    textView.font = UIFont.preferredFont(forTextStyle: .body)
+    textView.adjustsFontForContentSizeCategory = true
     textView.delegate = context.coordinator
     textView.becomeFirstResponder()
     return textView
