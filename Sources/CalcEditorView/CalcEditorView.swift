@@ -26,11 +26,6 @@ class CalcTextView: UITextView {
     )
     return keyboard
   }
-
-  override func layoutSubviews() {
-    super.layoutSubviews()
-    self.reloadInputViews()
-  }
 }
 
 @MainActor
@@ -68,6 +63,8 @@ public struct CalcEditorView: UIViewRepresentable {
   }
 
   public func updateUIView(_ uiView: UITextView, context: Context) {
-    uiView.text = text
+    if uiView.text != text {
+      uiView.text = text
+    }
   }
 }
