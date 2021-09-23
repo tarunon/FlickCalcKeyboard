@@ -15,16 +15,56 @@ public struct FlickButton: View {
     case down
     case left
     case right
+
+    func buttonLocation(on geometry: GeometryProxy) -> CGPoint {
+      let center = CGPoint(x: geometry.size.width / 2, y: geometry.size.height / 2)
+      switch self {
+      case .up:
+        return center.applying(.identity.translatedBy(x: 0, y: -geometry.size.height))
+      case .down:
+        return center.applying(.identity.translatedBy(x: 0, y: geometry.size.height))
+      case .left:
+        return center.applying(.identity.translatedBy(x: -geometry.size.width, y: 0))
+      case .right:
+        return center.applying(.identity.translatedBy(x: geometry.size.width, y: 0))
+      }
+    }
+
+    func voiceOverMessage(title: String) -> String {
+      switch self {
+      case .up:
+        return NSLocalizedString(
+          "com.tarunon.flickcalckeyboard.voice_over.navigate.flick_to_up",
+          comment: ""
+        ) + title
+      case .down:
+        return NSLocalizedString(
+          "com.tarunon.flickcalckeyboard.voice_over.navigate.flick_to_down",
+          comment: ""
+        ) + title
+      case .left:
+        return NSLocalizedString(
+          "com.tarunon.flickcalckeyboard.voice_over.navigate.flick_to_left",
+          comment: ""
+        ) + title
+      case .right:
+        return NSLocalizedString(
+          "com.tarunon.flickcalckeyboard.voice_over.navigate.flick_to_right",
+          comment: ""
+        ) + title
+      }
+    }
   }
 
   private var title: String
   private var subtitle: String?
+  private var voiceOverTitle: String
   private var action: () -> Void
   private var onDrag: () -> Void
   private var backgroundColor: Color
   private var actionWhilePressing: Bool
   private var actionTimer = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
-  private var directions: [Direction: (label: String, action: () -> Void)]
+  private var directions: [Direction: (title: String, voiceOverTitle: String, action: () -> Void)]
 
   @State private var isDragging: Bool = false
   @State private var currentDirection: Direction? = nil
@@ -33,14 +73,16 @@ public struct FlickButton: View {
   public init(
     title: String,
     subtitle: String? = nil,
+    voiceOverTitle: String,
     action: @escaping () -> Void,
     actionWhilePressing: Bool = false,
     onDrag: @escaping () -> Void,
     backgroundColor: Color = .white,
-    directions: [Direction: (label: String, action: () -> Void)]
+    directions: [Direction: (title: String, voiceOverTitle: String, action: () -> Void)]
   ) {
     self.title = title
     self.subtitle = subtitle
+    self.voiceOverTitle = voiceOverTitle
     self.action = action
     self.actionWhilePressing = actionWhilePressing
     self.onDrag = onDrag
@@ -70,18 +112,8 @@ public struct FlickButton: View {
     }
   }
 
-  func buttonLocation(on geometry: GeometryProxy, for direction: Direction) -> CGPoint {
-    let center = CGPoint(x: geometry.size.width / 2, y: geometry.size.height / 2)
-    switch direction {
-    case .up:
-      return center.applying(.identity.translatedBy(x: 0, y: -geometry.size.height))
-    case .down:
-      return center.applying(.identity.translatedBy(x: 0, y: geometry.size.height))
-    case .left:
-      return center.applying(.identity.translatedBy(x: -geometry.size.width, y: 0))
-    case .right:
-      return center.applying(.identity.translatedBy(x: geometry.size.width, y: 0))
-    }
+  func sendVoiceOver(announcement: String) {
+    UIAccessibility.post(notification: .announcement, argument: announcement)
   }
 
   public var body: some View {
@@ -119,17 +151,14 @@ public struct FlickButton: View {
             }
           }
           .onEnded { value in
-            switch currentDirection {
-            case nil:
+            if let currentDirection = currentDirection {
+              if let target = directions[currentDirection] {
+                target.action()
+                sendVoiceOver(announcement: target.voiceOverTitle)
+              }
+            } else {
               action()
-            case .up:
-              directions[.up]?.action()
-            case .down:
-              directions[.down]?.action()
-            case .right:
-              directions[.right]?.action()
-            case .left:
-              directions[.left]?.action()
+              sendVoiceOver(announcement: voiceOverTitle)
             }
             isDragging = false
             currentDirection = nil
@@ -151,43 +180,17 @@ public struct FlickButton: View {
           }
         }
       }
-      ForEach(directions.map { $0 }, id: \.key) { (direction, value) in
-        if currentDirection == direction {
-          ZStack {
-            Path { path in
-              path.move(to: .init(x: geometry.size.width / 2, y: geometry.size.height / 2))
-              switch direction {
-              case .up:
-                path.addLine(to: .init(x: 0.0, y: 0.0))
-                path.addLine(to: .init(x: geometry.size.width, y: 0.0))
-              case .down:
-                path.addLine(to: .init(x: geometry.size.width, y: geometry.size.height))
-                path.addLine(to: .init(x: geometry.size.width, y: geometry.size.height + 1.0))
-                path.addLine(to: .init(x: 0.0, y: geometry.size.height + 1.0))
-                path.addLine(to: .init(x: 0.0, y: geometry.size.height))
-              case .left:
-                path.addLine(to: .init(x: 0.0, y: 0.0))
-                path.addLine(to: .init(x: 0.0, y: geometry.size.height))
-              case .right:
-                path.addLine(to: .init(x: geometry.size.width, y: geometry.size.height))
-                path.addLine(to: .init(x: geometry.size.width + 1.0, y: geometry.size.height))
-                path.addLine(to: .init(x: geometry.size.width + 1.0, y: 0.0))
-                path.addLine(to: .init(x: geometry.size.width, y: 0.0))
-              }
-              path.addLine(to: .init(x: geometry.size.width / 2, y: geometry.size.height / 2))
-              path.closeSubpath()
-            }
-            .fill(Color.blue)
-            Text(value.label)
-              .bold()
-              .foregroundColor(.primary)
-              .dynamicTypeSize(DynamicTypeSize.xSmall...DynamicTypeSize.xLarge)
-              .frame(width: geometry.size.width, height: geometry.size.height, alignment: .center)
-              .background(Color.blue)
-              .position(buttonLocation(on: geometry, for: direction))
-          }
-        }
+      if let direction = currentDirection, let title = directions[direction]?.title {
+        FlickChip(direction: direction, geometry: geometry, title: title)
       }
     }.zIndex(isDragging ? 1 : 0)
+      .accessibilityElement()
+      .accessibilityLabel(voiceOverTitle)
+      .accessibilityHint(
+        directions.map { (key, value) in
+          key.voiceOverMessage(title: value.voiceOverTitle)
+        }.joined(separator: ". ")
+      )
+      .accessibilityAddTraits(.isButton)
   }
 }

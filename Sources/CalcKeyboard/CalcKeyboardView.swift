@@ -52,6 +52,7 @@ public struct CalcKeyboardView: View {
           FlickButton(
             title: "M+",
             subtitle: "M- MR MC",
+            voiceOverTitle: L10N.VoiceOverTitle.memoryPlus.localizedString,
             action: {
               viewModel.memoryAdd()
             },
@@ -61,19 +62,22 @@ public struct CalcKeyboardView: View {
             backgroundColor: darkButtonColor,
             directions: [
               .up: (
-                label: "M-",
+                title: "M-",
+                voiceOverTitle: L10N.VoiceOverTitle.memoryMinus.localizedString,
                 action: {
                   viewModel.memorySub()
                 }
               ),
               .right: (
-                label: "MR",
+                title: "MR",
+                voiceOverTitle: L10N.VoiceOverTitle.memoryRecall.localizedString,
                 action: {
                   viewModel.inputMemory()
                 }
               ),
               .down: (
-                label: "MC",
+                title: "MC",
+                voiceOverTitle: L10N.VoiceOverTitle.memoryClear.localizedString,
                 action: {
                   viewModel.memoryClear()
                 }
@@ -84,6 +88,7 @@ public struct CalcKeyboardView: View {
           FlickButton(
             title: "%",
             subtitle: "^ √ !",
+            voiceOverTitle: L10N.VoiceOverTitle.mod.localizedString,
             action: {
               viewModel.input(token: ModToken.instance)
             },
@@ -93,19 +98,22 @@ public struct CalcKeyboardView: View {
             backgroundColor: darkButtonColor,
             directions: [
               .up: (
-                label: "^",
+                title: "^",
+                voiceOverTitle: L10N.VoiceOverTitle.pow.localizedString,
                 action: {
                   viewModel.input(token: PowToken.instance)
                 }
               ),
               .right: (
-                label: "√",
+                title: "√",
+                voiceOverTitle: L10N.VoiceOverTitle.root.localizedString,
                 action: {
                   viewModel.input(token: RootToken.instance)
                 }
               ),
               .down: (
-                label: "!",
+                title: "!",
+                voiceOverTitle: L10N.VoiceOverTitle.gamma.localizedString,
                 action: {
                   viewModel.input(token: GammaToken.instance)
                 }
@@ -116,6 +124,7 @@ public struct CalcKeyboardView: View {
           FlickButton(
             title: "π",
             subtitle: "e i",
+            voiceOverTitle: L10N.VoiceOverTitle.pi.localizedString,
             action: {
               viewModel.input(token: ConstToken.pi)
             },
@@ -125,13 +134,15 @@ public struct CalcKeyboardView: View {
             backgroundColor: darkButtonColor,
             directions: [
               .up: (
-                label: "e",
+                title: "e",
+                voiceOverTitle: L10N.VoiceOverTitle.napier.localizedString,
                 action: {
                   viewModel.input(token: ConstToken.napier)
                 }
               ),
               .right: (
-                label: "i",
+                title: "i",
+                voiceOverTitle: L10N.VoiceOverTitle.imaginaly.localizedString,
                 action: {
                   viewModel.input(token: ConstToken.complex)
                 }
@@ -142,6 +153,7 @@ public struct CalcKeyboardView: View {
           FlickButton(
             title: "🌐\u{FE0E}",
             subtitle: "ans ret",
+            voiceOverTitle: L10N.VoiceOverTitle.pref.localizedString,
             action: {
               viewModel.exit()
             },
@@ -151,13 +163,15 @@ public struct CalcKeyboardView: View {
             backgroundColor: darkButtonColor,
             directions: [
               .up: (
-                label: "ans",
+                title: "ans",
+                voiceOverTitle: L10N.VoiceOverTitle.ans.localizedString,
                 action: {
                   viewModel.inputAnswer()
                 }
               ),
               .right: (
-                label: "ret",
+                title: "ret",
+                voiceOverTitle: L10N.VoiceOverTitle.ret.localizedString,
                 action: {
                   viewModel.inputRetry()
                 }
@@ -169,6 +183,7 @@ public struct CalcKeyboardView: View {
         VStack(spacing: 0.0) {
           FlickButton(
             title: "1",
+            voiceOverTitle: "1",
             action: {
               viewModel.input(token: DigitToken._1)
             },
@@ -182,6 +197,7 @@ public struct CalcKeyboardView: View {
           FlickButton(
             title: "4",
             subtitle: "sin",
+            voiceOverTitle: "4",
             action: {
               viewModel.input(token: DigitToken._4)
             },
@@ -191,7 +207,8 @@ public struct CalcKeyboardView: View {
             backgroundColor: lightButtonColor,
             directions: [
               .up: (
-                label: "sinh",
+                title: "sinh",
+                voiceOverTitle: L10N.VoiceOverTitle.sinh.localizedString,
                 action: {
                   viewModel.input(token: FunctionToken.sinh)
                   viewModel.input(token: BracketToken.open)
@@ -200,7 +217,8 @@ public struct CalcKeyboardView: View {
                 }
               ),
               .left: (
-                label: "sin",
+                title: "sin",
+                voiceOverTitle: L10N.VoiceOverTitle.sin.localizedString,
                 action: {
                   viewModel.input(token: FunctionToken.sin)
                   viewModel.input(token: BracketToken.open)
@@ -209,7 +227,8 @@ public struct CalcKeyboardView: View {
                 }
               ),
               .right: (
-                label: "asin",
+                title: "asin",
+                voiceOverTitle: L10N.VoiceOverTitle.asin.localizedString,
                 action: {
                   viewModel.input(token: FunctionToken.asin)
                   viewModel.input(token: BracketToken.open)
@@ -218,7 +237,8 @@ public struct CalcKeyboardView: View {
                 }
               ),
               .down: (
-                label: "asinh",
+                title: "asinh",
+                voiceOverTitle: L10N.VoiceOverTitle.asinh.localizedString,
                 action: {
                   viewModel.input(token: FunctionToken.asinh)
                   viewModel.input(token: BracketToken.open)
@@ -231,6 +251,7 @@ public struct CalcKeyboardView: View {
           Divider().background(.secondary)
           FlickButton(
             title: "7",
+            voiceOverTitle: "7",
             action: {
               viewModel.input(token: DigitToken._7)
             },
@@ -243,6 +264,7 @@ public struct CalcKeyboardView: View {
           Divider().background(.secondary)
           FlickButton(
             title: "()",
+            voiceOverTitle: L10N.VoiceOverTitle.bracket.localizedString,
             action: {
               viewModel.inputAutoBracket()
               viewModel.formatBrackets(withCompletion: false)
@@ -253,14 +275,16 @@ public struct CalcKeyboardView: View {
             backgroundColor: lightButtonColor,
             directions: [
               .left: (
-                label: "(",
+                title: "(",
+                voiceOverTitle: L10N.VoiceOverTitle.bracketOpen.localizedString,
                 action: {
                   viewModel.input(token: BracketToken.open)
                   viewModel.formatBrackets(withCompletion: false)
                 }
               ),
               .right: (
-                label: ")",
+                title: ")",
+                voiceOverTitle: L10N.VoiceOverTitle.bracketClose.localizedString,
                 action: {
                   viewModel.input(token: BracketToken.close)
                   viewModel.formatBrackets(withCompletion: false)
@@ -274,6 +298,7 @@ public struct CalcKeyboardView: View {
           FlickButton(
             title: "2",
             subtitle: "cos",
+            voiceOverTitle: "2",
             action: {
               viewModel.input(token: DigitToken._2)
             },
@@ -283,7 +308,8 @@ public struct CalcKeyboardView: View {
             backgroundColor: lightButtonColor,
             directions: [
               .up: (
-                label: "cosh",
+                title: "cosh",
+                voiceOverTitle: L10N.VoiceOverTitle.cosh.localizedString,
                 action: {
                   viewModel.input(token: FunctionToken.cosh)
                   viewModel.input(token: BracketToken.open)
@@ -293,7 +319,8 @@ public struct CalcKeyboardView: View {
                 }
               ),
               .left: (
-                label: "cos",
+                title: "cos",
+                voiceOverTitle: L10N.VoiceOverTitle.cos.localizedString,
                 action: {
                   viewModel.input(token: FunctionToken.cos)
                   viewModel.input(token: BracketToken.open)
@@ -302,7 +329,8 @@ public struct CalcKeyboardView: View {
                 }
               ),
               .right: (
-                label: "acos",
+                title: "acos",
+                voiceOverTitle: L10N.VoiceOverTitle.acos.localizedString,
                 action: {
                   viewModel.input(token: FunctionToken.acos)
                   viewModel.input(token: BracketToken.open)
@@ -312,7 +340,8 @@ public struct CalcKeyboardView: View {
                 }
               ),
               .down: (
-                label: "acosh",
+                title: "acosh",
+                voiceOverTitle: L10N.VoiceOverTitle.acosh.localizedString,
                 action: {
                   viewModel.input(token: FunctionToken.acosh)
                   viewModel.input(token: BracketToken.open)
@@ -326,6 +355,7 @@ public struct CalcKeyboardView: View {
           Divider().background(.secondary)
           FlickButton(
             title: "5",
+            voiceOverTitle: "5",
             action: {
               viewModel.input(token: DigitToken._5)
             },
@@ -339,6 +369,7 @@ public struct CalcKeyboardView: View {
           FlickButton(
             title: "8",
             subtitle: "log",
+            voiceOverTitle: "8",
             action: {
               viewModel.input(token: DigitToken._8)
             },
@@ -348,9 +379,9 @@ public struct CalcKeyboardView: View {
             backgroundColor: lightButtonColor,
             directions: [
               .left: (
-                label: "ln",
+                title: "ln",
+                voiceOverTitle: L10N.VoiceOverTitle.ln.localizedString,
                 action: {
-
                   viewModel.input(token: FunctionToken.ln)
                   viewModel.input(token: BracketToken.open)
                   viewModel.input(token: BracketToken.close)
@@ -358,7 +389,8 @@ public struct CalcKeyboardView: View {
                 }
               ),
               .up: (
-                label: "log",
+                title: "log",
+                voiceOverTitle: L10N.VoiceOverTitle.log.localizedString,
                 action: {
                   viewModel.input(token: FunctionToken.log)
                   viewModel.input(token: BracketToken.open)
@@ -367,9 +399,9 @@ public struct CalcKeyboardView: View {
                 }
               ),
               .right: (
-                label: "lg",
+                title: "lg",
+                voiceOverTitle: L10N.VoiceOverTitle.lg.localizedString,
                 action: {
-
                   viewModel.input(token: FunctionToken.lg)
                   viewModel.input(token: BracketToken.open)
                   viewModel.input(token: BracketToken.close)
@@ -382,6 +414,7 @@ public struct CalcKeyboardView: View {
           FlickButton(
             title: "0",
             subtitle: "00",
+            voiceOverTitle: "0",
             action: {
               viewModel.input(token: DigitToken._0)
             },
@@ -391,14 +424,16 @@ public struct CalcKeyboardView: View {
             backgroundColor: lightButtonColor,
             directions: [
               .left: (
-                label: "00",
+                title: "00",
+                voiceOverTitle: "00",
                 action: {
                   viewModel.input(token: DigitToken._0)
                   viewModel.input(token: DigitToken._0)
                 }
               ),
               .up: (
-                label: "000",
+                title: "000",
+                voiceOverTitle: "000",
                 action: {
                   viewModel.input(token: DigitToken._0)
                   viewModel.input(token: DigitToken._0)
@@ -406,7 +441,8 @@ public struct CalcKeyboardView: View {
                 }
               ),
               .right: (
-                label: "0000",
+                title: "0000",
+                voiceOverTitle: "0000",
                 action: {
                   viewModel.input(token: DigitToken._0)
                   viewModel.input(token: DigitToken._0)
@@ -421,6 +457,7 @@ public struct CalcKeyboardView: View {
         VStack(spacing: 0.0) {
           FlickButton(
             title: "3",
+            voiceOverTitle: "3",
             action: {
               viewModel.input(token: DigitToken._3)
             },
@@ -434,6 +471,7 @@ public struct CalcKeyboardView: View {
           FlickButton(
             title: "6",
             subtitle: "tan",
+            voiceOverTitle: "6",
             action: {
               viewModel.input(token: DigitToken._6)
             },
@@ -443,7 +481,8 @@ public struct CalcKeyboardView: View {
             backgroundColor: lightButtonColor,
             directions: [
               .up: (
-                label: "tanh",
+                title: "tanh",
+                voiceOverTitle: L10N.VoiceOverTitle.tanh.localizedString,
                 action: {
                   viewModel.input(token: FunctionToken.tanh)
                   viewModel.input(token: BracketToken.open)
@@ -452,7 +491,8 @@ public struct CalcKeyboardView: View {
                 }
               ),
               .left: (
-                label: "tan",
+                title: "tan",
+                voiceOverTitle: L10N.VoiceOverTitle.tan.localizedString,
                 action: {
                   viewModel.input(token: FunctionToken.tan)
                   viewModel.input(token: BracketToken.open)
@@ -461,7 +501,8 @@ public struct CalcKeyboardView: View {
                 }
               ),
               .right: (
-                label: "atan",
+                title: "atan",
+                voiceOverTitle: L10N.VoiceOverTitle.atan.localizedString,
                 action: {
                   viewModel.input(token: FunctionToken.atan)
                   viewModel.input(token: BracketToken.open)
@@ -470,7 +511,8 @@ public struct CalcKeyboardView: View {
                 }
               ),
               .down: (
-                label: "atanh",
+                title: "atanh",
+                voiceOverTitle: L10N.VoiceOverTitle.atanh.localizedString,
                 action: {
                   viewModel.input(token: FunctionToken.atanh)
                   viewModel.input(token: BracketToken.open)
@@ -483,6 +525,7 @@ public struct CalcKeyboardView: View {
           Divider().background(.secondary)
           FlickButton(
             title: "9",
+            voiceOverTitle: "9",
             action: {
               viewModel.input(token: DigitToken._9)
             },
@@ -495,6 +538,7 @@ public struct CalcKeyboardView: View {
           Divider().background(.secondary)
           FlickButton(
             title: ".",
+            voiceOverTitle: ".",
             action: {
               viewModel.inputAutoDot()
             },
@@ -509,6 +553,7 @@ public struct CalcKeyboardView: View {
         VStack(spacing: 0.0) {
           FlickButton(
             title: "⌫",
+            voiceOverTitle: L10N.VoiceOverTitle.deleteLeft.localizedString,
             action: {
               viewModel.deleteLeft()
             },
@@ -519,19 +564,22 @@ public struct CalcKeyboardView: View {
             backgroundColor: darkButtonColor,
             directions: [
               .left: (
-                label: "I⌫",
+                title: "I⌫",
+                voiceOverTitle: L10N.VoiceOverTitle.deleteLeftAll.localizedString,
                 action: {
                   viewModel.deleteLeftAll()
                 }
               ),
               .up: (
-                label: "⌦",
+                title: "⌦",
+                voiceOverTitle: L10N.VoiceOverTitle.deleteRight.localizedString,
                 action: {
                   viewModel.deleteRight()
                 }
               ),
               .down: (
-                label: "⌦I",
+                title: "⌦I",
+                voiceOverTitle: L10N.VoiceOverTitle.deleteRightAll.localizedString,
                 action: {
                   viewModel.deleteRightAll()
                 }
@@ -542,6 +590,7 @@ public struct CalcKeyboardView: View {
           FlickButton(
             title: "+",
             subtitle: "- × ÷",
+            voiceOverTitle: L10N.VoiceOverTitle.add.localizedString,
             action: {
               viewModel.input(token: AddToken.instance)
             },
@@ -551,19 +600,22 @@ public struct CalcKeyboardView: View {
             backgroundColor: darkButtonColor,
             directions: [
               .up: (
-                label: "×",
+                title: "×",
+                voiceOverTitle: L10N.VoiceOverTitle.mul.localizedString,
                 action: {
                   viewModel.input(token: MulToken.instance)
                 }
               ),
               .left: (
-                label: "-",
+                title: "-",
+                voiceOverTitle: L10N.VoiceOverTitle.sub.localizedString,
                 action: {
                   viewModel.input(token: SubToken.instance)
                 }
               ),
               .down: (
-                label: "÷",
+                title: "÷",
+                voiceOverTitle: L10N.VoiceOverTitle.div.localizedString,
                 action: {
                   viewModel.input(token: DivToken.instance)
                 }
@@ -573,6 +625,7 @@ public struct CalcKeyboardView: View {
           Divider().background(.primary)
           FlickButton(
             title: "→",
+            voiceOverTitle: L10N.VoiceOverTitle.moveRight.localizedString,
             action: {
               viewModel.shiftToRight()
             },
@@ -583,7 +636,8 @@ public struct CalcKeyboardView: View {
             backgroundColor: darkButtonColor,
             directions: [
               .left: (
-                label: "←",
+                title: "←",
+                voiceOverTitle: L10N.VoiceOverTitle.moveLeft.localizedString,
                 action: {
                   viewModel.shiftToLeft()
                 }
@@ -593,6 +647,7 @@ public struct CalcKeyboardView: View {
           Divider().background(.primary)
           FlickButton(
             title: "=",
+            voiceOverTitle: "=",
             action: {
               viewModel.calculate()
             },

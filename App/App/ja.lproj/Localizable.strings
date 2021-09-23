@@ -8,3 +8,52 @@
 "com.tarunon.flickcalckeyboard.error_message.parse_error" = "パースに失敗しました";
 "com.tarunon.flickcalckeyboard.error_message.runtime_error" = "対応していない演算です";
 
+"com.tarunon.flickcalckeyboard.voice_over.navigate.flick_to_up" = "うえフリックで";
+"com.tarunon.flickcalckeyboard.voice_over.navigate.flick_to_down" = "したフリックで";
+"com.tarunon.flickcalckeyboard.voice_over.navigate.flick_to_left" = "ひだりフリックで";
+"com.tarunon.flickcalckeyboard.voice_over.navigate.flick_to_right" = "みぎフリックで";
+
+"com.tarunon.flickcalckeyboard.voice_over.title.memory_plus" = "メモリプラス";
+"com.tarunon.flickcalckeyboard.voice_over.title.memory_minus" = "メモリマイナス";
+"com.tarunon.flickcalckeyboard.voice_over.title.memory_recall" = "メモリリコール";
+"com.tarunon.flickcalckeyboard.voice_over.title.memory_clear" = "メモリクリア";
+"com.tarunon.flickcalckeyboard.voice_over.title.delete_left" = "削除";
+"com.tarunon.flickcalckeyboard.voice_over.title.delete_left_all" = "左側を全て削除";
+"com.tarunon.flickcalckeyboard.voice_over.title.delete_right" = "右側を１文字削除";
+"com.tarunon.flickcalckeyboard.voice_over.title.delete_right_all" = "右側を全て削除";
+"com.tarunon.flickcalckeyboard.voice_over.title.pref" = "設定 他のキーボードに切り替え";
+"com.tarunon.flickcalckeyboard.voice_over.title.ans" = "前回の答えを入力";
+"com.tarunon.flickcalckeyboard.voice_over.title.ret" = "前回の式を入力";
+"com.tarunon.flickcalckeyboard.voice_over.title.add" = "加算";
+"com.tarunon.flickcalckeyboard.voice_over.title.sub" = "減算";
+"com.tarunon.flickcalckeyboard.voice_over.title.mul" = "乗算";
+"com.tarunon.flickcalckeyboard.voice_over.title.div" = "除算";
+"com.tarunon.flickcalckeyboard.voice_over.title.mod" = "剰余";
+"com.tarunon.flickcalckeyboard.voice_over.title.pow" = "累乗";
+"com.tarunon.flickcalckeyboard.voice_over.title.root" = "冪根";
+"com.tarunon.flickcalckeyboard.voice_over.title.gamma" = "階乗";
+"com.tarunon.flickcalckeyboard.voice_over.title.sin" = "サイン";
+"com.tarunon.flickcalckeyboard.voice_over.title.asin" = "アークサイン";
+"com.tarunon.flickcalckeyboard.voice_over.title.sinh" = "ハイパボリックサイン";
+"com.tarunon.flickcalckeyboard.voice_over.title.asinh" = "アークハイパボリックサイン";
+"com.tarunon.flickcalckeyboard.voice_over.title.cos" = "コサイン";
+"com.tarunon.flickcalckeyboard.voice_over.title.acos" = "アークコサイン";
+"com.tarunon.flickcalckeyboard.voice_over.title.cosh" = "ハイパボリックコサイン";
+"com.tarunon.flickcalckeyboard.voice_over.title.acosh" = "アークハイパボリックコサイン";
+"com.tarunon.flickcalckeyboard.voice_over.title.tan" = "タンジェント";
+"com.tarunon.flickcalckeyboard.voice_over.title.atan" = "アークタンジェント";
+"com.tarunon.flickcalckeyboard.voice_over.title.tanh" = "ハイパボリックタンジェント";
+"com.tarunon.flickcalckeyboard.voice_over.title.atanh" = "アークハイパボリックタンジェント";
+"com.tarunon.flickcalckeyboard.voice_over.title.log" = "ログ";
+"com.tarunon.flickcalckeyboard.voice_over.title.ln" = "ログ ていはネイピア数";
+"com.tarunon.flickcalckeyboard.voice_over.title.lg" = "ログ ていは2";
+"com.tarunon.flickcalckeyboard.voice_over.title.pi" = "円周率";
+"com.tarunon.flickcalckeyboard.voice_over.title.napier" = "ネイピア数";
+"com.tarunon.flickcalckeyboard.voice_over.title.imaginaly" = "虚数";
+"com.tarunon.flickcalckeyboard.voice_over.title.bracket" = "括弧";
+"com.tarunon.flickcalckeyboard.voice_over.title.bracket_open" = "開き括弧";
+"com.tarunon.flickcalckeyboard.voice_over.title.bracket_close" = "閉じ括弧";
+"com.tarunon.flickcalckeyboard.voice_over.title.move_left" = "カーソルを左に移動";
+"com.tarunon.flickcalckeyboard.voice_over.title.move_right" = "カーソルを右に移動";
+
+

@@ -11,6 +11,7 @@
 		D23F57BA265014890008532B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23F57B9265014890008532B /* AppDelegate.swift */; };
 		D23F57C02650148A0008532B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D23F57BF2650148A0008532B /* Assets.xcassets */; };
 		D23F57C62650148A0008532B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D23F57C42650148A0008532B /* LaunchScreen.storyboard */; };
+		D24F2B9926FCE09500F24F1D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D284CAF926FC4117000E5790 /* Localizable.strings */; };
 		D284CAE926F8B2B2000E5790 /* ProdKeyboard.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = D284CAE226F8B2B2000E5790 /* ProdKeyboard.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		D284CAF026F8B2DF000E5790 /* CalcKeyboard in Frameworks */ = {isa = PBXBuildFile; productRef = D284CAEF26F8B2DF000E5790 /* CalcKeyboard */; };
 		D284CAF426F94D45000E5790 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D284CAF326F94D45000E5790 /* Settings.bundle */; };
@@ -224,6 +225,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D24F2B9926FCE09500F24F1D /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -402,7 +404,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = U376YN5H26;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = App/Info_Prod.plist;
@@ -422,7 +424,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = U376YN5H26;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = App/Info_Prod.plist;
