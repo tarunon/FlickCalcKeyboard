@@ -9,7 +9,8 @@ let package = Package(
     .macOS(.v10_15)
   ],
   dependencies: [
-    .package(url: "https://github.com/apple/swift-format", branch: "0.50500.0")
+    .package(url: "https://github.com/apple/swift-format", from: "0.50500.0"),
+    .package(url: "https://github.com/tarunon/LicensePlist", branch: "work/update_swift-argument-parser")
   ],
   targets: [
     .target(

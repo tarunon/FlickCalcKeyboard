@@ -1,16 +1,20 @@
-APP_DIR=${PWD}/App/
-SOURCES_DIR=${PWD}/Sources/
-TESTS_DIR=${PWD}/Tests/
+APP_DIR=${PWD}/App
+SOURCES_DIR=${PWD}/Sources
+TESTS_DIR=${PWD}/Tests
+BUILD_TOOLS_DIR=${PWD}/BuildTools
+SWIFTRUN=swift run --package-path ${BUILD_TOOLS_DIR} -c release
 
 init:;	swift package resolve; cd BuildTools; swift package resolve
-clean:;	rm -rf BuildTools/.build
+clean:;	rm -rf ${BUILD_TOOLS_DIR}/.build
 lint:
-		cd BuildTools; swift run -c release swift-format lint -r ${APP_DIR}
-		cd BuildTools; swift run -c release --skip-build swift-format lint -r ${SOURCES_DIR}
-		cd BuildTools; swift run -c release --skip-build swift-format lint -r ${TESTS_DIR}
+		${SWIFTRUN} swift-format lint -r ${APP_DIR}
+		${SWIFTRUN} swift-format lint -r ${SOURCES_DIR}
+		${SWIFTRUN} swift-format lint -r ${TESTS_DIR}
 format:
-		cd BuildTools; swift run -c release swift-format format -p -i -r ${APP_DIR}
-		cd BuildTools; swift run -c release --skip-build swift-format format -p -i -r ${SOURCES_DIR}
-		cd BuildTools; swift run -c release --skip-build swift-format format -p -i -r ${TESTS_DIR}
+		${SWIFTRUN} swift-format format -p -i -r ${APP_DIR}
+		${SWIFTRUN} swift-format format -p -i -r ${SOURCES_DIR}
+		${SWIFTRUN} swift-format format -p -i -r ${TESTS_DIR}
 test:
 		xcodebuild -sdk iphonesimulator -configuration Debug -workspace App.xcworkspace -scheme App -destination 'platform=iOS Simulator,name=iPhone 12' clean test -quiet
+license:
+		${SWIFTRUN} license-plist --swift-package-path ${PWD}/Package.swift --swift-package-path ${BUILD_TOOLS_DIR}/Package.swift --output-path ${APP_DIR}/App/Settings.bundle
