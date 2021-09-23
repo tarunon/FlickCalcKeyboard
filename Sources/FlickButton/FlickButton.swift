@@ -88,7 +88,10 @@ public struct FlickButton: View {
     GeometryReader { geometry in
       ZStack {
         backgroundColor
-          .brightness(isDragging && currentDirection == nil ? -0.2 : 0.0)
+        if isDragging && (currentDirection == nil || directions[currentDirection!] != nil) {
+          Color.primary
+            .opacity(0.2)
+        }
         if !isDragging || currentDirection.flatMap { directions[$0] } == nil {
           Text(title)
             .bold()
