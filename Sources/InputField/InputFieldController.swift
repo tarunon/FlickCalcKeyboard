@@ -79,7 +79,6 @@ class InputFieldController: UIViewController, UIGestureRecognizerDelegate, UITex
     return dragGestureRecognizer
   }
   var delegate: InputFieldControllerDelegate?
-  var shouldUpdateCursor = false
 
   var errorMessage: String = "" {
     didSet {
@@ -97,13 +96,11 @@ class InputFieldController: UIViewController, UIGestureRecognizerDelegate, UITex
     view = scrollView
     scrollView.addSubview(textField)
     NSLayoutConstraint.activate([
+      textField.topAnchor.constraint(equalTo: scrollView.topAnchor),
       textField.leftAnchor.constraint(equalTo: scrollView.leftAnchor, constant: 5.0),
       textField.rightAnchor.constraint(equalTo: scrollView.rightAnchor, constant: 5.0),
+      textField.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
       textField.centerYAnchor.constraint(equalTo: scrollView.centerYAnchor),
-      textField.heightAnchor.constraint(
-        equalTo: scrollView.frameLayoutGuide.heightAnchor,
-        constant: -8.0
-      ),
       textField.widthAnchor.constraint(
         greaterThanOrEqualTo: scrollView.widthAnchor,
         constant: -10.0
@@ -114,10 +111,17 @@ class InputFieldController: UIViewController, UIGestureRecognizerDelegate, UITex
     textMarker.didMove(toParent: self)
   }
 
+  var doAfterLayoutStack: [() -> Void] = []
+
+  func callAfterLayout(_ f: @escaping (() -> Void)) {
+    doAfterLayoutStack.append(f)
+    view.setNeedsLayout()
+  }
+
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
-    if shouldUpdateCursor {
-      updateCursor()
+    if !doAfterLayoutStack.isEmpty {
+      doAfterLayoutStack.removeLast()()
     }
   }
 
@@ -157,10 +161,9 @@ class InputFieldController: UIViewController, UIGestureRecognizerDelegate, UITex
     if textField.textInputView.frame.width
       < textField.attributedText?.boundingRect(with: .zero, options: [], context: nil).width ?? 0.0
     {
-      view.setNeedsLayout()
+      callAfterLayout { [weak self] in self?.updateCursor() }
       return
     }
-    shouldUpdateCursor = false
     if let start = textField.selectedTextRange?.start,
       let end = textField.selectedTextRange?.end
     {
@@ -204,8 +207,7 @@ class InputFieldController: UIViewController, UIGestureRecognizerDelegate, UITex
   }
 
   func textFieldDidChangeSelection(_ textField: UITextField) {
-    shouldUpdateCursor = true
-    view.setNeedsLayout()
+    callAfterLayout { [weak self] in self?.updateCursor() }
     delegate?.inputFieldDidChangeSelection?(self)
   }
 
