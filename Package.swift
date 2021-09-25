@@ -30,6 +30,9 @@ let package = Package(
       name: "App",
       dependencies: ["CalcEditorView"]),
     .target(
+      name: "Core",
+      dependencies: []),
+    .target(
       name: "Parsec",
       dependencies: ["Builder"]),
     .target(
@@ -37,7 +40,7 @@ let package = Package(
       dependencies: ["Builder"]),
     .target(
       name: "InputField",
-      dependencies: ["Builder"]),
+      dependencies: ["Builder", "Core"]),
     .target(
       name: "CalcEditorView",
       dependencies: ["CalcKeyboard"]),
@@ -52,7 +55,7 @@ let package = Package(
       name: "CalcKeyboard",
       dependencies: [
         .productItem(name: "Numerics", package: "swift-numerics", condition: .when(platforms: [.iOS])),
-        "FlickButton", "Calculator", "Builder", "InputField"
+        "Core", "FlickButton", "Calculator", "Builder", "InputField"
       ]),
     .testTarget(
       name: "AppTests",

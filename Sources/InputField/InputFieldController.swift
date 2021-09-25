@@ -6,6 +6,7 @@
 //
 
 import Builder
+import Core
 import SwiftUI
 import UIKit
 
@@ -31,52 +32,45 @@ class InputTextField: UITextField {
 
 @MainActor
 class InputFieldController: UIViewController, UIGestureRecognizerDelegate, UITextFieldDelegate {
-  lazy var textField: UITextField = build {
-    let textField = InputTextField()
-    textField.translatesAutoresizingMaskIntoConstraints = false
-    textField.delegate = self
-    textField.borderStyle = .none
-    textField.font = UIFont.preferredFont(forTextStyle: .body)
-    textField.adjustsFontForContentSizeCategory = true
-    textField.text = ""
-    textField.selectedTextRange = textField.textRange(
-      from: textField.beginningOfDocument,
-      to: textField.endOfDocument
-    )
-    textField.addGestureRecognizer(self.dragGestureRecognizer)
-    textField.setContentCompressionResistancePriority(.required, for: .vertical)
-    return textField
+  lazy var textField = setup(from: UITextField()) {
+    $0.translatesAutoresizingMaskIntoConstraints = false
+    $0.delegate = self
+    $0.borderStyle = .none
+    $0.font = UIFont.preferredFont(forTextStyle: .body)
+    $0.adjustsFontForContentSizeCategory = true
+    $0.text = ""
+    $0.selectedTextRange = $0.textRange(from: $0.beginningOfDocument, to: $0.endOfDocument)
+    $0.addGestureRecognizer(self.dragGestureRecognizer)
+    $0.setContentCompressionResistancePriority(.required, for: .vertical)
   }
 
-  lazy var scrollView: UIScrollView = build {
-    let scrollView = UIScrollView()
-    scrollView.backgroundColor = UIColor.tertiarySystemBackground
-    scrollView.layer.cornerRadius = 5.0
-    scrollView.panGestureRecognizer.minimumNumberOfTouches = 3
-    scrollView.showsHorizontalScrollIndicator = false
-    scrollView.showsVerticalScrollIndicator = false
-    return scrollView
+  lazy var scrollView = setup(from: UIScrollView()) {
+    $0.backgroundColor = UIColor.tertiarySystemBackground
+    $0.layer.cornerRadius = 5.0
+    $0.panGestureRecognizer.minimumNumberOfTouches = 3
+    $0.showsHorizontalScrollIndicator = false
+    $0.showsVerticalScrollIndicator = false
   }
 
-  lazy var textMarker: UIHostingController<TextMarker> = build {
-    let textMarker = UIHostingController(
+  lazy var textMarker = setup(
+    from: UIHostingController(
       rootView: TextMarker(
         flushing: true
       )
     )
-    textMarker.view.frame = .init(x: 7.0, y: 3.0, width: 2.0, height: 22.0)
-    textMarker.view.backgroundColor = .clear
-    return textMarker
+  ) {
+    $0.view.frame = .init(x: 7.0, y: 3.0, width: 2.0, height: 22.0)
+    $0.view.backgroundColor = .clear
   }
 
-  lazy var dragGestureRecognizer: UILongPressGestureRecognizer = build {
-    let dragGestureRecognizer = UILongPressGestureRecognizer(
+  lazy var dragGestureRecognizer = setup(
+    from: UILongPressGestureRecognizer(
       target: self,
       action: #selector(self.didDrag(_:))
     )
-    dragGestureRecognizer.minimumPressDuration = 0.0
-    dragGestureRecognizer.delegate = self
-    return dragGestureRecognizer
+  ) {
+    $0.minimumPressDuration = 0.0
+    $0.delegate = self
   }
   var delegate: InputFieldControllerDelegate?
 
