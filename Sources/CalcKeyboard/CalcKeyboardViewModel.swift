@@ -6,8 +6,34 @@
 //
 
 import Calculator
+import FlickButton
 import Numerics
 import SwiftUI
+
+enum ButtonType {
+  case number
+  case function
+  case equal
+
+  var buttonColor: Color {
+    switch self {
+    case .number: return Color(uiColor: UIColor(named: "LightButtonColor")!)
+    case .function: return Color(uiColor: UIColor(named: "DarkButtonColor")!)
+    case .equal: return .blue
+    }
+  }
+}
+
+struct ButtonParameter {
+  var title: String
+  var subtitle: String?
+  var voiceOverTitle: String
+  var action: () -> Void
+  var actionWhilePressing: Bool = false
+  var buttonType: ButtonType
+  var directions:
+    [FlickButton.Direction: (title: String, voiceOverTitle: String, action: () -> Void)]
+}
 
 @MainActor
 class CalcKeyboardViewModel: ObservableObject {
@@ -63,6 +89,13 @@ class CalcKeyboardViewModel: ObservableObject {
     } else {
       input(token: BracketToken.open)
     }
+  }
+
+  func inputFunction(token: FunctionToken) {
+    self.input(token: token)
+    self.input(token: BracketToken.open)
+    self.input(token: BracketToken.close)
+    self.shiftToLeft()
   }
 
   func inputAnswer() {
