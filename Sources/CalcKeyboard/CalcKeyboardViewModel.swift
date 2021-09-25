@@ -5,6 +5,7 @@
 //  Created by tarunon on 2021/09/20.
 //
 
+import Builder
 import Calculator
 import FlickButton
 import Numerics
@@ -16,10 +17,12 @@ enum ButtonType {
   case equal
 
   var buttonColor: Color {
-    switch self {
-    case .number: return Color(uiColor: UIColor(named: "LightButtonColor")!)
-    case .function: return Color(uiColor: UIColor(named: "DarkButtonColor")!)
-    case .equal: return .blue
+    build {
+      switch self {
+      case .number: Color(uiColor: UIColor(named: "LightButtonColor")!)
+      case .function: Color(uiColor: UIColor(named: "DarkButtonColor")!)
+      case .equal: Color.blue
+      }
     }
   }
 }
@@ -313,20 +316,15 @@ class CalcKeyboardViewModel: ObservableObject {
   }
 
   var errorMessage: String {
-    switch error {
-    case nil, .tokensEmpty:
-      return ""
-    case .parseError(let tokens):
-      return NSLocalizedString(
-        "com.tarunon.flickcalckeyboard.error_message.parse_error",
-        comment: ""
-      ) + "(\(CalcFormatter.format(tokens)))"
-    case .runtimeError(let reason):
-      return NSLocalizedString(
-        "com.tarunon.flickcalckeyboard.error_message.runtime_error",
-        comment: ""
-      ) + "(\(reason))"
-
+    build {
+      switch self.error {
+      case nil, .tokensEmpty:
+        ""
+      case .parseError(let tokens):
+        L10N.ErrorMessage.parseError.localizedString + "(\(CalcFormatter.format(tokens)))"
+      case .runtimeError(let reason):
+        L10N.ErrorMessage.runtimeError.localizedString + "(\(reason))"
+      }
     }
   }
 

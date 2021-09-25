@@ -5,6 +5,8 @@
 //  Created by tarunon on 2021/09/25.
 //
 
+import Builder
+
 public enum ParseError: Error {
   case isEmpty
   case typeMissmatch(expect: Any.Type, actual: Any)
@@ -85,11 +87,13 @@ extension Parser {
   }
 
   public func many(allowEmpty: Bool) -> Parser<Input, [Output]> {
-    if allowEmpty {
-      return many(allowEmpty: false) ?? .pure([])
-    } else {
-      return flatMap { output in
-        return many(allowEmpty: true).map { [output] + $0 }
+    build {
+      if allowEmpty {
+        many(allowEmpty: false) ?? .pure([])
+      } else {
+        flatMap { output in
+          return many(allowEmpty: true).map { [output] + $0 }
+        }
       }
     }
   }

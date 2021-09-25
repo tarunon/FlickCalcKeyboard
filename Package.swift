@@ -31,10 +31,10 @@ let package = Package(
       dependencies: ["CalcEditorView"]),
     .target(
       name: "Parsec",
-      dependencies: []),
+      dependencies: ["Builder"]),
     .target(
       name: "FlickButton",
-      dependencies: []),
+      dependencies: ["Builder"]),
     .target(
       name: "InputField",
       dependencies: ["Builder"]),

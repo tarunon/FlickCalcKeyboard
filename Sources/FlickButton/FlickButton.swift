@@ -5,6 +5,7 @@
 //  Created by tarunon on 2021/09/19.
 //
 
+import Builder
 import Combine
 import SwiftUI
 
@@ -18,41 +19,36 @@ public struct FlickButton: View {
 
     func buttonLocation(on geometry: GeometryProxy) -> CGPoint {
       let center = CGPoint(x: geometry.size.width / 2, y: geometry.size.height / 2)
-      switch self {
-      case .up:
-        return center.applying(.identity.translatedBy(x: 0, y: -geometry.size.height))
-      case .down:
-        return center.applying(.identity.translatedBy(x: 0, y: geometry.size.height))
-      case .left:
-        return center.applying(.identity.translatedBy(x: -geometry.size.width, y: 0))
-      case .right:
-        return center.applying(.identity.translatedBy(x: geometry.size.width, y: 0))
+      return build {
+        switch self {
+        case .up:
+          center.applying(.identity.translatedBy(x: 0, y: -geometry.size.height))
+        case .down:
+          center.applying(.identity.translatedBy(x: 0, y: geometry.size.height))
+        case .left:
+          center.applying(.identity.translatedBy(x: -geometry.size.width, y: 0))
+        case .right:
+          center.applying(.identity.translatedBy(x: geometry.size.width, y: 0))
+        }
       }
     }
 
     func voiceOverMessage(title: String) -> String {
-      switch self {
-      case .up:
-        return NSLocalizedString(
-          "com.tarunon.flickcalckeyboard.voice_over.navigate.flick_to_up",
-          comment: ""
-        ) + title
-      case .down:
-        return NSLocalizedString(
-          "com.tarunon.flickcalckeyboard.voice_over.navigate.flick_to_down",
-          comment: ""
-        ) + title
-      case .left:
-        return NSLocalizedString(
-          "com.tarunon.flickcalckeyboard.voice_over.navigate.flick_to_left",
-          comment: ""
-        ) + title
-      case .right:
-        return NSLocalizedString(
-          "com.tarunon.flickcalckeyboard.voice_over.navigate.flick_to_right",
-          comment: ""
-        ) + title
-      }
+      NSLocalizedString(
+        build {
+          switch self {
+          case .up:
+            "com.tarunon.flickcalckeyboard.voice_over.navigate.flick_to_up"
+          case .down:
+            "com.tarunon.flickcalckeyboard.voice_over.navigate.flick_to_down"
+          case .left:
+            "com.tarunon.flickcalckeyboard.voice_over.navigate.flick_to_left"
+          case .right:
+            "com.tarunon.flickcalckeyboard.voice_over.navigate.flick_to_right"
+          }
+        },
+        comment: ""
+      ) + title
     }
   }
 
@@ -96,19 +92,21 @@ public struct FlickButton: View {
     let right = max(value.location.x - geometry.size.width, 0)
     let down = max(value.location.y - geometry.size.height, 0)
     let max = max(up, left, right, down)
-    switch max {
-    case 0:
-      return nil
-    case up:
-      return .up
-    case left:
-      return .left
-    case right:
-      return .right
-    case down:
-      return .down
-    default:
-      return nil
+    return build {
+      switch max {
+      case ...0:
+        Direction?.none
+      case up:
+        Direction?.some(.up)
+      case left:
+        Direction?.some(.left)
+      case right:
+        Direction?.some(.right)
+      case down:
+        Direction?.some(.down)
+      default:
+        Direction?.none
+      }
     }
   }
 

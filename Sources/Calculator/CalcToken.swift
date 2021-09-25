@@ -5,6 +5,7 @@
 //  Created by tarunon on 2021/09/20.
 //
 
+import Builder
 import Numerics
 
 public protocol CalcToken {
@@ -21,10 +22,12 @@ public enum Precedence: Int {
   case high
 
   func next() -> Precedence? {
-    switch self {
-    case .low: return .middle
-    case .middle: return .high
-    case .high: return nil
+    build {
+      switch self {
+      case .low: Precedence?.some(.middle)
+      case .middle: Precedence?.some(.high)
+      case .high: Precedence?.none
+      }
     }
   }
 }
@@ -58,25 +61,29 @@ public enum ConstToken: NumberToken {
   case answer(answer: Complex<Double>, index: Int)
 
   public var rawValue: String {
-    switch self {
-    case .pi: return "π"
-    case .napier: return "e"
-    case .complex: return "i"
-    case .answer(let answer, _):
-      return "(\(CalcFormatter.format(answer)))"
+    build {
+      switch self {
+      case .pi: "π"
+      case .napier: "e"
+      case .complex: "i"
+      case .answer(let answer, _):
+        "(\(CalcFormatter.format(answer)))"
+      }
     }
   }
 
   public func number() throws -> Complex<Double> {
-    switch self {
-    case .pi:
-      return .init(.pi)
-    case .napier:
-      return .init(.exp(1))
-    case .complex:
-      return .init(imaginary: 1.0)
-    case .answer(let answer, _):
-      return answer
+    build {
+      switch self {
+      case .pi:
+        Complex<Double>.init(.pi)
+      case .napier:
+        Complex<Double>.init(.exp(1))
+      case .complex:
+        Complex<Double>.init(imaginary: 1.0)
+      case .answer(let answer, _):
+        answer
+      }
     }
   }
 }

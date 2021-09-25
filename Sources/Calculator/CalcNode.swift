@@ -5,6 +5,7 @@
 //  Created by tarunon on 2021/09/21.
 //
 
+import Builder
 import Numerics
 
 protocol CalcNode: CustomStringConvertible {
@@ -69,25 +70,28 @@ enum OperationNode: CalcNode {
   case postfix(lhs: CalcNode, token: PostfixOperatorToken)
 
   func result() throws -> Complex<Double> {
-    switch self {
-    case .infix(let lhs, let rhs, let token):
-      return try token.operation(lhs: lhs.result(), rhs: rhs.result())
-    case .prefix(let rhs, let token):
-      return try token.operation(rhs: rhs.result())
-    case .postfix(let lhs, let token):
-      return try token.operation(lhs: lhs.result())
+    try build {
+      switch self {
+      case .infix(let lhs, let rhs, let token):
+        try token.operation(lhs: lhs.result(), rhs: rhs.result())
+      case .prefix(let rhs, let token):
+        try token.operation(rhs: rhs.result())
+      case .postfix(let lhs, let token):
+        try token.operation(lhs: lhs.result())
+      }
     }
-
   }
 
   var description: String {
-    switch self {
-    case .infix(let lhs, let rhs, let token):
-      return "(\(lhs)\(token.rawValue)\(rhs))"
-    case .prefix(let rhs, let token):
-      return "(\(token.rawValue)\(rhs))"
-    case .postfix(let lhs, let token):
-      return "(\(lhs)\(token.rawValue))"
+    build {
+      switch self {
+      case .infix(let lhs, let rhs, let token):
+        "(\(lhs)\(token.rawValue)\(rhs))"
+      case .prefix(let rhs, let token):
+        "(\(token.rawValue)\(rhs))"
+      case .postfix(let lhs, let token):
+        "(\(lhs)\(token.rawValue))"
+      }
     }
   }
 }

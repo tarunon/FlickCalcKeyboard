@@ -5,6 +5,7 @@
 //  Created by tarunon on 2021/09/22.
 //
 
+import Builder
 import Foundation
 import Numerics
 
@@ -31,21 +32,23 @@ public enum CalcFormatter {
           )
           .sign(strategy: .never)
       )
-    switch (real, imaginary) {
-    case ("NaN", _), (_, "NaN"):
-      return "NaN"
-    case ("0", "0"), ("-0", "0"):
-      return "0"
-    case (_, "0"):
-      return real
-    case ("0", "1"), ("-0", "1"):
-      return (complex.imaginary < 0 ? "-" : "") + "i"
-    case ("0", _), ("-0", _):
-      return (complex.imaginary < 0 ? "-" : "") + imaginary + "i"
-    case (_, "1"):
-      return real + (complex.imaginary < 0 ? "-" : "+") + "i"
-    default:
-      return real + (complex.imaginary < 0 ? "-" : "+") + imaginary + "i"
+    return build {
+      switch (real, imaginary) {
+      case ("NaN", _), (_, "NaN"):
+        "NaN"
+      case ("0", "0"), ("-0", "0"):
+        "0"
+      case (_, "0"):
+        real
+      case ("0", "1"), ("-0", "1"):
+        (complex.imaginary < 0 ? "-" : "") + "i"
+      case ("0", _), ("-0", _):
+        (complex.imaginary < 0 ? "-" : "") + imaginary + "i"
+      case (_, "1"):
+        real + (complex.imaginary < 0 ? "-" : "+") + "i"
+      default:
+        real + (complex.imaginary < 0 ? "-" : "+") + imaginary + "i"
+      }
     }
   }
 

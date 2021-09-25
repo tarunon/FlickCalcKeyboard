@@ -5,6 +5,7 @@
 //  Created by tarunon on 2021/09/22.
 //
 
+import Builder
 import Numerics
 import Parsec
 
@@ -17,15 +18,17 @@ public enum Calculator {
       }
       return try head.result()
     } catch (let error) {
-      switch error {
-      case ParseError.isEmpty:
-        throw CalcError.tokensEmpty
-      case ParseError.typeMissmatch(_, let actual as CalcToken):
-        throw CalcError.parseError([actual])
-      case ParseError.conditionFailure(let value as CalcToken):
-        throw CalcError.parseError([value])
-      default:
-        throw error
+      throw build {
+        switch error {
+        case ParseError.isEmpty:
+          CalcError.tokensEmpty
+        case ParseError.typeMissmatch(_, let actual as CalcToken):
+          CalcError.parseError([actual])
+        case ParseError.conditionFailure(let value as CalcToken):
+          CalcError.parseError([value])
+        default:
+          error
+        }
       }
     }
   }
