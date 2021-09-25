@@ -12,11 +12,11 @@ import Parsec
 enum CalcParsers {
   typealias CalcParser<Output> = Parser<[CalcToken], Output>
 
-  static var digit = CalcParser<DigitToken>.satisfy()
-  static var const = CalcParser<ConstToken>.satisfy()
-  static var function = CalcParser<FunctionToken>.satisfy()
-  static var digits = digit.many(allowEmpty: false).map { DigitsNode(digits: $0.reversed()) }
-  static var number = digits.map { $0 as CalcNode } || const.map { $0 as CalcNode }
+  static let digit = CalcParser<DigitToken>.satisfy()
+  static let const = CalcParser<ConstToken>.satisfy()
+  static let function = CalcParser<FunctionToken>.satisfy()
+  static let digits = digit.many(allowEmpty: false).map { DigitsNode(digits: $0.reversed()) }
+  static let number = digits.map { $0 as CalcNode } || const.map { $0 as CalcNode }
 
   static func bracket(open: Bool) -> CalcParser<BracketToken> {
     .satisfy().assert { $0 == (open ? .open : .close) }
@@ -73,6 +73,6 @@ enum CalcParsers {
       }
     }
   }
-  
-  static var calc = expr(precedence: .low)
+
+  static let calc = expr(precedence: .low)
 }

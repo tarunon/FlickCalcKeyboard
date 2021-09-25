@@ -6,17 +6,29 @@ final class ParserTests: XCTestCase {
   func parse(tokens: [CalcToken]) throws -> String {
     try CalcParsers.calc(tokens.reversed()).0.description
   }
-  
+
   func testParseTokens() throws {
     try XCTAssertEqual(CalcParsers.digit([DigitToken._0]).0.rawValue, "0")
     try XCTAssertEqual(CalcParsers.const([ConstToken.pi]).0.rawValue, "π")
-    try XCTAssertEqual(CalcParsers.digits([DigitToken._6, DigitToken._4].reversed()).0.description, "64")
+    try XCTAssertEqual(
+      CalcParsers.digits([DigitToken._6, DigitToken._4].reversed()).0.description,
+      "64"
+    )
     try XCTAssertEqual(CalcParsers.function([FunctionToken.log]).0.rawValue, "log")
     try XCTAssertEqual(CalcParsers.bracket(open: true)([BracketToken.open]).0.rawValue, "(")
     try XCTAssertEqual(CalcParsers.bracket(open: false)([BracketToken.close]).0.rawValue, ")")
-    try XCTAssertEqual(CalcParsers.prefixOperator(precedence: .low)([SubToken.instance]).0.rawValue, "-")
-    try XCTAssertEqual(CalcParsers.infixOperator(precedence: .middle)([DivToken.instance]).0.rawValue, "÷")
-    try XCTAssertEqual(CalcParsers.postfixOperator(precedence: .high)([GammaToken.instance]).0.rawValue, "!") 
+    try XCTAssertEqual(
+      CalcParsers.prefixOperator(precedence: .low)([SubToken.instance]).0.rawValue,
+      "-"
+    )
+    try XCTAssertEqual(
+      CalcParsers.infixOperator(precedence: .middle)([DivToken.instance]).0.rawValue,
+      "÷"
+    )
+    try XCTAssertEqual(
+      CalcParsers.postfixOperator(precedence: .high)([GammaToken.instance]).0.rawValue,
+      "!"
+    )
   }
 
   func testParseNumbers() throws {

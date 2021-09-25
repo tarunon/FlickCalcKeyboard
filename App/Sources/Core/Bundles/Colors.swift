@@ -8,13 +8,13 @@
 import SwiftUI
 
 extension Color {
-  public static var lightButtonColor = Color(
+  public static let lightButtonColor = Color(
     uiColor: .init(named: "LightButtonColor", in: .main, compatibleWith: .current)!
   )
-  public static var darkButtonColor = Color(
+  public static let darkButtonColor = Color(
     uiColor: .init(named: "DarkButtonColor", in: .main, compatibleWith: .current)!
   )
-  public static var backgroundColor = Color(
+  public static let backgroundColor = Color(
     uiColor: .init(named: "BackgroundColor", in: .main, compatibleWith: .current)!
   )
 }
