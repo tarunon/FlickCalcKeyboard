@@ -23,6 +23,6 @@ final class TokenTests: XCTestCase {
     try XCTAssertEqual(DigitToken._9.result(), 9)
     try XCTAssertEqual(ConstToken.pi.result(), .init(.pi))
     try XCTAssertEqual(ConstToken.napier.result(), .init(.exp(1.0)))
-    try XCTAssertEqual(ConstToken.complex.result(), .init(imaginary: 1.0))
+    try XCTAssertEqual(ConstToken.imaginaly.result(), .init(imaginary: 1.0))
   }
 }

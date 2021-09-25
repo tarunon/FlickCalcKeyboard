@@ -159,7 +159,7 @@ public struct CalcKeyboardView: View {
               title: "i",
               voiceOverTitle: L10N.VoiceOverTitle.imaginaly.localizedString,
               action: {
-                viewModel.input(token: ConstToken.complex)
+                viewModel.input(token: ConstToken.imaginaly)
               }
             ),
           ]

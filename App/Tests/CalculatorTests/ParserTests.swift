@@ -121,7 +121,7 @@ final class ParserTests: XCTestCase {
     )
     try XCTAssertEqual(
       parse(tokens: [
-        DigitToken._9, DivToken.instance, DigitToken._3, ConstToken.complex, GammaToken.instance,
+        DigitToken._9, DivToken.instance, DigitToken._3, ConstToken.imaginaly, GammaToken.instance,
       ]),
       "((9)÷((3*i)!))"
     )
