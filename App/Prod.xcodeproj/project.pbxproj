@@ -531,7 +531,7 @@
 /* Begin XCRemoteSwiftPackageReference section */
 		D21F969F265016C9003FD064 /* XCRemoteSwiftPackageReference "." */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = ../;
+			repositoryURL = ./;
 		};
 /* End XCRemoteSwiftPackageReference section */
 
