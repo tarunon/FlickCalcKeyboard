@@ -5,6 +5,7 @@ import PackageDescription
 
 let package = Package(
   name: "App",
+  defaultLocalization: "en",
   platforms: [
     .iOS(.v15)
   ],
@@ -32,7 +33,14 @@ let package = Package(
         .directory(
           name: "Core",
           [
-            .target(name: "Bundles"),
+            .target(
+              name: "Bundles",
+              resources: [
+                .process("Assets.xcassets"),
+                .process("en.lproj/Localizable.strings", localization: .init(rawValue: "en")),
+                .process("ja.lproj/Localizable.strings", localization: .init(rawValue: "ja"))
+              ]
+            ),
             .target(
               name: "Calculator",
               dependencies: [

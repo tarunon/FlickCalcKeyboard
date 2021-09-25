@@ -16,7 +16,7 @@ public struct L10N {
   }
 
   public var localizedString: String {
-    NSLocalizedString(rawValue, comment: "")
+    NSLocalizedString(rawValue, tableName: nil, bundle: .module, value: "", comment: "")
   }
 
   public enum ErrorMessage {

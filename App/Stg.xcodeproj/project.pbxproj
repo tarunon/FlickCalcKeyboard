@@ -8,10 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		D23C94ED2650189700998632 /* App in Frameworks */ = {isa = PBXBuildFile; productRef = D23C94EC2650189700998632 /* App */; };
+		D23EED1426FFAA9A00686134 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D23EED1326FFAA9A00686134 /* LaunchScreen.storyboard */; };
 		D23F57C02650148A0008532B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D23F57BF2650148A0008532B /* Assets.xcassets */; };
-		D23F57C62650148A0008532B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D23F57C42650148A0008532B /* LaunchScreen.storyboard */; };
-		D24F2B9626FCDF6A00F24F1D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D284CB0526FC45C0000E5790 /* Localizable.strings */; };
-		D24F2B9826FCE08700F24F1D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D284CB0526FC45C0000E5790 /* Localizable.strings */; };
 		D284CAD426F8A255000E5790 /* StgKeyboard.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = D284CACD26F8A255000E5790 /* StgKeyboard.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		D284CADD26F8A486000E5790 /* CalcKeyboard in Frameworks */ = {isa = PBXBuildFile; productRef = D284CADC26F8A486000E5790 /* CalcKeyboard */; };
 		D284CAF226F94D33000E5790 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D284CAF126F94D33000E5790 /* Settings.bundle */; };
@@ -42,16 +40,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		D23EED1326FFAA9A00686134 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D23F57B6265014890008532B /* Stg.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stg.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D23F57BF2650148A0008532B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D23F57C72650148A0008532B /* Info_Stg.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info_Stg.plist; sourceTree = "<group>"; };
-		D24F2B9726FCDFE200F24F1D /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		D24F2B9F26FCE26C00F24F1D /* ja */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = ja; path = ja.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D284CACD26F8A255000E5790 /* StgKeyboard.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = StgKeyboard.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		D284CAD126F8A255000E5790 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D284CAF126F94D33000E5790 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
-		D284CB0426FC45C0000E5790 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		D284CB0626FC45C2000E5790 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,9 +93,8 @@
 		D23F57B8265014890008532B /* App */ = {
 			isa = PBXGroup;
 			children = (
-				D284CB0526FC45C0000E5790 /* Localizable.strings */,
 				D23F57BF2650148A0008532B /* Assets.xcassets */,
-				D23F57C42650148A0008532B /* LaunchScreen.storyboard */,
+				D23EED1326FFAA9A00686134 /* LaunchScreen.storyboard */,
 				D23F57C72650148A0008532B /* Info_Stg.plist */,
 				D284CAF126F94D33000E5790 /* Settings.bundle */,
 			);
@@ -191,6 +185,7 @@
 			knownRegions = (
 				en,
 				ja,
+				Base,
 			);
 			mainGroup = D23F57AD265014890008532B;
 			packageReferences = (
@@ -211,8 +206,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D24F2B9626FCDF6A00F24F1D /* Localizable.strings in Resources */,
-				D23F57C62650148A0008532B /* LaunchScreen.storyboard in Resources */,
+				D23EED1426FFAA9A00686134 /* LaunchScreen.storyboard in Resources */,
 				D284CAF226F94D33000E5790 /* Settings.bundle in Resources */,
 				D23F57C02650148A0008532B /* Assets.xcassets in Resources */,
 			);
@@ -222,7 +216,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D24F2B9826FCE08700F24F1D /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -252,27 +245,6 @@
 			targetProxy = D284CAD226F8A255000E5790 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		D23F57C42650148A0008532B /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				D24F2B9726FCDFE200F24F1D /* en */,
-				D24F2B9F26FCE26C00F24F1D /* ja */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-		D284CB0526FC45C0000E5790 /* Localizable.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				D284CB0426FC45C0000E5790 /* en */,
-				D284CB0626FC45C2000E5790 /* ja */,
-			);
-			name = Localizable.strings;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		D23F57C82650148A0008532B /* Debug */ = {
