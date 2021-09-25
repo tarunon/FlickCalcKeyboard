@@ -104,8 +104,8 @@ class CalcKeyboardViewModel: ObservableObject {
     @MainActor
     func input(index: Int) async {
       let answer = answerHistory[index]
-      self.input(token: ConstToken.answer(answer: answer, index: index))
       await postVoiceOver(text: CalcFormatter.format(answer))
+      self.input(token: ConstToken.answer(answer: answer, index: index))
     }
     if !answerHistory.isEmpty {
       if startIndex == 0 {
@@ -121,17 +121,17 @@ class CalcKeyboardViewModel: ObservableObject {
   }
 
   func inputRetry() async {
+    await postVoiceOver(text: CalcFormatter.format(tokens))
     clearAll()
     error = nil
     tokens = latestTokens
     endIndex = latestTokens.count
     startIndex = latestTokens.count
-    await postVoiceOver(text: CalcFormatter.format(tokens))
   }
 
   func inputMemory() async {
-    input(token: ConstToken.answer(answer: memory, index: 0))
     await postVoiceOver(text: CalcFormatter.format(memory))
+    input(token: ConstToken.answer(answer: memory, index: 0))
   }
 
   func memoryAdd() {
@@ -268,8 +268,8 @@ class CalcKeyboardViewModel: ObservableObject {
     do {
       let answer = try Calculator.calc(tokens: tokens)
       let result = "\(CalcFormatter.format(tokens)) = \(CalcFormatter.format(answer))\n"
-      action(.insertText(result))
       await postVoiceOver(text: result)
+      action(.insertText(result))
       answerHistory.append(answer)
       latestTokens = tokens
       clearAll()
