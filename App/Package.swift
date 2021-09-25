@@ -30,38 +30,9 @@ let package = Package(
     .directory(
       name: "Sources",
       [
-        .directory(
-          name: "Core",
-          [
-            .target(
-              name: "Bundles",
-              resources: [
-                .process("Assets.xcassets"),
-                .process("en.lproj/Localizable.strings", localization: .init(rawValue: "en")),
-                .process("ja.lproj/Localizable.strings", localization: .init(rawValue: "ja"))
-              ]
-            ),
-            .target(
-              name: "Calculator",
-              dependencies: [
-                "Builder",
-                "Core",
-                "Parsec",
-                .productItem(
-                  name: "Numerics",
-                  package: "swift-numerics",
-                  condition: .when(platforms: [.iOS])
-                ),
-              ]
-            ),
-            .target(name: "Core"),
-            .target(
-              name: "Parsec",
-              dependencies: [
-                "Builder"
-              ]
-            ),
-          ]
+        .target(
+          name: "App",
+          dependencies: ["CalcEditorView"]
         ),
         .directory(
           name: "Components",
@@ -106,9 +77,38 @@ let package = Package(
             ),
           ]
         ),
-        .target(
-          name: "App",
-          dependencies: ["CalcEditorView"]
+        .directory(
+          name: "Core",
+          [
+            .target(
+              name: "Bundles",
+              resources: [
+                .process("Assets.xcassets"),
+                .process("en.lproj/Localizable.strings", localization: .init(rawValue: "en")),
+                .process("ja.lproj/Localizable.strings", localization: .init(rawValue: "ja")),
+              ]
+            ),
+            .target(
+              name: "Calculator",
+              dependencies: [
+                "Builder",
+                "Core",
+                "Parsec",
+                .productItem(
+                  name: "Numerics",
+                  package: "swift-numerics",
+                  condition: .when(platforms: [.iOS])
+                ),
+              ]
+            ),
+            .target(name: "Core"),
+            .target(
+              name: "Parsec",
+              dependencies: [
+                "Builder"
+              ]
+            ),
+          ]
         ),
       ]
     ),

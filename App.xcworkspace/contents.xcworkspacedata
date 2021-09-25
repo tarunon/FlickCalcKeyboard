@@ -31,6 +31,12 @@
          location = "group:Makefile">
       </FileRef>
       <FileRef
+         location = "group:.gitignore">
+      </FileRef>
+      <FileRef
+         location = "group:.swift-format">
+      </FileRef>
+      <FileRef
          location = "group:.github/">
       </FileRef>
    </Group>
