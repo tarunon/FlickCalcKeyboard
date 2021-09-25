@@ -4,7 +4,7 @@ name: Builder, nameSpecified: Builder, owner: tarunon, version:
 
 name: HeliumLogger, nameSpecified: HeliumLogger, owner: Kitura, version: 1.9.200
 
-name: LicensePlist, nameSpecified: LicensePlist, owner: tarunon, version: 
+name: LicensePlist, nameSpecified: LicensePlist, owner: mono0926, version: 3.14.4
 
 name: LoggerAPI, nameSpecified: LoggerAPI, owner: Kitura, version: 1.9.200
 
@@ -24,4 +24,4 @@ name: YamlSwift, nameSpecified: Yaml, owner: behrang, version: 3.4.4
 
 add-version-numbers: false
 
-LicensePlist Version: 3.14.2
+LicensePlist Version: 3.14.4

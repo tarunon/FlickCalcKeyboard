@@ -10,7 +10,7 @@ let package = Package(
   ],
   dependencies: [
     .package(url: "https://github.com/apple/swift-format", from: "0.50500.0"),
-    .package(url: "https://github.com/tarunon/LicensePlist", branch: "work/update_swift-argument-parser")
+    .package(url: "https://github.com/mono0926/LicensePlist", from: "3.14.4")
   ],
   targets: [
     .target(

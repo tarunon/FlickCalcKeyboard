@@ -21,11 +21,11 @@
       },
       {
         "package": "LicensePlist",
-        "repositoryURL": "https://github.com/tarunon/LicensePlist",
+        "repositoryURL": "https://github.com/mono0926/LicensePlist",
         "state": {
-          "branch": "work/update_swift-argument-parser",
-          "revision": "919383dd6647eb6ff69616f59275c2a599cb3122",
-          "version": null
+          "branch": null,
+          "revision": "22d5de3a45008f5c366bea25e5279e49d3a3f3fd",
+          "version": "3.14.4"
         }
       },
       {
