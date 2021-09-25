@@ -14,14 +14,14 @@ public enum ParseError: Error {
 }
 
 public struct Parser<Input: RangeReplaceableCollection, Output> {
-  var _parse: (Input) throws -> (Output, Input)
+  var parse: (Input) throws -> (Output, Input)
 
   public init(parse: @escaping @Sendable (Input) throws -> (Output, Input)) {
-    self._parse = parse
+    self.parse = parse
   }
 
-  public func parse(_ input: Input) throws -> (Output, Input) {
-    try _parse(input)
+  public func callAsFunction(_ input: Input) throws -> (Output, Input) {
+    try parse(input)
   }
 }
 
@@ -40,8 +40,8 @@ extension Parser {
 
   public func flatMap<T>(_ f: @escaping (Output) throws -> Parser<Input, T>) -> Parser<Input, T> {
     return Parser<Input, T> { input throws in
-      let (result, input2) = try self.parse(input)
-      return try f(result).parse(input2)
+      let (result, input2) = try self(input)
+      return try f(result)(input2)
     }
   }
 
@@ -52,9 +52,9 @@ extension Parser {
   public func flatMapError(_ f: @escaping (Error) throws -> Parser) -> Parser {
     .init(parse: { input throws in
       do {
-        return try self.parse(input)
+        return try self(input)
       } catch (let error) {
-        return try f(error).parse(input)
+        return try f(error)(input)
       }
     })
   }

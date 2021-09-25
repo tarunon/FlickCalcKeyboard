@@ -73,4 +73,6 @@ enum CalcParsers {
       }
     }
   }
+  
+  static var calc = expr(precedence: .low)
 }

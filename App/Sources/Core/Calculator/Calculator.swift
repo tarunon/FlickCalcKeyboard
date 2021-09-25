@@ -12,7 +12,7 @@ import Parsec
 public enum Calculator {
   public static func calc(tokens: [CalcToken]) throws -> Complex<Double> {
     do {
-      let (head, tail) = try CalcParsers.expr(precedence: .low).parse(tokens.reversed())
+      let (head, tail) = try CalcParsers.calc(tokens.reversed())
       guard tail.isEmpty else {
         throw CalcError.parseError(tail.prefix(3).reversed())
       }
