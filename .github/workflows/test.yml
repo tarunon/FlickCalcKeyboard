@@ -15,8 +15,10 @@ jobs:
       id: cache-buildtools
       uses: actions/cache@v2
       with:
-        path: ./BuildTools/.build
-        key: ${{ runner.os }}-buildtools
+        path: .build
+        key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
+        restore-keys: |
+          ${{ runner.os }}-spm-
     - name: Init
       run: make init
     - name: Lint
