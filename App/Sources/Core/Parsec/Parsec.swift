@@ -68,7 +68,7 @@ extension Parser {
     }
   }
 
-  public static func ?? (lhs: Parser, rhs: @autoclosure @escaping () -> Parser) -> Parser {
+  public static func || (lhs: Parser, rhs: @autoclosure @escaping () -> Parser) -> Parser {
     return lhs.flatMapError { _ in rhs() }
   }
 
@@ -89,7 +89,7 @@ extension Parser {
   public func many(allowEmpty: Bool) -> Parser<Input, [Output]> {
     build {
       if allowEmpty {
-        many(allowEmpty: false) ?? .pure([])
+        many(allowEmpty: false) || .pure([])
       } else {
         flatMap { output in
           return many(allowEmpty: true).map { [output] + $0 }

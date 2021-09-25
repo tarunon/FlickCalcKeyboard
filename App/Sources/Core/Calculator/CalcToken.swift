@@ -20,16 +20,6 @@ public enum Precedence: Int {
   case low
   case middle
   case high
-
-  func next() -> Precedence? {
-    build {
-      switch self {
-      case .low: Precedence?.some(.middle)
-      case .middle: Precedence?.some(.high)
-      case .high: Precedence?.none
-      }
-    }
-  }
 }
 
 public enum DigitToken: String, NumberToken {
@@ -224,27 +214,27 @@ public enum BracketToken: String, Equatable, CalcToken {
 }
 
 public struct FunctionToken: CalcToken {
-  public static let sin = Self(rawValue: "sin", operation: Complex<Double>.sin)
-  public static let sinh = Self(rawValue: "sinh", operation: Complex<Double>.sinh)
-  public static let asin = Self(rawValue: "asin", operation: Complex<Double>.asin)
-  public static let asinh = Self(rawValue: "asinh", operation: Complex<Double>.asinh)
-  public static let cos = Self(rawValue: "cos", operation: Complex<Double>.cos)
-  public static let cosh = Self(rawValue: "cosh", operation: Complex<Double>.cosh)
-  public static let acos = Self(rawValue: "acos", operation: Complex<Double>.acos)
-  public static let acosh = Self(rawValue: "acosh", operation: Complex<Double>.acosh)
-  public static let tan = Self(rawValue: "tan", operation: Complex<Double>.tan)
-  public static let tanh = Self(rawValue: "tanh", operation: Complex<Double>.tanh)
-  public static let atan = Self(rawValue: "atan", operation: Complex<Double>.atan)
-  public static let atanh = Self(rawValue: "atanh", operation: Complex<Double>.atanh)
+  public static let sin = Self(rawValue: "sin", operation: Complex.sin)
+  public static let sinh = Self(rawValue: "sinh", operation: Complex.sinh)
+  public static let asin = Self(rawValue: "asin", operation: Complex.asin)
+  public static let asinh = Self(rawValue: "asinh", operation: Complex.asinh)
+  public static let cos = Self(rawValue: "cos", operation: Complex.cos)
+  public static let cosh = Self(rawValue: "cosh", operation: Complex.cosh)
+  public static let acos = Self(rawValue: "acos", operation: Complex.acos)
+  public static let acosh = Self(rawValue: "acosh", operation: Complex.acosh)
+  public static let tan = Self(rawValue: "tan", operation: Complex.tan)
+  public static let tanh = Self(rawValue: "tanh", operation: Complex.tanh)
+  public static let atan = Self(rawValue: "atan", operation: Complex.atan)
+  public static let atanh = Self(rawValue: "atanh", operation: Complex.atanh)
   public static let log = Self(
     rawValue: "log",
-    operation: { Complex<Double>.log($0) / Complex.log(10) }
+    operation: { Complex.log($0) / Complex.log(10) }
   )
   public static let lg = Self(
     rawValue: "lg",
-    operation: { Complex<Double>.log($0) / Complex.log(2) }
+    operation: { Complex.log($0) / Complex.log(2) }
   )
-  public static let ln = Self(rawValue: "ln", operation: Complex<Double>.log(_:))
+  public static let ln = Self(rawValue: "ln", operation: Complex.log(_:))
 
   public let rawValue: String
   var operation: (Complex<Double>) -> Complex<Double>
