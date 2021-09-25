@@ -6,7 +6,7 @@
 //
 
 import Builder
-import Combine
+import Bundles
 import SwiftUI
 
 @MainActor
@@ -34,21 +34,18 @@ public struct FlickButton: View {
     }
 
     func voiceOverMessage(title: String) -> String {
-      NSLocalizedString(
-        build {
-          switch self {
-          case .up:
-            "com.tarunon.flickcalckeyboard.voice_over.navigate.flick_to_up"
-          case .down:
-            "com.tarunon.flickcalckeyboard.voice_over.navigate.flick_to_down"
-          case .left:
-            "com.tarunon.flickcalckeyboard.voice_over.navigate.flick_to_left"
-          case .right:
-            "com.tarunon.flickcalckeyboard.voice_over.navigate.flick_to_right"
-          }
-        },
-        comment: ""
-      ) + title
+      build {
+        switch self {
+        case .up:
+          L10N.VoiceOverNavigate.flickToUp
+        case .down:
+          L10N.VoiceOverNavigate.flickToDown
+        case .left:
+          L10N.VoiceOverNavigate.flickToLeft
+        case .right:
+          L10N.VoiceOverNavigate.flickToRight
+        }
+      }.localizedString + title
     }
   }
 

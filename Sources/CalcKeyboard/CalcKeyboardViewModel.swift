@@ -6,6 +6,7 @@
 //
 
 import Builder
+import Bundles
 import Calculator
 import FlickButton
 import Numerics
@@ -19,8 +20,8 @@ enum ButtonType {
   var buttonColor: Color {
     build {
       switch self {
-      case .number: Color(uiColor: UIColor(named: "LightButtonColor")!)
-      case .function: Color(uiColor: UIColor(named: "DarkButtonColor")!)
+      case .number: Color.lightButtonColor
+      case .function: Color.darkButtonColor
       case .equal: Color.blue
       }
     }

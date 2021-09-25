@@ -5,7 +5,9 @@
 //  Created by tarunon on 2021/09/19.
 //
 
+import Bundles
 import Calculator
+import Core
 import FlickButton
 import InputField
 import SwiftUI
@@ -14,7 +16,6 @@ import SwiftUI
 public struct CalcKeyboardView: View {
   @State private var draggingLine: Int? = nil
   @ObservedObject private var viewModel: CalcKeyboardViewModel
-  @Environment(\.colorScheme) private var colorScheme
 
   public init(
     action: @escaping (CalcAction) -> Void
@@ -22,17 +23,6 @@ public struct CalcKeyboardView: View {
     self.viewModel = CalcKeyboardViewModel(
       action: action
     )
-  }
-
-  var darkButtonColor: Color {
-    colorScheme == .dark
-      ? .black
-      : Color(.sRGB, red: 181 / 256, green: 184 / 256, blue: 194 / 256, opacity: 1.0)
-  }
-
-  var lightButtonColor: Color {
-    colorScheme == .light
-      ? Color.white : Color(.sRGB, red: 79 / 256, green: 84 / 256, blue: 88 / 256, opacity: 1.0)
   }
 
   public var body: some View {
@@ -77,11 +67,7 @@ public struct CalcKeyboardView: View {
       .frame(maxWidth: .infinity, maxHeight: 280.0, alignment: .bottom)
     }
     .clipped()
-    .background(
-      colorScheme == .dark
-        ? Color(.sRGB, red: 70 / 256, green: 75 / 256, blue: 75 / 256, opacity: 1.0)
-        : Color(.sRGB, red: 214 / 256, green: 216 / 256, blue: 222 / 256, opacity: 1.0)
-    )
+    .background(Color.backgroundColor)
   }
 
   var buttonParameters: [[ButtonParameter]] {
