@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		D23C94ED2650189700998632 /* App in Frameworks */ = {isa = PBXBuildFile; productRef = D23C94EC2650189700998632 /* App */; };
-		D23F57BA265014890008532B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23F57B9265014890008532B /* AppDelegate.swift */; };
 		D23F57C02650148A0008532B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D23F57BF2650148A0008532B /* Assets.xcassets */; };
 		D23F57C62650148A0008532B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D23F57C42650148A0008532B /* LaunchScreen.storyboard */; };
 		D24F2B9626FCDF6A00F24F1D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D284CB0526FC45C0000E5790 /* Localizable.strings */; };
@@ -44,7 +43,6 @@
 
 /* Begin PBXFileReference section */
 		D23F57B6265014890008532B /* Stg.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stg.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		D23F57B9265014890008532B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D23F57BF2650148A0008532B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D23F57C72650148A0008532B /* Info_Stg.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info_Stg.plist; sourceTree = "<group>"; };
 		D24F2B9726FCDFE200F24F1D /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -100,7 +98,6 @@
 		D23F57B8265014890008532B /* App */ = {
 			isa = PBXGroup;
 			children = (
-				D23F57B9265014890008532B /* AppDelegate.swift */,
 				D284CB0526FC45C0000E5790 /* Localizable.strings */,
 				D23F57BF2650148A0008532B /* Assets.xcassets */,
 				D23F57C42650148A0008532B /* LaunchScreen.storyboard */,
@@ -197,7 +194,7 @@
 			);
 			mainGroup = D23F57AD265014890008532B;
 			packageReferences = (
-				D23C94EB2650189700998632 /* XCRemoteSwiftPackageReference "." */,
+				D23C94EB2650189700998632 /* XCRemoteSwiftPackageReference "" */,
 			);
 			productRefGroup = D23F57B7265014890008532B /* Products */;
 			projectDirPath = "";
@@ -236,7 +233,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D23F57BA265014890008532B /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -528,7 +524,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		D23C94EB2650189700998632 /* XCRemoteSwiftPackageReference "." */ = {
+		D23C94EB2650189700998632 /* XCRemoteSwiftPackageReference "" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = ./;
 		};
@@ -537,7 +533,7 @@
 /* Begin XCSwiftPackageProductDependency section */
 		D23C94EC2650189700998632 /* App */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = D23C94EB2650189700998632 /* XCRemoteSwiftPackageReference "." */;
+			package = D23C94EB2650189700998632 /* XCRemoteSwiftPackageReference "" */;
 			productName = App;
 		};
 		D284CADC26F8A486000E5790 /* CalcKeyboard */ = {

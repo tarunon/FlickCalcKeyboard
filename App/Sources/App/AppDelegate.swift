@@ -7,8 +7,8 @@
 
 import UIKit
 
-@MainActor
-open class AppDelegate: UIResponder, UIApplicationDelegate {
+@main @MainActor
+public class AppDelegate: UIResponder, UIApplicationDelegate {
   public func application(
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?

@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		D21F96A1265016C9003FD064 /* App in Frameworks */ = {isa = PBXBuildFile; productRef = D21F96A0265016C9003FD064 /* App */; };
-		D23F57BA265014890008532B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23F57B9265014890008532B /* AppDelegate.swift */; };
 		D23F57C02650148A0008532B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D23F57BF2650148A0008532B /* Assets.xcassets */; };
 		D24F2B9926FCE09500F24F1D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D284CAF926FC4117000E5790 /* Localizable.strings */; };
 		D24F2B9C26FCE25900F24F1D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D24F2B9A26FCE25900F24F1D /* LaunchScreen.storyboard */; };
@@ -44,7 +43,6 @@
 
 /* Begin PBXFileReference section */
 		D23F57B6265014890008532B /* Prod.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Prod.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		D23F57B9265014890008532B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D23F57BF2650148A0008532B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D23F57C72650148A0008532B /* Info_Prod.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info_Prod.plist; sourceTree = "<group>"; };
 		D24F2B9B26FCE25900F24F1D /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -100,7 +98,6 @@
 		D23F57B8265014890008532B /* App */ = {
 			isa = PBXGroup;
 			children = (
-				D23F57B9265014890008532B /* AppDelegate.swift */,
 				D284CAF926FC4117000E5790 /* Localizable.strings */,
 				D23F57BF2650148A0008532B /* Assets.xcassets */,
 				D24F2B9A26FCE25900F24F1D /* LaunchScreen.storyboard */,
@@ -198,7 +195,7 @@
 			);
 			mainGroup = D23F57AD265014890008532B;
 			packageReferences = (
-				D21F969F265016C9003FD064 /* XCRemoteSwiftPackageReference "." */,
+				D21F969F265016C9003FD064 /* XCRemoteSwiftPackageReference "" */,
 			);
 			productRefGroup = D23F57B7265014890008532B /* Products */;
 			projectDirPath = "";
@@ -237,7 +234,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D23F57BA265014890008532B /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -529,7 +525,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		D21F969F265016C9003FD064 /* XCRemoteSwiftPackageReference "." */ = {
+		D21F969F265016C9003FD064 /* XCRemoteSwiftPackageReference "" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = ./;
 		};
@@ -538,7 +534,7 @@
 /* Begin XCSwiftPackageProductDependency section */
 		D21F96A0265016C9003FD064 /* App */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = D21F969F265016C9003FD064 /* XCRemoteSwiftPackageReference "." */;
+			package = D21F969F265016C9003FD064 /* XCRemoteSwiftPackageReference "" */;
 			productName = App;
 		};
 		D284CAEF26F8B2DF000E5790 /* CalcKeyboard */ = {
