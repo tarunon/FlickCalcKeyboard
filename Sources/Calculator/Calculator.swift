@@ -6,6 +6,7 @@
 //
 
 import Numerics
+import Parsec
 
 public enum Calculator {
   public static func calc(tokens: [CalcToken]) throws -> Complex<Double> {

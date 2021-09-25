@@ -30,6 +30,9 @@ let package = Package(
       name: "App",
       dependencies: ["CalcEditorView"]),
     .target(
+      name: "Parsec",
+      dependencies: []),
+    .target(
       name: "FlickButton",
       dependencies: []),
     .target(
@@ -42,6 +45,7 @@ let package = Package(
       name: "Calculator",
       dependencies: [
         .productItem(name: "Numerics", package: "swift-numerics", condition: .when(platforms: [.iOS])),
+        "Parsec"
       ]
     ),
     .target(
