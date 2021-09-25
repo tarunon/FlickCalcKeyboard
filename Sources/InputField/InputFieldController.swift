@@ -11,7 +11,7 @@ import SwiftUI
 import UIKit
 
 @MainActor
-class InputTextField: UITextField {
+final class InputTextField: UITextField {
   override func textRect(forBounds bounds: CGRect) -> CGRect {
     return super.textRect(forBounds: bounds).inset(
       by: .init(top: 0.0, left: 0.0, bottom: 0.0, right: 50.0)
@@ -31,8 +31,9 @@ class InputTextField: UITextField {
 }
 
 @MainActor
-class InputFieldController: UIViewController, UIGestureRecognizerDelegate, UITextFieldDelegate {
-  lazy var textField = setup(from: UITextField()) {
+final class InputFieldController: UIViewController, UIGestureRecognizerDelegate, UITextFieldDelegate
+{
+  lazy var textField = setup(from: InputTextField()) {
     $0.translatesAutoresizingMaskIntoConstraints = false
     $0.delegate = self
     $0.borderStyle = .none
@@ -107,8 +108,11 @@ class InputFieldController: UIViewController, UIGestureRecognizerDelegate, UITex
 
   var doAfterLayoutStack: [() -> Void] = []
 
-  func callAfterLayout(_ f: @escaping (() -> Void)) {
-    doAfterLayoutStack.append(f)
+  func callAfterLayout(_ f: @escaping ((InputFieldController) -> Void)) {
+    doAfterLayoutStack.append { [weak self] in
+      guard let self = self else { return }
+      f(self)
+    }
     view.setNeedsLayout()
   }
 
@@ -155,7 +159,7 @@ class InputFieldController: UIViewController, UIGestureRecognizerDelegate, UITex
     if textField.textInputView.frame.width
       < textField.attributedText?.boundingRect(with: .zero, options: [], context: nil).width ?? 0.0
     {
-      callAfterLayout { [weak self] in self?.updateCursor() }
+      callAfterLayout { $0.updateCursor() }
       return
     }
     if let start = textField.selectedTextRange?.start,
@@ -201,7 +205,7 @@ class InputFieldController: UIViewController, UIGestureRecognizerDelegate, UITex
   }
 
   func textFieldDidChangeSelection(_ textField: UITextField) {
-    callAfterLayout { [weak self] in self?.updateCursor() }
+    callAfterLayout { $0.updateCursor() }
     delegate?.inputFieldDidChangeSelection?(self)
   }
 

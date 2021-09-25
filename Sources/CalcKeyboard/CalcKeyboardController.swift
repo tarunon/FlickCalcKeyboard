@@ -11,7 +11,7 @@ import SwiftUI
 import UIKit
 
 @MainActor
-public class CalcKeyboardController: UIInputViewController {
+final public class CalcKeyboardController: UIInputViewController {
   lazy var keyboardViewController = UIHostingController(
     rootView: CalcKeyboardView(
       action: { [weak self] action in

@@ -46,7 +46,7 @@ let package = Package(
       dependencies: ["Builder", "Core"]),
     .target(
       name: "CalcEditorView",
-      dependencies: ["CalcKeyboard"]),
+      dependencies: ["CalcKeyboard", "Core"]),
     .target(
       name: "Calculator",
       dependencies: [

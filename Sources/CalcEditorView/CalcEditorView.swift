@@ -6,11 +6,12 @@
 //
 
 import CalcKeyboard
+import Core
 import Foundation
 import SwiftUI
 
 @MainActor
-class CalcTextView: UITextView {
+final class CalcTextView: UITextView {
   lazy var keyboard = CalcKeyboardController()
   override var inputViewController: UIInputViewController? {
     let windowSize = window?.frame.size ?? UIScreen.main.bounds.size
@@ -29,7 +30,7 @@ class CalcTextView: UITextView {
 }
 
 @MainActor
-public class CalcEditorViewCoordinator: NSObject, UITextViewDelegate {
+final public class CalcEditorViewCoordinator: NSObject, UITextViewDelegate {
   @Binding var text: String
 
   init(text: Binding<String>) {
@@ -54,13 +55,13 @@ public struct CalcEditorView: UIViewRepresentable {
   }
 
   public func makeUIView(context: Context) -> UITextView {
-    let textView = CalcTextView()
-    textView.text = text
-    textView.font = UIFont.preferredFont(forTextStyle: .body)
-    textView.adjustsFontForContentSizeCategory = true
-    textView.delegate = context.coordinator
-    textView.becomeFirstResponder()
-    return textView
+    setup(CalcTextView()) {
+      $0.text = text
+      $0.font = UIFont.preferredFont(forTextStyle: .body)
+      $0.adjustsFontForContentSizeCategory = true
+      $0.delegate = context.coordinator
+      $0.becomeFirstResponder()
+    }
   }
 
   public func updateUIView(_ uiView: UITextView, context: Context) {

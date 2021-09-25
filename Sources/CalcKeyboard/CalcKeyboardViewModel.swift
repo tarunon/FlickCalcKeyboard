@@ -40,7 +40,7 @@ struct ButtonParameter {
 }
 
 @MainActor
-class CalcKeyboardViewModel: ObservableObject {
+final class CalcKeyboardViewModel: ObservableObject {
   @Published var tokens: [CalcToken] = []
   @Published var error: CalcError?
   @Published var startIndex: Int = 0

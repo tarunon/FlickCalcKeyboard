@@ -9,4 +9,4 @@ import App
 import UIKit
 
 @main
-class AppDelegate: App.AppDelegate {}
+final class AppDelegate: App.AppDelegate {}

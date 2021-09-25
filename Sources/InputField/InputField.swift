@@ -6,11 +6,12 @@
 //
 
 import Builder
+import Core
 import SwiftUI
 import UIKit
 
 @MainActor
-public class TextFieldCoordinator: NSObject, InputFieldControllerDelegate {
+final public class TextFieldCoordinator: NSObject, InputFieldControllerDelegate {
   @Binding var cursor: NSRange
 
   init(cursor: Binding<NSRange>) {
@@ -26,9 +27,35 @@ public class TextFieldCoordinator: NSObject, InputFieldControllerDelegate {
 }
 
 @MainActor
-public struct InputField: UIViewControllerRepresentable {
-  public typealias UIViewControllerType = UIViewController
+struct InputFieldBody: UIViewControllerRepresentable {
+  typealias UIViewControllerType = InputFieldController
 
+  var text: String
+  var errorMessage: String
+  @Binding var cursor: NSRange
+
+  public func makeCoordinator() -> TextFieldCoordinator {
+    TextFieldCoordinator(cursor: $cursor)
+  }
+
+  public func makeUIViewController(context: Context) -> InputFieldController {
+    setup(InputFieldController()) {
+      $0.delegate = context.coordinator
+      $0.textField.text = text
+      $0.errorMessage = errorMessage
+      $0.cursor = cursor
+    }
+  }
+
+  public func updateUIViewController(_ uiViewController: InputFieldController, context: Context) {
+    uiViewController.textField.text = text
+    uiViewController.errorMessage = errorMessage
+    uiViewController.cursor = cursor
+  }
+}
+
+@MainActor
+public struct InputField: View {
   var text: String
   var errorMessage: String
   @Binding var cursor: NSRange
@@ -39,23 +66,7 @@ public struct InputField: UIViewControllerRepresentable {
     self._cursor = cursor
   }
 
-  public func makeCoordinator() -> TextFieldCoordinator {
-    TextFieldCoordinator(cursor: $cursor)
-  }
-
-  public func makeUIViewController(context: Context) -> UIViewController {
-    let controller = InputFieldController()
-    controller.delegate = context.coordinator
-    controller.cursor = cursor
-    controller.textField.text = text
-    controller.errorMessage = errorMessage
-    return controller
-  }
-
-  public func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
-    let controller = uiViewController as! InputFieldController
-    controller.textField.text = text
-    controller.errorMessage = errorMessage
-    controller.cursor = cursor
+  public var body: some View {
+    InputFieldBody(text: text, errorMessage: errorMessage, cursor: $cursor)
   }
 }
