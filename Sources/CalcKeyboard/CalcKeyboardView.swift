@@ -107,7 +107,9 @@ public struct CalcKeyboardView: View {
               title: "MR",
               voiceOverTitle: L10N.VoiceOverTitle.memoryRecall.localizedString,
               action: {
-                viewModel.inputMemory()
+                Task {
+                  await viewModel.inputMemory()
+                }
               }
             ),
             .down: (
@@ -189,14 +191,18 @@ public struct CalcKeyboardView: View {
               title: "ans",
               voiceOverTitle: L10N.VoiceOverTitle.ans.localizedString,
               action: {
-                viewModel.inputAnswer()
+                Task {
+                  await viewModel.inputAnswer()
+                }
               }
             ),
             .right: (
               title: "ret",
               voiceOverTitle: L10N.VoiceOverTitle.ret.localizedString,
               action: {
-                viewModel.inputRetry()
+                Task {
+                  await viewModel.inputRetry()
+                }
               }
             ),
           ]
@@ -563,7 +569,9 @@ public struct CalcKeyboardView: View {
           title: "=",
           voiceOverTitle: "=",
           action: {
-            viewModel.calculate()
+            Task {
+              await viewModel.calculate()
+            }
           },
           buttonType: .equal,
           directions: [:]
