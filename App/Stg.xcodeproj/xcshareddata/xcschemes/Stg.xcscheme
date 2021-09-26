@@ -14,8 +14,8 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D23F57B5265014890008532B"
-               BuildableName = "Stg.app"
+               BlueprintIdentifier = "D22531662700972D0096BF5C"
+               BuildableName = "FlickCalcStg.app"
                BlueprintName = "Stg"
                ReferencedContainer = "container:Stg.xcodeproj">
             </BuildableReference>
@@ -26,31 +26,8 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES"
-      codeCoverageEnabled = "YES">
+      shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO"
-            parallelizable = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "AppTests"
-               BuildableName = "AppTests"
-               BlueprintName = "AppTests"
-               ReferencedContainer = "container:">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO"
-            parallelizable = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "CalculatorTests"
-               BuildableName = "CalculatorTests"
-               BlueprintName = "CalculatorTests"
-               ReferencedContainer = "container:">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
@@ -67,8 +44,8 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D23F57B5265014890008532B"
-            BuildableName = "Stg.app"
+            BlueprintIdentifier = "D22531662700972D0096BF5C"
+            BuildableName = "FlickCalcStg.app"
             BlueprintName = "Stg"
             ReferencedContainer = "container:Stg.xcodeproj">
          </BuildableReference>
@@ -84,8 +61,8 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D23F57B5265014890008532B"
-            BuildableName = "Stg.app"
+            BlueprintIdentifier = "D22531662700972D0096BF5C"
+            BuildableName = "FlickCalcStg.app"
             BlueprintName = "Stg"
             ReferencedContainer = "container:Stg.xcodeproj">
          </BuildableReference>

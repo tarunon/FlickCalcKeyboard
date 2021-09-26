@@ -15,7 +15,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D284CACC26F8A255000E5790"
+               BlueprintIdentifier = "D2843921270099E200B02606"
                BuildableName = "StgKeyboard.appex"
                BlueprintName = "StgKeyboard"
                ReferencedContainer = "container:Stg.xcodeproj">
@@ -29,8 +29,8 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D23F57B5265014890008532B"
-               BuildableName = "Stg.app"
+               BlueprintIdentifier = "D22531662700972D0096BF5C"
+               BuildableName = "FlickCalcStg.app"
                BlueprintName = "Stg"
                ReferencedContainer = "container:Stg.xcodeproj">
             </BuildableReference>
@@ -61,8 +61,8 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D23F57B5265014890008532B"
-            BuildableName = "Stg.app"
+            BlueprintIdentifier = "D22531662700972D0096BF5C"
+            BuildableName = "FlickCalcStg.app"
             BlueprintName = "Stg"
             ReferencedContainer = "container:Stg.xcodeproj">
          </BuildableReference>
@@ -80,8 +80,8 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D23F57B5265014890008532B"
-            BuildableName = "Stg.app"
+            BlueprintIdentifier = "D22531662700972D0096BF5C"
+            BuildableName = "FlickCalcStg.app"
             BlueprintName = "Stg"
             ReferencedContainer = "container:Stg.xcodeproj">
          </BuildableReference>

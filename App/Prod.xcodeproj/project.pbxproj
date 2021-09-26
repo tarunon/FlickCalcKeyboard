@@ -3,36 +3,34 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 55;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D21F96A1265016C9003FD064 /* App in Frameworks */ = {isa = PBXBuildFile; productRef = D21F96A0265016C9003FD064 /* App */; };
-		D23EED1226FFAA9400686134 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D23EED1126FFAA9400686134 /* LaunchScreen.storyboard */; };
-		D23F57C02650148A0008532B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D23F57BF2650148A0008532B /* Assets.xcassets */; };
-		D284CAE926F8B2B2000E5790 /* ProdKeyboard.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = D284CAE226F8B2B2000E5790 /* ProdKeyboard.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		D284CAF026F8B2DF000E5790 /* CalcKeyboard in Frameworks */ = {isa = PBXBuildFile; productRef = D284CAEF26F8B2DF000E5790 /* CalcKeyboard */; };
-		D284CAF426F94D45000E5790 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D284CAF326F94D45000E5790 /* Settings.bundle */; };
+		D225316F2700972F0096BF5C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D225316E2700972F0096BF5C /* Assets.xcassets */; };
+		D284391D270097CA00B02606 /* App in Frameworks */ = {isa = PBXBuildFile; productRef = D284391C270097CA00B02606 /* App */; };
+		D2843929270099E200B02606 /* ProdKeyboard.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = D2843922270099E200B02606 /* ProdKeyboard.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		D284392F270099F500B02606 /* CalcKeyboard in Frameworks */ = {isa = PBXBuildFile; productRef = D284392E270099F500B02606 /* CalcKeyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		D284CAE726F8B2B2000E5790 /* PBXContainerItemProxy */ = {
+		D2843927270099E200B02606 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = D23F57AE265014890008532B /* Project object */;
+			containerPortal = D225315F2700972D0096BF5C /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = D284CAE126F8B2B2000E5790;
-			remoteInfo = FlickCalcKeyboard;
+			remoteGlobalIDString = D2843921270099E200B02606;
+			remoteInfo = StgKeyboard;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		D284CAED26F8B2B2000E5790 /* Embed App Extensions */ = {
+		D284392D270099E200B02606 /* Embed App Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				D284CAE926F8B2B2000E5790 /* ProdKeyboard.appex in Embed App Extensions */,
+				D2843929270099E200B02606 /* ProdKeyboard.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -40,114 +38,106 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		D23EED1126FFAA9400686134 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
-		D23F57B6265014890008532B /* Prod.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Prod.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		D23F57BF2650148A0008532B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		D23F57C72650148A0008532B /* Info_Prod.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info_Prod.plist; sourceTree = "<group>"; };
-		D284CAE226F8B2B2000E5790 /* ProdKeyboard.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ProdKeyboard.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		D284CAE626F8B2B2000E5790 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D284CAF326F94D45000E5790 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		D22531672700972D0096BF5C /* FlickCalc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlickCalc.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D225316E2700972F0096BF5C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D2843922270099E200B02606 /* ProdKeyboard.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ProdKeyboard.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		D2843926270099E200B02606 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		D23F57B3265014890008532B /* Frameworks */ = {
+		D22531642700972D0096BF5C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D21F96A1265016C9003FD064 /* App in Frameworks */,
+				D284391D270097CA00B02606 /* App in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D284CADF26F8B2B2000E5790 /* Frameworks */ = {
+		D284391F270099E200B02606 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D284CAF026F8B2DF000E5790 /* CalcKeyboard in Frameworks */,
+				D284392F270099F500B02606 /* CalcKeyboard in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		D23F57AD265014890008532B = {
+		D225315E2700972D0096BF5C = {
 			isa = PBXGroup;
 			children = (
-				D23F57B8265014890008532B /* App */,
-				D284CAE326F8B2B2000E5790 /* Keyboard */,
-				D23F57B7265014890008532B /* Products */,
-				D284CAEE26F8B2DF000E5790 /* Frameworks */,
+				D22531692700972D0096BF5C /* App */,
+				D2843923270099E200B02606 /* Keyboard */,
+				D22531682700972D0096BF5C /* Products */,
+				D284391B270097CA00B02606 /* Frameworks */,
 			);
-			indentWidth = 2;
 			sourceTree = "<group>";
-			tabWidth = 2;
 		};
-		D23F57B7265014890008532B /* Products */ = {
+		D22531682700972D0096BF5C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D23F57B6265014890008532B /* Prod.app */,
-				D284CAE226F8B2B2000E5790 /* ProdKeyboard.appex */,
+				D22531672700972D0096BF5C /* FlickCalc.app */,
+				D2843922270099E200B02606 /* ProdKeyboard.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		D23F57B8265014890008532B /* App */ = {
+		D22531692700972D0096BF5C /* App */ = {
 			isa = PBXGroup;
 			children = (
-				D23F57BF2650148A0008532B /* Assets.xcassets */,
-				D23EED1126FFAA9400686134 /* LaunchScreen.storyboard */,
-				D23F57C72650148A0008532B /* Info_Prod.plist */,
-				D284CAF326F94D45000E5790 /* Settings.bundle */,
+				D225316E2700972F0096BF5C /* Assets.xcassets */,
 			);
 			path = App;
 			sourceTree = "<group>";
 		};
-		D284CAE326F8B2B2000E5790 /* Keyboard */ = {
-			isa = PBXGroup;
-			children = (
-				D284CAE626F8B2B2000E5790 /* Info.plist */,
-			);
-			path = Keyboard;
-			sourceTree = "<group>";
-		};
-		D284CAEE26F8B2DF000E5790 /* Frameworks */ = {
+		D284391B270097CA00B02606 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		D2843923270099E200B02606 /* Keyboard */ = {
+			isa = PBXGroup;
+			children = (
+				D2843926270099E200B02606 /* Info.plist */,
+			);
+			path = Keyboard;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		D23F57B5265014890008532B /* Prod */ = {
+		D22531662700972D0096BF5C /* Prod */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D23F57CA2650148A0008532B /* Build configuration list for PBXNativeTarget "Prod" */;
+			buildConfigurationList = D22531752700972F0096BF5C /* Build configuration list for PBXNativeTarget "Prod" */;
 			buildPhases = (
-				D23F57B2265014890008532B /* Sources */,
-				D23F57B3265014890008532B /* Frameworks */,
-				D23F57B4265014890008532B /* Resources */,
-				D284CAED26F8B2B2000E5790 /* Embed App Extensions */,
+				D22531632700972D0096BF5C /* Sources */,
+				D22531642700972D0096BF5C /* Frameworks */,
+				D22531652700972D0096BF5C /* Resources */,
+				D284392D270099E200B02606 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				D284CAE826F8B2B2000E5790 /* PBXTargetDependency */,
+				D2843928270099E200B02606 /* PBXTargetDependency */,
 			);
 			name = Prod;
 			packageProductDependencies = (
-				D21F96A0265016C9003FD064 /* App */,
+				D284391C270097CA00B02606 /* App */,
 			);
 			productName = App;
-			productReference = D23F57B6265014890008532B /* Prod.app */;
+			productReference = D22531672700972D0096BF5C /* FlickCalc.app */;
 			productType = "com.apple.product-type.application";
 		};
-		D284CAE126F8B2B2000E5790 /* ProdKeyboard */ = {
+		D2843921270099E200B02606 /* ProdKeyboard */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D284CAEA26F8B2B2000E5790 /* Build configuration list for PBXNativeTarget "ProdKeyboard" */;
+			buildConfigurationList = D284392A270099E200B02606 /* Build configuration list for PBXNativeTarget "ProdKeyboard" */;
 			buildPhases = (
-				D284CADE26F8B2B2000E5790 /* Sources */,
-				D284CADF26F8B2B2000E5790 /* Frameworks */,
-				D284CAE026F8B2B2000E5790 /* Resources */,
+				D284391E270099E200B02606 /* Sources */,
+				D284391F270099E200B02606 /* Frameworks */,
+				D2843920270099E200B02606 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -155,64 +145,59 @@
 			);
 			name = ProdKeyboard;
 			packageProductDependencies = (
-				D284CAEF26F8B2DF000E5790 /* CalcKeyboard */,
+				D284392E270099F500B02606 /* CalcKeyboard */,
 			);
-			productName = FlickCalcKeyboard;
-			productReference = D284CAE226F8B2B2000E5790 /* ProdKeyboard.appex */;
+			productName = StgKeyboard;
+			productReference = D2843922270099E200B02606 /* ProdKeyboard.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		D23F57AE265014890008532B /* Project object */ = {
+		D225315F2700972D0096BF5C /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1300;
-				LastUpgradeCheck = 1250;
+				LastUpgradeCheck = 1300;
 				TargetAttributes = {
-					D23F57B5265014890008532B = {
-						CreatedOnToolsVersion = 12.5;
+					D22531662700972D0096BF5C = {
+						CreatedOnToolsVersion = 13.0;
 					};
-					D284CAE126F8B2B2000E5790 = {
+					D2843921270099E200B02606 = {
 						CreatedOnToolsVersion = 13.0;
 					};
 				};
 			};
-			buildConfigurationList = D23F57B1265014890008532B /* Build configuration list for PBXProject "Prod" */;
-			compatibilityVersion = "Xcode 9.3";
+			buildConfigurationList = D22531622700972D0096BF5C /* Build configuration list for PBXProject "Prod" */;
+			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
-				ja,
 			);
-			mainGroup = D23F57AD265014890008532B;
-			packageReferences = (
-				D21F969F265016C9003FD064 /* XCRemoteSwiftPackageReference "" */,
-			);
-			productRefGroup = D23F57B7265014890008532B /* Products */;
+			mainGroup = D225315E2700972D0096BF5C;
+			productRefGroup = D22531682700972D0096BF5C /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				D23F57B5265014890008532B /* Prod */,
-				D284CAE126F8B2B2000E5790 /* ProdKeyboard */,
+				D22531662700972D0096BF5C /* Prod */,
+				D2843921270099E200B02606 /* ProdKeyboard */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		D23F57B4265014890008532B /* Resources */ = {
+		D22531652700972D0096BF5C /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D23EED1226FFAA9400686134 /* LaunchScreen.storyboard in Resources */,
-				D284CAF426F94D45000E5790 /* Settings.bundle in Resources */,
-				D23F57C02650148A0008532B /* Assets.xcassets in Resources */,
+				D225316F2700972F0096BF5C /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D284CAE026F8B2B2000E5790 /* Resources */ = {
+		D2843920270099E200B02606 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -222,14 +207,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		D23F57B2265014890008532B /* Sources */ = {
+		D22531632700972D0096BF5C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D284CADE26F8B2B2000E5790 /* Sources */ = {
+		D284391E270099E200B02606 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -239,22 +224,21 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		D284CAE826F8B2B2000E5790 /* PBXTargetDependency */ = {
+		D2843928270099E200B02606 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D284CAE126F8B2B2000E5790 /* ProdKeyboard */;
-			targetProxy = D284CAE726F8B2B2000E5790 /* PBXContainerItemProxy */;
+			target = D2843921270099E200B02606 /* ProdKeyboard */;
+			targetProxy = D2843927270099E200B02606 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		D23F57C82650148A0008532B /* Debug */ = {
+		D22531732700972F0096BF5C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -306,18 +290,16 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
-		D23F57C92650148A0008532B /* Release */ = {
+		D22531742700972F0096BF5C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -362,60 +344,70 @@
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
-		D23F57CB2650148A0008532B /* Debug */ = {
+		D22531762700972F0096BF5C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = "${BUILD_NUMBER}";
+				CURRENT_PROJECT_VERSION = "$(BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = U376YN5H26;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = App/Info_Prod.plist;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tarunon.flickcalckeyboard.prod;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = FlickCalc;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
-		D23F57CC2650148A0008532B /* Release */ = {
+		D22531772700972F0096BF5C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = "${BUILD_NUMBER}";
+				CURRENT_PROJECT_VERSION = "$(BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = U376YN5H26;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = App/Info_Prod.plist;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tarunon.flickcalckeyboard.prod;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = FlickCalc;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
-		D284CAEB26F8B2B2000E5790 /* Debug */ = {
+		D284392B270099E200B02606 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
-				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = "${BUILD_NUMBER}";
 				DEVELOPMENT_TEAM = U376YN5H26;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Keyboard/Info.plist;
@@ -429,20 +421,17 @@
 				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tarunon.flickcalckeyboard.prod.extension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
-		D284CAEC26F8B2B2000E5790 /* Release */ = {
+		D284392C270099E200B02606 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
-				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = "${BUILD_NUMBER}";
 				DEVELOPMENT_TEAM = U376YN5H26;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Keyboard/Info.plist;
@@ -456,63 +445,55 @@
 				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tarunon.flickcalckeyboard.prod.extension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		D23F57B1265014890008532B /* Build configuration list for PBXProject "Prod" */ = {
+		D22531622700972D0096BF5C /* Build configuration list for PBXProject "Prod" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				D23F57C82650148A0008532B /* Debug */,
-				D23F57C92650148A0008532B /* Release */,
+				D22531732700972F0096BF5C /* Debug */,
+				D22531742700972F0096BF5C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D23F57CA2650148A0008532B /* Build configuration list for PBXNativeTarget "Prod" */ = {
+		D22531752700972F0096BF5C /* Build configuration list for PBXNativeTarget "Prod" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				D23F57CB2650148A0008532B /* Debug */,
-				D23F57CC2650148A0008532B /* Release */,
+				D22531762700972F0096BF5C /* Debug */,
+				D22531772700972F0096BF5C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D284CAEA26F8B2B2000E5790 /* Build configuration list for PBXNativeTarget "ProdKeyboard" */ = {
+		D284392A270099E200B02606 /* Build configuration list for PBXNativeTarget "ProdKeyboard" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				D284CAEB26F8B2B2000E5790 /* Debug */,
-				D284CAEC26F8B2B2000E5790 /* Release */,
+				D284392B270099E200B02606 /* Debug */,
+				D284392C270099E200B02606 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		D21F969F265016C9003FD064 /* XCRemoteSwiftPackageReference "" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = ./;
-		};
-/* End XCRemoteSwiftPackageReference section */
-
 /* Begin XCSwiftPackageProductDependency section */
-		D21F96A0265016C9003FD064 /* App */ = {
+		D284391C270097CA00B02606 /* App */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = D21F969F265016C9003FD064 /* XCRemoteSwiftPackageReference "" */;
 			productName = App;
 		};
-		D284CAEF26F8B2DF000E5790 /* CalcKeyboard */ = {
+		D284392E270099F500B02606 /* CalcKeyboard */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = CalcKeyboard;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
-	rootObject = D23F57AE265014890008532B /* Project object */;
+	rootObject = D225315F2700972D0096BF5C /* Project object */;
 }
