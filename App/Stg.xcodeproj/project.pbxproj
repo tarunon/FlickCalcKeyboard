@@ -40,6 +40,7 @@
 /* Begin PBXFileReference section */
 		D22531672700972D0096BF5C /* FlickCalcStg.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlickCalcStg.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D225316E2700972F0096BF5C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D26AD2A12700C1CE00AD7FB4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D2843922270099E200B02606 /* StgKeyboard.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = StgKeyboard.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2843926270099E200B02606 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -86,6 +87,7 @@
 		D22531692700972D0096BF5C /* App */ = {
 			isa = PBXGroup;
 			children = (
+				D26AD2A12700C1CE00AD7FB4 /* Info.plist */,
 				D225316E2700972F0096BF5C /* Assets.xcassets */,
 			);
 			path = App;
@@ -358,6 +360,7 @@
 				DEVELOPMENT_TEAM = U376YN5H26;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = App/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -386,6 +389,7 @@
 				DEVELOPMENT_TEAM = U376YN5H26;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = App/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
