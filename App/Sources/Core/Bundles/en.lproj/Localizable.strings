@@ -35,7 +35,7 @@
 "com.tarunon.flickcalckeyboard.voice_over.title.sin" = "sine";
 "com.tarunon.flickcalckeyboard.voice_over.title.asin" = "arcsine";
 "com.tarunon.flickcalckeyboard.voice_over.title.sinh" = "hyperbolic sign";
-"com.tarunon.flickcalckeyboard.voice_over.title.sinh" = "arc hyperbolic sign";
+"com.tarunon.flickcalckeyboard.voice_over.title.asinh" = "arc hyperbolic sign";
 "com.tarunon.flickcalckeyboard.voice_over.title.cos" = "cosine";
 "com.tarunon.flickcalckeyboard.voice_over.title.acos" = "arc cosine";
 "com.tarunon.flickcalckeyboard.voice_over.title.cosh" = "hyperbolic cosine";
@@ -43,7 +43,7 @@
 "com.tarunon.flickcalckeyboard.voice_over.title.tan" = "tangent";
 "com.tarunon.flickcalckeyboard.voice_over.title.atan" = "arctangent";
 "com.tarunon.flickcalckeyboard.voice_over.title.tanh" = "hyperbolic tangent";
-"com.tarunon.flickcalckeyboard.voice_over.title.tanh" = "arc hyperbolic tangent";
+"com.tarunon.flickcalckeyboard.voice_over.title.atanh" = "arc hyperbolic tangent";
 "com.tarunon.flickcalckeyboard.voice_over.title.log" = "log";
 "com.tarunon.flickcalckeyboard.voice_over.title.ln" = "log low is Napier number";
 "com.tarunon.flickcalckeyboard.voice_over.title.lg" = "log low is 2";
