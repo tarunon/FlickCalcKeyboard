@@ -16,7 +16,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: '**/.build'
-        key: ${{ runner.os }}-spm-build-${{ hashFiles('**/Package.resolved') }}
+        key: ${{ runner.os }}-spm-build-${{ hashFiles('**/Package.resolved', 'Makefile') }}
         restore-keys: |
           ${{ runner.os }}-spm-build
     - name: Init
