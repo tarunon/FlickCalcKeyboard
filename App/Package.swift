@@ -124,6 +124,10 @@ let package = Package(
           name: "CalculatorTests",
           dependencies: ["Calculator"]
         ),
+        .testTarget(
+          name: "ParsecTests",
+          dependencies: ["Parsec"]
+        ),
       ]
     )
   )

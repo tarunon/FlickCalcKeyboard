@@ -98,3 +98,26 @@ extension Parser {
     }
   }
 }
+
+extension Parser where Input.Element == Output {
+
+  public static func satisfy(_ isSatisfy: @escaping (Input.Element) -> Bool) -> Parser {
+    return Parser { input throws in
+      if input.isEmpty {
+        throw ParseError.isEmpty
+      }
+      var tail = input
+      let head = tail.removeFirst()
+      guard isSatisfy(head) else {
+        throw ParseError.conditionFailure(value: head)
+      }
+      return (head, tail)
+    }
+  }
+}
+
+extension Parser where Input.Element == Output, Input.Element: Equatable {
+  public static func satisfy(to value: Input.Element) -> Parser {
+    .satisfy { $0 == value }
+  }
+}
