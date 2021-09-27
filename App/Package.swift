@@ -47,7 +47,6 @@ let package = Package(
             .target(
               name: "CalcKeyboard",
               dependencies: [
-                "Builder",
                 "Bundles",
                 "Core",
                 "Calculator",
@@ -63,7 +62,6 @@ let package = Package(
             .target(
               name: "FlickButton",
               dependencies: [
-                "Builder",
                 "Bundles",
                 "Core",
               ]
@@ -71,8 +69,7 @@ let package = Package(
             .target(
               name: "InputField",
               dependencies: [
-                "Builder",
-                "Core",
+                "Core"
               ]
             ),
           ]
@@ -91,7 +88,6 @@ let package = Package(
             .target(
               name: "Calculator",
               dependencies: [
-                "Builder",
                 "Core",
                 "Parsec",
                 .productItem(
@@ -101,11 +97,16 @@ let package = Package(
                 ),
               ]
             ),
-            .target(name: "Core"),
+            .target(
+              name: "Core",
+              dependencies: [
+                "Builder"
+              ]
+            ),
             .target(
               name: "Parsec",
               dependencies: [
-                "Builder"
+                "Core"
               ]
             ),
           ]

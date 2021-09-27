@@ -11,8 +11,8 @@ import SwiftUI
 public struct L10N {
   var rawValue: String
 
-  public var localizedStringKey: LocalizedStringKey {
-    .init(rawValue)
+  public var text: Text {
+    .init(.init(rawValue), tableName: nil, bundle: .module, comment: nil)
   }
 
   public var localizedString: String {
