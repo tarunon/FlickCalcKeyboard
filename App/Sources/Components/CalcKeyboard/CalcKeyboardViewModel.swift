@@ -6,6 +6,7 @@
 //
 
 import Bundles
+import CalcMemory
 import Calculator
 import Core
 import FlickButton
@@ -48,9 +49,7 @@ final class CalcKeyboardViewModel: ObservableObject {
 
   var action: (CalcAction) -> Void
 
-  var answerHistory: [Complex<Double>] = []
-  var latestTokens: [CalcToken] = []
-  var memory: Complex<Double> = 0
+  var memory = CalcMemory()
 
   init(
     action: @escaping (CalcAction) -> Void
@@ -60,11 +59,10 @@ final class CalcKeyboardViewModel: ObservableObject {
 
   func input(token: CalcToken) {
     error = nil
-    tokens.removeSubrange(startIndex..<endIndex)
-    endIndex = startIndex
-    tokens.insert(token, at: startIndex)
-    startIndex += 1
-    endIndex = startIndex
+    memory.resetCursor()
+    tokens.replaceSubrange(startIndex..<endIndex, with: [token])
+    endIndex = startIndex + 1
+    startIndex = endIndex
   }
 
   func inputAutoDot() {
@@ -96,53 +94,42 @@ final class CalcKeyboardViewModel: ObservableObject {
   }
 
   func inputFunction(token: FunctionToken) {
-    self.input(token: token)
-    self.input(token: BracketToken.open)
-    self.input(token: BracketToken.close)
-    self.shiftToLeft()
+    input(token: token)
+    input(token: BracketToken.open)
+    input(token: BracketToken.close)
+    shiftToLeft()
   }
 
   func inputAnswer() async {
     tokens.removeSubrange(startIndex..<endIndex)
     endIndex = startIndex
-    @MainActor
-    func input(index: Int) async {
-      let answer = answerHistory[index]
-      await postVoiceOver(text: CalcFormatter.format(answer))
-      self.input(token: ConstToken.answer(answer: answer, index: index))
-    }
-    if !answerHistory.isEmpty {
-      if startIndex == 0 {
-        await input(index: answerHistory.count - 1)
-      } else if case .answer(_, let index) = tokens[startIndex - 1] as? ConstToken {
-        deleteLeft()
-        let nextIndex = index == 0 ? answerHistory.count - 1 : index - 1
-        await input(index: nextIndex)
-      } else {
-        await input(index: answerHistory.count - 1)
-      }
-    }
+    let answer = memory.getAnswer()
+    await postVoiceOver(text: CalcFormatter.format([answer]))
+    tokens.replaceSubrange(startIndex..<endIndex, with: [answer])
+    endIndex = startIndex + 1
+    startIndex = endIndex
   }
 
   func inputRetry() async {
-    await postVoiceOver(text: CalcFormatter.format(tokens))
     clearAll()
     error = nil
-    tokens = latestTokens
-    endIndex = latestTokens.count
-    startIndex = latestTokens.count
+    tokens = memory.getTokens()
+    await postVoiceOver(text: CalcFormatter.format(tokens))
+    endIndex = tokens.count
+    startIndex = tokens.count
   }
 
   func inputMemory() async {
-    await postVoiceOver(text: CalcFormatter.format(memory))
-    input(token: ConstToken.answer(answer: memory, index: 0))
+    let memory = self.memory.getMemory()
+    await postVoiceOver(text: CalcFormatter.format([memory]))
+    input(token: memory)
   }
 
   func memoryAdd() {
     do {
       shiftToEnd()
       formatBrackets(withCompletion: true)
-      memory += try Calculator.calc(tokens: tokens)
+      memory.memoryAdd(try Calculator.calc(tokens: tokens))
     } catch (let error) {
       clearAll()
       self.error = error as? CalcError
@@ -153,7 +140,7 @@ final class CalcKeyboardViewModel: ObservableObject {
     do {
       shiftToEnd()
       formatBrackets(withCompletion: true)
-      memory -= try Calculator.calc(tokens: tokens)
+      memory.memorySub(try Calculator.calc(tokens: tokens))
     } catch (let error) {
       clearAll()
       self.error = error as? CalcError
@@ -161,7 +148,7 @@ final class CalcKeyboardViewModel: ObservableObject {
   }
 
   func memoryClear() {
-    memory = 0
+    memory.memoryClear()
   }
 
   func formatBrackets(withCompletion: Bool) {
@@ -269,20 +256,19 @@ final class CalcKeyboardViewModel: ObservableObject {
   func calculate() async {
     shiftToEnd()
     formatBrackets(withCompletion: true)
+    memory.addTokens(tokens)
     do {
       let answer = try Calculator.calc(tokens: tokens)
       let result = "\(CalcFormatter.format(tokens)) = \(CalcFormatter.format(answer))\n"
       await postVoiceOver(text: result)
       action(.insertText(result))
-      answerHistory.append(answer)
-      latestTokens = tokens
+      memory.addAnswer(answer)
       clearAll()
     } catch (let error) {
       switch error {
       case CalcError.tokensEmpty:
         action(.insertText("\n"))
       default:
-        latestTokens = tokens
         clearAll()
         self.error = error as? CalcError
         await postVoiceOver(text: self.errorMessage)

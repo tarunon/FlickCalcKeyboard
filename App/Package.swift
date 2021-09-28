@@ -49,6 +49,7 @@ let package = Package(
               dependencies: [
                 "Bundles",
                 "Core",
+                "CalcMemory",
                 "Calculator",
                 "FlickButton",
                 "InputField",
@@ -83,6 +84,17 @@ let package = Package(
                 .process("Assets.xcassets"),
                 .process("en.lproj/Localizable.strings", localization: .init(rawValue: "en")),
                 .process("ja.lproj/Localizable.strings", localization: .init(rawValue: "ja")),
+              ]
+            ),
+            .target(
+              name: "CalcMemory",
+              dependencies: [
+                "Calculator",
+                .productItem(
+                  name: "Numerics",
+                  package: "swift-numerics",
+                  condition: .when(platforms: [.iOS])
+                ),
               ]
             ),
             .target(

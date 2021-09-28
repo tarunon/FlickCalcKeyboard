@@ -48,7 +48,7 @@ public enum ConstToken: NumberToken {
   case pi
   case napier
   case imaginaly
-  case answer(answer: Complex<Double>, index: Int)
+  case answer(answer: Complex<Double>)
 
   public var rawValue: String {
     build {
@@ -56,7 +56,7 @@ public enum ConstToken: NumberToken {
       case .pi: "π"
       case .napier: "e"
       case .imaginaly: "i"
-      case .answer(let answer, _):
+      case .answer(let answer):
         "(\(CalcFormatter.format(answer)))"
       }
     }
@@ -71,7 +71,7 @@ public enum ConstToken: NumberToken {
         Complex<Double>.init(.exp(1))
       case .imaginaly:
         Complex<Double>.init(imaginary: 1.0)
-      case .answer(let answer, _):
+      case .answer(let answer):
         answer
       }
     }
