@@ -111,7 +111,7 @@ public struct CalcKeyboardView: View {
           subtitle: "^ √ !",
           voiceOverTitle: L10N.VoiceOverTitle.mod.localizedString,
           action: {
-            viewModel.input(token: ModToken.instance)
+            viewModel.input(ModToken.instance)
           },
           buttonType: .function,
           directions: [
@@ -119,21 +119,21 @@ public struct CalcKeyboardView: View {
               title: "^",
               voiceOverTitle: L10N.VoiceOverTitle.pow.localizedString,
               action: {
-                viewModel.input(token: PowToken.instance)
+                viewModel.input(PowToken.instance)
               }
             ),
             .right: (
               title: "√",
               voiceOverTitle: L10N.VoiceOverTitle.root.localizedString,
               action: {
-                viewModel.input(token: RootToken.instance)
+                viewModel.input(RootToken.instance)
               }
             ),
             .down: (
               title: "!",
               voiceOverTitle: L10N.VoiceOverTitle.gamma.localizedString,
               action: {
-                viewModel.input(token: GammaToken.instance)
+                viewModel.input(GammaToken.instance)
               }
             ),
           ]
@@ -143,7 +143,7 @@ public struct CalcKeyboardView: View {
           subtitle: "e i",
           voiceOverTitle: L10N.VoiceOverTitle.pi.localizedString,
           action: {
-            viewModel.input(token: ConstToken.pi)
+            viewModel.input(ConstToken.pi)
           },
           buttonType: .function,
           directions: [
@@ -151,14 +151,14 @@ public struct CalcKeyboardView: View {
               title: "e",
               voiceOverTitle: L10N.VoiceOverTitle.napier.localizedString,
               action: {
-                viewModel.input(token: ConstToken.napier)
+                viewModel.input(ConstToken.napier)
               }
             ),
             .right: (
               title: "i",
               voiceOverTitle: L10N.VoiceOverTitle.imaginaly.localizedString,
               action: {
-                viewModel.input(token: ConstToken.imaginaly)
+                viewModel.input(ConstToken.imaginaly)
               }
             ),
           ]
@@ -198,7 +198,7 @@ public struct CalcKeyboardView: View {
           title: "1",
           voiceOverTitle: "1",
           action: {
-            viewModel.input(token: DigitToken._1)
+            viewModel.input(DigitToken._1)
           },
           buttonType: .number,
           directions: [:]
@@ -208,7 +208,7 @@ public struct CalcKeyboardView: View {
           subtitle: "sin",
           voiceOverTitle: "4",
           action: {
-            viewModel.input(token: DigitToken._4)
+            viewModel.input(DigitToken._4)
           },
           buttonType: .number,
           directions: [
@@ -246,7 +246,7 @@ public struct CalcKeyboardView: View {
           title: "7",
           voiceOverTitle: "7",
           action: {
-            viewModel.input(token: DigitToken._7)
+            viewModel.input(DigitToken._7)
           },
           buttonType: .number,
           directions: [:]
@@ -264,7 +264,7 @@ public struct CalcKeyboardView: View {
               title: "(",
               voiceOverTitle: L10N.VoiceOverTitle.bracketOpen.localizedString,
               action: {
-                viewModel.input(token: BracketToken.open)
+                viewModel.input(BracketToken.open)
                 viewModel.formatBrackets(withCompletion: false)
               }
             ),
@@ -272,7 +272,7 @@ public struct CalcKeyboardView: View {
               title: ")",
               voiceOverTitle: L10N.VoiceOverTitle.bracketClose.localizedString,
               action: {
-                viewModel.input(token: BracketToken.close)
+                viewModel.input(BracketToken.close)
                 viewModel.formatBrackets(withCompletion: false)
               }
             ),
@@ -285,7 +285,7 @@ public struct CalcKeyboardView: View {
           subtitle: "cos",
           voiceOverTitle: "2",
           action: {
-            viewModel.input(token: DigitToken._2)
+            viewModel.input(DigitToken._2)
           },
           buttonType: .number,
           directions: [
@@ -323,7 +323,7 @@ public struct CalcKeyboardView: View {
           title: "5",
           voiceOverTitle: "5",
           action: {
-            viewModel.input(token: DigitToken._5)
+            viewModel.input(DigitToken._5)
           },
           buttonType: .number,
           directions: [:]
@@ -333,7 +333,7 @@ public struct CalcKeyboardView: View {
           subtitle: "log",
           voiceOverTitle: "8",
           action: {
-            viewModel.input(token: DigitToken._8)
+            viewModel.input(DigitToken._8)
           },
           buttonType: .number,
           directions: [
@@ -365,7 +365,7 @@ public struct CalcKeyboardView: View {
           subtitle: "00",
           voiceOverTitle: "0",
           action: {
-            viewModel.input(token: DigitToken._0)
+            viewModel.input(DigitToken._0)
           },
           buttonType: .number,
           directions: [
@@ -373,27 +373,21 @@ public struct CalcKeyboardView: View {
               title: "00",
               voiceOverTitle: "00",
               action: {
-                viewModel.input(token: DigitToken._0)
-                viewModel.input(token: DigitToken._0)
+                viewModel.input(DigitToken._0, DigitToken._0)
               }
             ),
             .up: (
               title: "000",
               voiceOverTitle: "000",
               action: {
-                viewModel.input(token: DigitToken._0)
-                viewModel.input(token: DigitToken._0)
-                viewModel.input(token: DigitToken._0)
+                viewModel.input(DigitToken._0, DigitToken._0, DigitToken._0)
               }
             ),
             .right: (
               title: "0000",
               voiceOverTitle: "0000",
               action: {
-                viewModel.input(token: DigitToken._0)
-                viewModel.input(token: DigitToken._0)
-                viewModel.input(token: DigitToken._0)
-                viewModel.input(token: DigitToken._0)
+                viewModel.input(DigitToken._0, DigitToken._0, DigitToken._0, DigitToken._0)
               }
             ),
           ]
@@ -404,7 +398,7 @@ public struct CalcKeyboardView: View {
           title: "3",
           voiceOverTitle: "3",
           action: {
-            viewModel.input(token: DigitToken._3)
+            viewModel.input(DigitToken._3)
           },
           buttonType: .number,
           directions: [:]
@@ -414,7 +408,7 @@ public struct CalcKeyboardView: View {
           subtitle: "tan",
           voiceOverTitle: "6",
           action: {
-            viewModel.input(token: DigitToken._6)
+            viewModel.input(DigitToken._6)
           },
           buttonType: .number,
           directions: [
@@ -452,7 +446,7 @@ public struct CalcKeyboardView: View {
           title: "9",
           voiceOverTitle: "9",
           action: {
-            viewModel.input(token: DigitToken._9)
+            viewModel.input(DigitToken._9)
           },
           buttonType: .number,
           directions: [:]
@@ -472,7 +466,7 @@ public struct CalcKeyboardView: View {
           title: "⌫",
           voiceOverTitle: L10N.VoiceOverTitle.deleteLeft.localizedString,
           action: {
-            viewModel.deleteLeft()
+            viewModel.deleteLeft(line: false)
           },
           actionWhilePressing: true,
           buttonType: .function,
@@ -481,21 +475,21 @@ public struct CalcKeyboardView: View {
               title: "I⌫",
               voiceOverTitle: L10N.VoiceOverTitle.deleteLeftAll.localizedString,
               action: {
-                viewModel.deleteLeftAll()
+                viewModel.deleteLeft(line: true)
               }
             ),
             .up: (
               title: "⌦",
               voiceOverTitle: L10N.VoiceOverTitle.deleteRight.localizedString,
               action: {
-                viewModel.deleteRight()
+                viewModel.deleteRight(line: false)
               }
             ),
             .down: (
               title: "⌦I",
               voiceOverTitle: L10N.VoiceOverTitle.deleteRightAll.localizedString,
               action: {
-                viewModel.deleteRightAll()
+                viewModel.deleteRight(line: true)
               }
             ),
           ]
@@ -505,7 +499,7 @@ public struct CalcKeyboardView: View {
           subtitle: "- × ÷",
           voiceOverTitle: L10N.VoiceOverTitle.add.localizedString,
           action: {
-            viewModel.input(token: AddToken.instance)
+            viewModel.input(AddToken.instance)
           },
           buttonType: .function,
           directions: [
@@ -513,21 +507,21 @@ public struct CalcKeyboardView: View {
               title: "×",
               voiceOverTitle: L10N.VoiceOverTitle.mul.localizedString,
               action: {
-                viewModel.input(token: MulToken.instance)
+                viewModel.input(MulToken.instance)
               }
             ),
             .left: (
               title: "-",
               voiceOverTitle: L10N.VoiceOverTitle.sub.localizedString,
               action: {
-                viewModel.input(token: SubToken.instance)
+                viewModel.input(SubToken.instance)
               }
             ),
             .down: (
               title: "÷",
               voiceOverTitle: L10N.VoiceOverTitle.div.localizedString,
               action: {
-                viewModel.input(token: DivToken.instance)
+                viewModel.input(DivToken.instance)
               }
             ),
           ]

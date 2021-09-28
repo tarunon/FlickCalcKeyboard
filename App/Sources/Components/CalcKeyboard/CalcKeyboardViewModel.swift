@@ -10,6 +10,7 @@ import CalcMemory
 import Calculator
 import Core
 import FlickButton
+import InputControl
 import Numerics
 import SwiftUI
 
@@ -42,14 +43,9 @@ struct ButtonParameter {
 
 @MainActor
 final class CalcKeyboardViewModel: ObservableObject {
-  @Published var tokens: [CalcToken] = []
-  @Published var error: CalcError?
-  @Published var startIndex: Int = 0
-  @Published var endIndex: Int = 0
-
-  var action: (CalcAction) -> Void
-
-  var memory = CalcMemory()
+  @Published private var inputControl = InputControl()
+  private var memory = CalcMemory()
+  private var action: (CalcAction) -> Void
 
   init(
     action: @escaping (CalcAction) -> Void
@@ -57,93 +53,83 @@ final class CalcKeyboardViewModel: ObservableObject {
     self.action = action
   }
 
-  func input(token: CalcToken) {
-    error = nil
+  func input(_ tokens: CalcToken...) {
     memory.resetCursor()
-    tokens.replaceSubrange(startIndex..<endIndex, with: [token])
-    endIndex = startIndex + 1
-    startIndex = endIndex
+    inputControl.insert(tokens: tokens)
   }
 
   func inputAutoDot() {
-    tokens.removeSubrange(startIndex..<endIndex)
-    endIndex = startIndex
-    if startIndex == 0 {
-      input(token: DigitToken._0)
-      input(token: DigitToken.dot)
-    } else if tokens[startIndex - 1] is DigitToken {
-      input(token: DigitToken.dot)
+    if inputControl.previousToken is DigitToken {
+      input(DigitToken.dot)
     } else {
-      input(token: DigitToken._0)
-      input(token: DigitToken.dot)
+      input(DigitToken._0, DigitToken.dot)
     }
   }
 
   func inputAutoBracket() {
-    tokens.removeSubrange(startIndex..<endIndex)
-    endIndex = startIndex
-    if startIndex == 0 {
-      input(token: BracketToken.open)
-    } else if tokens[startIndex - 1] is NumberToken {
-      input(token: BracketToken.close)
-    } else if let bracket = tokens[startIndex - 1] as? BracketToken, bracket == .close {
-      input(token: BracketToken.close)
-    } else {
-      input(token: BracketToken.open)
-    }
+    input(
+      build {
+        switch inputControl.previousToken {
+        case is NumberToken:
+          BracketToken.close
+        case let bracket as BracketToken:
+          bracket
+        default:
+          BracketToken.open
+        }
+      }
+    )
   }
 
   func inputFunction(token: FunctionToken) {
-    input(token: token)
-    input(token: BracketToken.open)
-    input(token: BracketToken.close)
-    shiftToLeft()
+    input(token, BracketToken.open, BracketToken.close)
+    try! inputControl.moveCursor(direction: .left)
   }
 
   func inputAnswer() async {
-    tokens.removeSubrange(startIndex..<endIndex)
-    endIndex = startIndex
+    if case .answer = inputControl.previousToken as? ConstToken {
+      try! inputControl.delete(direction: .left, line: false)
+    }
     let answer = memory.getAnswer()
     await postVoiceOver(text: CalcFormatter.format([answer]))
-    tokens.replaceSubrange(startIndex..<endIndex, with: [answer])
-    endIndex = startIndex + 1
-    startIndex = endIndex
+    inputControl.insert(tokens: [answer])
   }
 
   func inputRetry() async {
-    clearAll()
-    error = nil
-    tokens = memory.getTokens()
-    await postVoiceOver(text: CalcFormatter.format(tokens))
-    endIndex = tokens.count
-    startIndex = tokens.count
+    inputControl.clearAll()
+    inputControl.insert(tokens: memory.getTokens())
+    await postVoiceOver(text: inputControl.text)
   }
 
   func inputMemory() async {
     let memory = self.memory.getMemory()
     await postVoiceOver(text: CalcFormatter.format([memory]))
-    input(token: memory)
+    input(memory)
   }
 
   func memoryAdd() {
     do {
-      shiftToEnd()
+      inputControl.moveCusorToEnd()
       formatBrackets(withCompletion: true)
-      memory.memoryAdd(try Calculator.calc(tokens: tokens))
+      memory.memoryAdd(try Calculator.calc(tokens: inputControl.tokens))
     } catch (let error) {
-      clearAll()
-      self.error = error as? CalcError
+      inputControl.clearAll()
+      if let error = error as? CalcError {
+        inputControl.errorOccured(error)
+      }
     }
   }
 
   func memorySub() {
     do {
-      shiftToEnd()
+      inputControl.moveCusorToEnd()
       formatBrackets(withCompletion: true)
-      memory.memorySub(try Calculator.calc(tokens: tokens))
+      memory.memorySub(try Calculator.calc(tokens: inputControl.tokens))
     } catch (let error) {
-      clearAll()
-      self.error = error as? CalcError
+      inputControl.clearAll()
+      if let error = error as? CalcError {
+        inputControl.errorOccured(error)
+      }
     }
   }
 
@@ -152,134 +138,80 @@ final class CalcKeyboardViewModel: ObservableObject {
   }
 
   func formatBrackets(withCompletion: Bool) {
-    let checkTarget = tokens[0..<startIndex]
+    let checkTarget = inputControl.tokens[0..<inputControl.startPosition]
     let numberOfOpen = checkTarget.filter { ($0 as? BracketToken) == BracketToken.open }.count
     let numberOfClose = checkTarget.filter { ($0 as? BracketToken) == BracketToken.close }.count
 
     if numberOfClose > numberOfOpen {
-      for _ in 0..<numberOfClose - numberOfOpen {
-        tokens.insert(BracketToken.open, at: 0)
-        startIndex += 1
-        endIndex = startIndex
-      }
+      inputControl.insert(
+        tokens: Array(repeating: BracketToken.open, count: numberOfClose - numberOfOpen),
+        at: 0
+      )
     }
 
     if withCompletion && numberOfOpen > numberOfClose {
-      for _ in 0..<numberOfOpen - numberOfClose {
-        input(token: BracketToken.close)
-      }
+      inputControl.insert(
+        tokens: Array(repeating: BracketToken.close, count: numberOfOpen - numberOfClose)
+      )
     }
   }
 
   func shiftToLeft() {
-    if tokens.isEmpty {
+    do {
+      try inputControl.moveCursor(direction: .left)
+    } catch {
       action(.moveCursor(offset: -1))
-    } else {
-      startIndex -= 1
-      if startIndex < 0 {
-        startIndex = 0
-      }
-      endIndex = startIndex
     }
   }
 
   func shiftToRight() {
-    if tokens.isEmpty {
+    do {
+      try inputControl.moveCursor(direction: .right)
+    } catch {
       action(.moveCursor(offset: 1))
-    } else {
-      startIndex = endIndex
-      startIndex += 1
-      if startIndex > tokens.count {
-        startIndex = tokens.count
-      }
-      endIndex = startIndex
     }
   }
 
-  func shiftToEnd() {
-    startIndex = tokens.count
-    endIndex = startIndex
-  }
-
-  func deleteLeft() {
-    if tokens.isEmpty {
-      action(.deleteLeft(line: false))
-    } else if startIndex < endIndex {
-      tokens.removeSubrange(startIndex..<endIndex)
-      endIndex = startIndex
-    } else if startIndex > 0 {
-      tokens.remove(at: startIndex - 1)
-      startIndex -= 1
-      endIndex = startIndex
+  func deleteLeft(line: Bool) {
+    do {
+      try inputControl.delete(direction: .left, line: line)
+    } catch {
+      action(.deleteLeft(line: line))
     }
   }
 
-  func deleteLeftAll() {
-    if tokens.isEmpty {
-      action(.deleteLeft(line: true))
-    } else if startIndex < endIndex {
-      tokens.removeSubrange(startIndex..<endIndex)
-      endIndex = startIndex
-    } else {
-      while startIndex > 0 {
-        tokens.remove(at: startIndex - 1)
-        startIndex -= 1
-      }
-      endIndex = startIndex
-    }
-  }
-
-  func deleteRight() {
-    if tokens.isEmpty {
-      action(.deleteRight(line: false))
-    } else if startIndex < endIndex {
-      tokens.removeSubrange(startIndex..<endIndex)
-      endIndex = startIndex
-    } else if startIndex < tokens.count {
-      tokens.remove(at: startIndex)
-    }
-  }
-
-  func deleteRightAll() {
-    if tokens.isEmpty {
-      action(.deleteRight(line: true))
-    } else if startIndex < endIndex {
-      tokens.removeSubrange(startIndex..<endIndex)
-      endIndex = startIndex
-    } else {
-      while startIndex < tokens.count {
-        tokens.remove(at: startIndex)
-      }
+  func deleteRight(line: Bool) {
+    do {
+      try inputControl.delete(direction: .right, line: line)
+    } catch {
+      action(.deleteLeft(line: line))
     }
   }
 
   func calculate() async {
-    shiftToEnd()
+    inputControl.moveCusorToEnd()
     formatBrackets(withCompletion: true)
-    memory.addTokens(tokens)
+    memory.addTokens(inputControl.tokens)
     do {
-      let answer = try Calculator.calc(tokens: tokens)
-      let result = "\(CalcFormatter.format(tokens)) = \(CalcFormatter.format(answer))\n"
+      let answer = try Calculator.calc(tokens: inputControl.tokens)
+      let result =
+        "\(CalcFormatter.format(inputControl.tokens)) = \(CalcFormatter.format(answer))\n"
       await postVoiceOver(text: result)
       action(.insertText(result))
       memory.addAnswer(answer)
-      clearAll()
+      inputControl.clearAll()
     } catch (let error) {
       switch error {
       case CalcError.tokensEmpty:
         action(.insertText("\n"))
       default:
-        clearAll()
-        self.error = error as? CalcError
-        await postVoiceOver(text: self.errorMessage)
+        inputControl.clearAll()
+        if let error = error as? CalcError {
+          inputControl.errorOccured(error)
+          await postVoiceOver(text: inputControl.errorMessage)
+        }
       }
     }
-  }
-
-  func clearAll() {
-    startIndex = 0
-    endIndex = 0
-    tokens = []
   }
 
   func exit() {
@@ -299,53 +231,15 @@ final class CalcKeyboardViewModel: ObservableObject {
   }
 
   var text: String {
-    CalcFormatter.format(tokens)
+    inputControl.text
   }
 
   var errorMessage: String {
-    build {
-      switch self.error {
-      case nil, .tokensEmpty:
-        ""
-      case .parseError(let tokens):
-        L10N.ErrorMessage.parseError.localizedString + "(\(CalcFormatter.format(tokens)))"
-      case .runtimeError(let reason):
-        L10N.ErrorMessage.runtimeError.localizedString + "(\(reason))"
-      }
-    }
+    inputControl.errorMessage
   }
 
   var cursor: NSRange {
-    get {
-      return NSRange(
-        location: CalcFormatter.format(tokens[0..<startIndex]).count,
-        length: CalcFormatter.format(tokens[startIndex..<endIndex]).count
-      )
-    }
-    set {
-      setStart: do {
-        for i in 0...tokens.count {
-          if newValue.lowerBound
-            <= CalcFormatter.format(tokens[0..<i]).count
-          {
-            startIndex = i
-            break setStart
-          }
-        }
-        startIndex = tokens.count
-      }
-
-      setEnd: do {
-        for i in 0..<tokens.count {
-          if newValue.upperBound
-            <= CalcFormatter.format(tokens[0..<i]).count
-          {
-            endIndex = i
-            break setEnd
-          }
-        }
-        endIndex = tokens.count
-      }
-    }
+    get { inputControl.cursor }
+    set { inputControl.cursor = newValue }
   }
 }

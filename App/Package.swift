@@ -53,6 +53,7 @@ let package = Package(
                 "Calculator",
                 "FlickButton",
                 "InputField",
+                "InputControl",
                 .productItem(
                   name: "Numerics",
                   package: "swift-numerics",
@@ -126,8 +127,16 @@ let package = Package(
                 ),
               ]
             ),
+            .target(
+              name: "InputControl",
+              dependencies: [
+                "Core",
+                "Bundles",
+                "Calculator",
+              ]
+            ),
           ]
-        )
+        ),
       ]
     ),
     .directory(
@@ -144,6 +153,10 @@ let package = Package(
         .testTarget(
           name: "ParsecTests",
           dependencies: ["Parsec"]
+        ),
+        .testTarget(
+          name: "InputControlTests",
+          dependencies: ["InputControl"]
         ),
       ]
     )
