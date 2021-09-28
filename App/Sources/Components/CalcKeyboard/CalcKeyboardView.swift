@@ -12,7 +12,6 @@ import FlickButton
 import InputField
 import SwiftUI
 
-@MainActor
 public struct CalcKeyboardView: View {
   @State private var draggingLine: Int? = nil
   @ObservedObject private var viewModel: CalcKeyboardViewModel

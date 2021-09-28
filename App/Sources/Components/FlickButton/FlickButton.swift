@@ -9,7 +9,6 @@ import Bundles
 import Core
 import SwiftUI
 
-@MainActor
 public struct FlickButton: View {
   public enum Direction: String, Hashable {
     case up

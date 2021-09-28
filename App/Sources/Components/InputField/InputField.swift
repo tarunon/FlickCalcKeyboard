@@ -9,7 +9,6 @@ import Core
 import SwiftUI
 import UIKit
 
-@MainActor
 final public class TextFieldCoordinator: NSObject, InputFieldControllerDelegate {
   @Binding var cursor: NSRange
 
@@ -25,7 +24,6 @@ final public class TextFieldCoordinator: NSObject, InputFieldControllerDelegate 
   }
 }
 
-@MainActor
 struct InputFieldBody: UIViewControllerRepresentable {
   typealias UIViewControllerType = InputFieldController
 
@@ -53,7 +51,6 @@ struct InputFieldBody: UIViewControllerRepresentable {
   }
 }
 
-@MainActor
 public struct InputField: View {
   var text: String
   var errorMessage: String

@@ -8,7 +8,7 @@
 import CalcEditorView
 import SwiftUI
 
-@main @MainActor
+@main
 struct CalcApp: App {
   var body: some Scene {
     WindowGroup {

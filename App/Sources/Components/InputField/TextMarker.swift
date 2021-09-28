@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-@MainActor
 struct TextMarker: View {
   final class Blink: ObservableObject {
     @Published var hide: Bool = false

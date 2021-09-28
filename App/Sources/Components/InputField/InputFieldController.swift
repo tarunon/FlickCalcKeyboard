@@ -9,7 +9,6 @@ import Core
 import SwiftUI
 import UIKit
 
-@MainActor
 final class InputTextField: UITextField {
   override func textRect(forBounds bounds: CGRect) -> CGRect {
     return super.textRect(forBounds: bounds).inset(
@@ -24,12 +23,10 @@ final class InputTextField: UITextField {
   }
 }
 
-@MainActor
 @objc protocol InputFieldControllerDelegate: NSObjectProtocol {
   @objc optional func inputFieldDidChangeSelection(_ controller: InputFieldController)
 }
 
-@MainActor
 final class InputFieldController: UIViewController, UIGestureRecognizerDelegate, UITextFieldDelegate
 {
   lazy var textField = setup(from: InputTextField()) {

@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-@MainActor
 public struct CalcEditorView: View {
   @State var text: String = ""
 

@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-@MainActor
 struct FlickChip: View {
   var direction: FlickButton.Direction
   var geometry: GeometryProxy
