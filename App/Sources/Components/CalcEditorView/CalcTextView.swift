@@ -19,7 +19,8 @@ final class TextView: UITextView {
       size: .init(
         width: windowSize.width,
         height: min(
-          300.0,
+          UIDevice.current.userInterfaceIdiom == .pad
+            ? 260.0 : CalcKeyboardView.requireToShowExtraArea ? 330.0 : 300.0,
           windowSize.height * 3 / 5
         )
       )

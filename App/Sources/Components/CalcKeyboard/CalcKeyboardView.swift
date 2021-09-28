@@ -63,10 +63,18 @@ public struct CalcKeyboardView: View {
         }
       }
       .padding(0.0)
-      .frame(maxWidth: .infinity, maxHeight: 280.0, alignment: .bottom)
+      .frame(maxWidth: .infinity, maxHeight: 270.0, alignment: .bottom)
+      if CalcKeyboardView.requireToShowExtraArea {
+        Color.backgroundColor
+          .frame(height: 40.0, alignment: .bottom)
+      }
     }
     .clipped()
     .background(Color.backgroundColor)
+  }
+
+  public static var requireToShowExtraArea: Bool {
+    UIDevice.current.userInterfaceIdiom == .phone && UIApplication.shared.delegate != nil
   }
 
   var buttonParameters: [[ButtonParameter]] {

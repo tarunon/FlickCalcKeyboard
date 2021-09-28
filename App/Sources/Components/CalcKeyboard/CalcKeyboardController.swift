@@ -10,6 +10,8 @@ import SwiftUI
 import UIKit
 
 final public class CalcKeyboardController: UIInputViewController {
+  lazy var minHeight = CalcKeyboardView.requireToShowExtraArea ? 286.0 : 256.0
+
   lazy var keyboardViewController = UIHostingController(
     rootView: CalcKeyboardView(
       action: { [weak self] action in
@@ -58,14 +60,14 @@ final public class CalcKeyboardController: UIInputViewController {
   lazy var keyboardHeight: [NSLayoutConstraint] = [
     setup(
       from: self.inputView!.heightAnchor.constraint(
-        lessThanOrEqualToConstant: min(256.0, UIScreen.main.bounds.height * 3 / 5)
+        lessThanOrEqualToConstant: min(self.minHeight, UIScreen.main.bounds.height * 3.0 / 5.0)
       )
     ) {
       $0.priority = .defaultHigh
     },
     setup(
       from: self.inputView!.heightAnchor.constraint(
-        equalToConstant: min(256.0, UIScreen.main.bounds.height * 3 / 5)
+        equalToConstant: min(self.minHeight, UIScreen.main.bounds.height * 3.0 / 5.0)
       )
     ) {
       $0.priority = .defaultHigh
@@ -101,7 +103,7 @@ final public class CalcKeyboardController: UIInputViewController {
   ) {
     super.viewWillTransition(to: size, with: coordinator)
     keyboardHeight.forEach {
-      $0.constant = min(256.0, UIScreen.main.bounds.height * 3 / 5)
+      $0.constant = min(self.minHeight, (UIScreen.main.bounds.height * 3.0 / 5.0))
     }
     self.inputView?.setNeedsLayout()
     coordinator.animate { _ in
