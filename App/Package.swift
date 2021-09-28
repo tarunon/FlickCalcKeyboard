@@ -87,6 +87,23 @@ let package = Package(
               ]
             ),
             .target(
+              name: "Core",
+              dependencies: [
+                "Builder"
+              ]
+            ),
+            .target(
+              name: "Parsec",
+              dependencies: [
+                "Core"
+              ]
+            ),
+          ]
+        ),
+        .directory(
+          name: "Services",
+          [
+            .target(
               name: "CalcMemory",
               dependencies: [
                 "Calculator",
@@ -109,20 +126,8 @@ let package = Package(
                 ),
               ]
             ),
-            .target(
-              name: "Core",
-              dependencies: [
-                "Builder"
-              ]
-            ),
-            .target(
-              name: "Parsec",
-              dependencies: [
-                "Core"
-              ]
-            ),
           ]
-        ),
+        )
       ]
     ),
     .directory(
