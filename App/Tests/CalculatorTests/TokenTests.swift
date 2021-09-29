@@ -11,18 +11,18 @@ import XCTest
 
 final class TokenTests: XCTestCase {
   func testTokenParameters() throws {
-    try XCTAssertEqual(DigitToken._0.result(), 0)
-    try XCTAssertEqual(DigitToken._1.result(), 1)
-    try XCTAssertEqual(DigitToken._2.result(), 2)
-    try XCTAssertEqual(DigitToken._3.result(), 3)
-    try XCTAssertEqual(DigitToken._4.result(), 4)
-    try XCTAssertEqual(DigitToken._5.result(), 5)
-    try XCTAssertEqual(DigitToken._6.result(), 6)
-    try XCTAssertEqual(DigitToken._7.result(), 7)
-    try XCTAssertEqual(DigitToken._8.result(), 8)
-    try XCTAssertEqual(DigitToken._9.result(), 9)
-    try XCTAssertEqual(ConstToken.pi.result(), .init(.pi))
-    try XCTAssertEqual(ConstToken.napier.result(), .init(.exp(1.0)))
-    try XCTAssertEqual(ConstToken.imaginaly.result(), .init(imaginary: 1.0))
+    XCTAssertEqual(try DigitToken._0.result(), 0)
+    XCTAssertEqual(try DigitToken._1.result(), 1)
+    XCTAssertEqual(try DigitToken._2.result(), 2)
+    XCTAssertEqual(try DigitToken._3.result(), 3)
+    XCTAssertEqual(try DigitToken._4.result(), 4)
+    XCTAssertEqual(try DigitToken._5.result(), 5)
+    XCTAssertEqual(try DigitToken._6.result(), 6)
+    XCTAssertEqual(try DigitToken._7.result(), 7)
+    XCTAssertEqual(try DigitToken._8.result(), 8)
+    XCTAssertEqual(try DigitToken._9.result(), 9)
+    XCTAssertEqual(try ConstToken.pi.result(), .init(.pi))
+    XCTAssertEqual(try ConstToken.napier.result(), .init(.exp(1.0)))
+    XCTAssertEqual(try ConstToken.imaginaly.result(), .init(imaginary: 1.0))
   }
 }

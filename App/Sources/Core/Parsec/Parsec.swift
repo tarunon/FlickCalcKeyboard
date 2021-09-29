@@ -11,23 +11,44 @@ public enum ParseError: Error {
   case isEmpty
   case typeMissmatch(expect: Any.Type, actual: Any)
   case conditionFailure(value: Any)
+  case notComplete(tokens: [Any])
+}
+
+public struct ParseResult<Input: RangeReplaceableCollection, Output> {
+  var output: Output
+  var input: Input
+
+  // swift-format-ignore
+  public var value: Output {
+    get throws {
+      guard input.isEmpty else {
+        throw ParseError.notComplete(tokens: input.map { $0 })
+      }
+      return output
+    }
+  }
 }
 
 public struct Parser<Input: RangeReplaceableCollection, Output> {
-  var parse: (Input) throws -> (Output, Input)
+  public typealias Result = ParseResult<Input, Output>
+  var parse: (Input) throws -> Result
 
-  public init(parse: @escaping @Sendable (Input) throws -> (Output, Input)) {
+  public init(parse: @escaping @Sendable (Input) throws -> Result) {
     self.parse = parse
   }
 
-  public func callAsFunction(_ input: Input) throws -> (Output, Input) {
+  public func callAsFunction(_ input: Input) throws -> Result {
     try parse(input)
   }
 }
 
+extension ParseResult: Equatable where Input: Equatable, Output: Equatable {
+
+}
+
 extension Parser {
   public static func pure(_ value: Output) -> Parser {
-    return .init(parse: { (value, $0) })
+    return .init(parse: { .init(output: value, input: $0) })
   }
 
   public static func empty() -> Parser {
@@ -40,8 +61,8 @@ extension Parser {
 
   public func flatMap<T>(_ f: @escaping (Output) throws -> Parser<Input, T>) -> Parser<Input, T> {
     return Parser<Input, T> { input throws in
-      let (result, input2) = try self(input)
-      return try f(result)(input2)
+      let result = try self(input)
+      return try f(result.output)(result.input)
     }
   }
 
@@ -82,7 +103,7 @@ extension Parser {
       guard let head = head as? Output else {
         throw ParseError.typeMissmatch(expect: Output.self, actual: head)
       }
-      return (head, tail)
+      return .init(output: head, input: tail)
     }
   }
 
@@ -111,7 +132,7 @@ extension Parser where Input.Element == Output {
       guard isSatisfy(head) else {
         throw ParseError.conditionFailure(value: head)
       }
-      return (head, tail)
+      return .init(output: head, input: tail)
     }
   }
 }
