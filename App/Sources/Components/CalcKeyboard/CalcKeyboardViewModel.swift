@@ -60,9 +60,9 @@ final class CalcKeyboardViewModel: ObservableObject {
 
   func inputAutoDot() {
     if inputControl.previousToken is DigitToken {
-      input(DigitToken.dot)
+      input(DotToken.instance)
     } else {
-      input(DigitToken._0, DigitToken.dot)
+      input(DigitToken._0, DotToken.instance)
     }
   }
 

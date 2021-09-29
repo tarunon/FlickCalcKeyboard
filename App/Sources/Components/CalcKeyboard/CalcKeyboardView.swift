@@ -37,9 +37,9 @@ public struct CalcKeyboardView: View {
       .padding(4.0)
       .frame(height: 36.0, alignment: .top)
       HStack(spacing: 0.0) {
-        ForEach(Array(buttonParameters.enumerated()), id: \.offset) { (vOffset, line) in
+        ForEach(Array(buttonParameters.enumerated()), id: \.offset) { (hOffset, line) in
           VStack(spacing: 0.0) {
-            ForEach(Array(line.enumerated()), id: \.offset) { (hOffset, parameter) in
+            ForEach(Array(line.enumerated()), id: \.offset) { (vOffset, parameter) in
               FlickButton(
                 title: parameter.title,
                 subtitle: parameter.subtitle,
@@ -47,17 +47,17 @@ public struct CalcKeyboardView: View {
                 action: parameter.action,
                 actionWhilePressing: parameter.actionWhilePressing,
                 onDrag: {
-                  draggingLine = vOffset
+                  draggingLine = hOffset
                 },
                 backgroundColor: parameter.buttonType.buttonColor,
                 directions: parameter.directions
               )
-              if hOffset != 3 {
+              if vOffset != 3 {
                 Divider().background(.secondary)
               }
             }
-          }.zIndex(draggingLine == vOffset ? 1 : 0)
-          if vOffset != 4 {
+          }.zIndex(draggingLine == hOffset ? 1 : 0)
+          if hOffset != 4 {
             Divider().background(.secondary)
           }
         }

@@ -31,24 +31,27 @@ extension ConstToken: CalcNode {
 }
 
 struct DigitsNode: CalcNode {
-  var digits: [DigitToken]
+  var digits: [DigitToken?]
 
   func result() throws -> Complex<Double> {
-    let segments = digits.split(separator: .dot)
+    let segments = digits.split(separator: nil)
     if segments.count > 2 {
       throw CalcError.runtimeError(description)
     }
-    let result = try segments[0].map { try $0.number() }.reduce(0) { $0 * 10 + $1 }
+    let result = try segments[0]
+      .compactMap { try $0?.number() }.reduce(0) { $0 * 10 + $1 }
     if segments.count == 2 {
       return result
-        + (try segments[1].map { try $0.number() }.reversed().reduce(0) { $0 / 10 + $1 })
+        + (try segments[1].compactMap { try $0?.number() }.reversed().reduce(0) { $0 / 10 + $1 })
         / 10
     }
     return result
   }
 
   var description: String {
-    CalcFormatter.format(digits)
+    digits.split(separator: nil).map { part in
+      CalcFormatter.format(part.compactMap { $0 })
+    }.joined(separator: ".")
   }
 }
 

@@ -33,15 +33,15 @@ public enum DigitToken: String, NumberToken {
   case _7 = "7"
   case _8 = "8"
   case _9 = "9"
-  case dot = "."
 
   public func number() throws -> Complex<Double> {
-    if self == .dot {
-      throw CalcError.runtimeError(self)
-    } else {
-      return .init(Double(rawValue)!)
-    }
+    return .init(Double(rawValue)!)
   }
+}
+
+public struct DotToken: CalcToken, Equatable {
+  public let rawValue: String = "."
+  public static let instance = DotToken()
 }
 
 public enum ConstToken: NumberToken {

@@ -13,9 +13,16 @@ enum CalcParsers {
   typealias CalcParser<Output> = Parser<[CalcToken], Output>
 
   static let digit = CalcParser<DigitToken>.satisfy()
+  static let dot = CalcParser<DotToken>.satisfy()
   static let const = CalcParser<ConstToken>.satisfy()
   static let function = CalcParser<FunctionToken>.satisfy()
-  static let digits = digit.many(allowEmpty: false).map { DigitsNode(digits: $0.reversed()) }
+  static let digits = digit.many(allowEmpty: false).flatMap { minor in
+    dot.flatMap { _ in
+      digit.many(allowEmpty: false).map { integer in
+        return minor + [nil] + integer
+      }
+    } || .pure(minor)
+  }.map { DigitsNode(digits: $0.reversed()) }
   static let number = digits.map { $0 as CalcNode } || const.map { $0 as CalcNode }
 
   static func bracket(open: Bool) -> CalcParser<BracketToken> {
@@ -60,8 +67,10 @@ enum CalcParsers {
     }.flatMap { node in
       function.map { token in
         FunctionNode(node: node, token: token)
-      }.flatMapError { _ in .pure(node) }
-    } || number).many(allowEmpty: false).map { GroupNode(nodes: $0.reversed()) }
+      } || .pure(node)
+    } || number)
+    .many(allowEmpty: false)
+    .map { GroupNode(nodes: $0.reversed()) }
   }
 
   static func highExpr(precendence: Precedence) -> CalcParser<CalcNode> {

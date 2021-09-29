@@ -1,3 +1,4 @@
+import Parsec
 import XCTest
 
 @testable import Calculator
@@ -35,14 +36,26 @@ final class ParserTests: XCTestCase {
     try XCTAssertEqual(parse(tokens: [DigitToken._0]), "(0)")
     try XCTAssertEqual(parse(tokens: [DigitToken._3, DigitToken._2]), "(32)")
     try XCTAssertEqual(
-      parse(tokens: [DigitToken._1, DigitToken.dot, DigitToken._4, DigitToken._1]),
+      parse(tokens: [DigitToken._1, DotToken.instance, DigitToken._4, DigitToken._1]),
       "(1.41)"
     )
     try XCTAssertEqual(
-      parse(tokens: [DigitToken._0, DigitToken.dot, DigitToken._1, DigitToken.dot, DigitToken._0]),
-      "(0.1.0)"
+      parse(tokens: [
+        DigitToken._0, DotToken.instance, DigitToken._1, DotToken.instance, DigitToken._0,
+      ]),
+      "(1.0)"
     )
-    try XCTAssertEqual(parse(tokens: [DigitToken.dot, DigitToken.dot]), "(..)")
+    XCTAssertThrowsError(
+      try parse(tokens: [DotToken.instance, DotToken.instance]),
+      "",
+      { error in
+        if case ParseError.typeMissmatch(_, let actual) = error {
+          XCTAssertEqual(actual as! DotToken, .instance)
+        } else {
+          XCTFail()
+        }
+      }
+    )
     try XCTAssertEqual(parse(tokens: [DigitToken._8, ConstToken.pi]), "(8*π)")
     try XCTAssertEqual(parse(tokens: [ConstToken.pi, ConstToken.napier]), "(π*e)")
   }
