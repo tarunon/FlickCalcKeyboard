@@ -67,18 +67,21 @@ final class CalcKeyboardViewModel: ObservableObject {
   }
 
   func inputAutoBracket() {
-    input(
-      build {
-        switch inputControl.previousToken {
-        case is NumberToken:
-          BracketToken.close
-        case let bracket as BracketToken:
-          bracket
-        default:
-          BracketToken.open
-        }
+    let bracket = build {
+      switch inputControl.previousToken {
+      case is NumberToken:
+        BracketToken.close
+      case let bracket as BracketToken:
+        bracket
+      default:
+        BracketToken.open
       }
-    )
+    }
+    if bracket == inputControl.nextToken as? BracketToken {
+      shiftToRight()
+    } else {
+      input(bracket)
+    }
   }
 
   func inputFunction(token: FunctionToken) {
