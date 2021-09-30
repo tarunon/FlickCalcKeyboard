@@ -28,7 +28,7 @@ struct InputFieldBody: UIViewControllerRepresentable {
   typealias UIViewControllerType = InputFieldController
 
   var text: String
-  var errorMessage: String
+  var placeholder: AttributedString?
   @Binding var cursor: NSRange
 
   public func makeCoordinator() -> TextFieldCoordinator {
@@ -39,30 +39,30 @@ struct InputFieldBody: UIViewControllerRepresentable {
     setup(InputFieldController()) {
       $0.delegate = context.coordinator
       $0.textField.text = text
-      $0.errorMessage = errorMessage
+      $0.placeholder = placeholder
       $0.cursor = cursor
     }
   }
 
   public func updateUIViewController(_ uiViewController: InputFieldController, context: Context) {
     uiViewController.textField.text = text
-    uiViewController.errorMessage = errorMessage
+    uiViewController.placeholder = placeholder
     uiViewController.cursor = cursor
   }
 }
 
 public struct InputField: View {
   var text: String
-  var errorMessage: String
+  var placeholder: AttributedString?
   @Binding var cursor: NSRange
 
-  public init(text: String, errorMessage: String, cursor: Binding<NSRange>) {
+  public init(text: String, placeholder: AttributedString?, cursor: Binding<NSRange>) {
     self.text = text
-    self.errorMessage = errorMessage
+    self.placeholder = placeholder
     self._cursor = cursor
   }
 
   public var body: some View {
-    InputFieldBody(text: text, errorMessage: errorMessage, cursor: $cursor)
+    InputFieldBody(text: text, placeholder: placeholder, cursor: $cursor)
   }
 }

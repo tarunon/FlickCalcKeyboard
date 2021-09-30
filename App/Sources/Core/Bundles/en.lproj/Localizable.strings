@@ -7,6 +7,9 @@
 */
 "com.tarunon.flickcalckeyboard.error_message.parse_error" = "Parse error occured";
 "com.tarunon.flickcalckeyboard.error_message.runtime_error" = "Failure by unsupported operation";
+"com.tarunon.flickcalckeyboard.placeholder.memory_add" = "Added to memory";
+"com.tarunon.flickcalckeyboard.placeholder.memory_sub" = "Subtracted from memory";
+"com.tarunon.flickcalckeyboard.placeholder.memory_clear" = "Removed memory";
 
 "com.tarunon.flickcalckeyboard.voice_over.navigate.flick_to_up" = "flick up then ";
 "com.tarunon.flickcalckeyboard.voice_over.navigate.flick_to_down" = "flick down then ";

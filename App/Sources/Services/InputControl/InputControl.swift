@@ -9,6 +9,7 @@ import Bundles
 import Calculator
 import Core
 import Foundation
+import UIKit
 
 public enum InputControlError: Error {
   case isEmpty
@@ -20,14 +21,9 @@ public enum InputDirection {
 }
 
 public struct InputControl {
-  public internal(set) var tokens: [CalcToken] = [] {
-    didSet {
-      error = nil
-    }
-  }
+  public internal(set) var tokens: [CalcToken] = []
   public internal(set) var startPosition: Int = 0
   public internal(set) var endPosition: Int = 0
-  var error: CalcError?
 
   public init() {}
 
@@ -107,25 +103,8 @@ public struct InputControl {
     startPosition = tokens.count
   }
 
-  public mutating func errorOccured(_ error: CalcError) {
-    self.error = error
-  }
-
   public var text: String {
     CalcFormatter.format(tokens)
-  }
-
-  public var errorMessage: String {
-    build {
-      switch error {
-      case nil, .tokensEmpty:
-        ""
-      case .parseError(let tokens):
-        L10N.ErrorMessage.parseError.localizedString + "(\(CalcFormatter.format(tokens)))"
-      case .runtimeError(let reason):
-        L10N.ErrorMessage.runtimeError.localizedString + "(\(reason))"
-      }
-    }
   }
 
   public var previousToken: CalcToken? {

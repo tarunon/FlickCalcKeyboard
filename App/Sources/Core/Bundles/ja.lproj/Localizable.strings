@@ -8,6 +8,10 @@
 "com.tarunon.flickcalckeyboard.error_message.parse_error" = "パースに失敗しました";
 "com.tarunon.flickcalckeyboard.error_message.runtime_error" = "対応していない演算です";
 
+"com.tarunon.flickcalckeyboard.placeholder.memory_add" = "メモリに加算しました";
+"com.tarunon.flickcalckeyboard.placeholder.memory_sub" = "メモリから減算しました";
+"com.tarunon.flickcalckeyboard.placeholder.memory_clear" = "メモリを消去しました";
+
 "com.tarunon.flickcalckeyboard.voice_over.navigate.flick_to_up" = "うえフリックで";
 "com.tarunon.flickcalckeyboard.voice_over.navigate.flick_to_down" = "したフリックで";
 "com.tarunon.flickcalckeyboard.voice_over.navigate.flick_to_left" = "ひだりフリックで";

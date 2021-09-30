@@ -28,7 +28,7 @@ public struct CalcKeyboardView: View {
     VStack(spacing: 0.0) {
       InputField(
         text: viewModel.text,
-        errorMessage: viewModel.errorMessage,
+        placeholder: viewModel.placeholder,
         cursor: .init(
           get: { viewModel.cursor },
           set: { viewModel.cursor = $0 }
@@ -85,7 +85,9 @@ public struct CalcKeyboardView: View {
           subtitle: "M- MR MC",
           voiceOverTitle: L10N.VoiceOverTitle.memoryPlus.localizedString,
           action: {
-            viewModel.memoryAdd()
+            Task {
+              await viewModel.memoryAdd()
+            }
           },
           buttonType: .function,
           directions: [
@@ -93,7 +95,9 @@ public struct CalcKeyboardView: View {
               title: "M-",
               voiceOverTitle: L10N.VoiceOverTitle.memoryMinus.localizedString,
               action: {
-                viewModel.memorySub()
+                Task {
+                  await viewModel.memorySub()
+                }
               }
             ),
             .right: (

@@ -28,6 +28,18 @@ public struct L10N {
     )
   }
 
+  public enum Placeholder {
+    public static let memoryAdd = L10N(
+      rawValue: "com.tarunon.flickcalckeyboard.placeholder.memory_add"
+    )
+    public static let memorySub = L10N(
+      rawValue: "com.tarunon.flickcalckeyboard.placeholder.memory_sub"
+    )
+    public static let memoryClear = L10N(
+      rawValue: "com.tarunon.flickcalckeyboard.placeholder.memory_clear"
+    )
+  }
+
   public enum VoiceOverNavigate {
     public static let flickToUp = L10N(
       rawValue: "com.tarunon.flickcalckeyboard.voice_over.navigate.flick_to_up"

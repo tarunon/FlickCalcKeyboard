@@ -71,15 +71,10 @@ final class InputFieldController: UIViewController, UIGestureRecognizerDelegate,
   }
   var delegate: InputFieldControllerDelegate?
 
-  var errorMessage: String = "" {
+  var placeholder: AttributedString? {
     didSet {
-      textField.attributedPlaceholder = NSAttributedString(
-        string: errorMessage,
-        attributes: [
-          .foregroundColor: UIColor.systemRed
-        ]
-      )
-      textMarker.view.isHidden = !errorMessage.isEmpty
+      textField.attributedPlaceholder = placeholder.map(NSAttributedString.init)
+      textMarker.view.isHidden = placeholder != nil
     }
   }
 

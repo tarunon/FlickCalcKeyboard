@@ -41,9 +41,17 @@ struct ButtonParameter {
     [FlickButton.Direction: (title: String, voiceOverTitle: String, action: () -> Void)]
 }
 
+enum LatestMemoryAction {
+  case add(Complex<Double>)
+  case sub(Complex<Double>)
+  case clear
+}
+
 @MainActor
 final class CalcKeyboardViewModel: ObservableObject {
   @Published private var inputControl = InputControl()
+  @Published private var error: CalcError?
+  @Published private var latestMemoryAction: LatestMemoryAction?
   private var memory = CalcMemory()
   private var action: (CalcAction) -> Void
 
@@ -54,6 +62,8 @@ final class CalcKeyboardViewModel: ObservableObject {
   }
 
   func input(_ tokens: CalcToken...) {
+    error = nil
+    latestMemoryAction = nil
     memory.resetCursor()
     inputControl.insert(tokens: tokens)
   }
@@ -110,34 +120,45 @@ final class CalcKeyboardViewModel: ObservableObject {
     input(memory)
   }
 
-  func memoryAdd() {
+  func memoryAdd() async {
+    memory.addTokens(inputControl.tokens)
     do {
       inputControl.moveCusorToEnd()
       formatBrackets(withCompletion: true)
-      memory.memoryAdd(try Calculator.calc(tokens: inputControl.tokens))
+      let result = try Calculator.calc(tokens: inputControl.tokens)
+      memory.memoryAdd(result)
+      latestMemoryAction = .add(result)
+      inputControl.clearAll()
+      await postVoiceOver(text: placeholder!.description)
     } catch (let error) {
       inputControl.clearAll()
       if let error = error as? CalcError {
-        inputControl.errorOccured(error)
+        self.error = error
       }
     }
   }
 
-  func memorySub() {
+  func memorySub() async {
+    memory.addTokens(inputControl.tokens)
     do {
       inputControl.moveCusorToEnd()
       formatBrackets(withCompletion: true)
-      memory.memorySub(try Calculator.calc(tokens: inputControl.tokens))
+      let result = try Calculator.calc(tokens: inputControl.tokens)
+      memory.memorySub(result)
+      latestMemoryAction = .sub(result)
+      inputControl.clearAll()
+      await postVoiceOver(text: placeholder!.description)
     } catch (let error) {
       inputControl.clearAll()
       if let error = error as? CalcError {
-        inputControl.errorOccured(error)
+        self.error = error
       }
     }
   }
 
   func memoryClear() {
     memory.memoryClear()
+    latestMemoryAction = .clear
   }
 
   func formatBrackets(withCompletion: Bool) {
@@ -192,6 +213,8 @@ final class CalcKeyboardViewModel: ObservableObject {
   }
 
   func calculate() async {
+    error = nil
+    latestMemoryAction = nil
     inputControl.moveCusorToEnd()
     formatBrackets(withCompletion: true)
     memory.addTokens(inputControl.tokens)
@@ -210,8 +233,8 @@ final class CalcKeyboardViewModel: ObservableObject {
       default:
         inputControl.clearAll()
         if let error = error as? CalcError {
-          inputControl.errorOccured(error)
-          await postVoiceOver(text: inputControl.errorMessage)
+          self.error = error
+          await postVoiceOver(text: placeholder!.description)
         }
       }
     }
@@ -237,8 +260,48 @@ final class CalcKeyboardViewModel: ObservableObject {
     inputControl.text
   }
 
-  var errorMessage: String {
-    inputControl.errorMessage
+  var placeholder: AttributedString? {
+    build {
+      if let errorText = build({
+        switch error {
+        case nil, .tokensEmpty:
+          String?.none
+        case .parseError(let tokens):
+          String?.some(
+            L10N.ErrorMessage.parseError.localizedString + "(\(CalcFormatter.format(tokens)))"
+          )
+        case .runtimeError(let reason):
+          String?.some(L10N.ErrorMessage.runtimeError.localizedString + "(\(reason))")
+        }
+      }) {
+        AttributedString?.some(
+          .init(errorText, attributes: .init().foregroundColor(UIColor.systemRed))
+        )
+      } else if let memoryText = build({
+        build {
+          switch latestMemoryAction {
+          case .add(let value):
+            String?.some(
+              L10N.Placeholder.memoryAdd.localizedString + "(\(CalcFormatter.format(value)))"
+            )
+          case .sub(let value):
+            String?.some(
+              L10N.Placeholder.memorySub.localizedString + "(\(CalcFormatter.format(value)))"
+            )
+          case .clear:
+            String?.some(L10N.Placeholder.memoryClear.localizedString)
+          case nil:
+            String?.none
+          }
+        }
+      }) {
+        AttributedString?.some(
+          .init(memoryText, attributes: .init().foregroundColor(UIColor.systemBlue))
+        )
+      } else {
+        AttributedString?.none
+      }
+    }
   }
 
   var cursor: NSRange {
