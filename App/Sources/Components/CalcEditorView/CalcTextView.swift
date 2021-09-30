@@ -68,3 +68,11 @@ struct CalcTextView: UIViewRepresentable {
     }
   }
 }
+
+#if DEBUG
+  struct CalcTextView_Preview: PreviewProvider {
+    static var previews: some View {
+      CalcTextView(text: .constant("1+e^πi = 0"))
+    }
+  }
+#endif

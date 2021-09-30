@@ -10,9 +10,9 @@
 		D225316F2700972F0096BF5C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D225316E2700972F0096BF5C /* Assets.xcassets */; };
 		D2552FFB2700D5CA00C1C0DE /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D2552FFA2700D5CA00C1C0DE /* Settings.bundle */; };
 		D25530042700D83700C1C0DE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D25530062700D83700C1C0DE /* LaunchScreen.storyboard */; };
+		D260600027060C2500E0FCF7 /* KeyboardExtension in Frameworks */ = {isa = PBXBuildFile; productRef = D2605FFF27060C2500E0FCF7 /* KeyboardExtension */; };
 		D284391D270097CA00B02606 /* App in Frameworks */ = {isa = PBXBuildFile; productRef = D284391C270097CA00B02606 /* App */; };
 		D2843929270099E200B02606 /* ProdKeyboard.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = D2843922270099E200B02606 /* ProdKeyboard.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		D284392F270099F500B02606 /* CalcKeyboard in Frameworks */ = {isa = PBXBuildFile; productRef = D284392E270099F500B02606 /* CalcKeyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,7 +63,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D284392F270099F500B02606 /* CalcKeyboard in Frameworks */,
+				D260600027060C2500E0FCF7 /* KeyboardExtension in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -154,7 +154,7 @@
 			);
 			name = ProdKeyboard;
 			packageProductDependencies = (
-				D284392E270099F500B02606 /* CalcKeyboard */,
+				D2605FFF27060C2500E0FCF7 /* KeyboardExtension */,
 			);
 			productName = StgKeyboard;
 			productReference = D2843922270099E200B02606 /* ProdKeyboard.appex */;
@@ -509,13 +509,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		D2605FFF27060C2500E0FCF7 /* KeyboardExtension */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = KeyboardExtension;
+		};
 		D284391C270097CA00B02606 /* App */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = App;
-		};
-		D284392E270099F500B02606 /* CalcKeyboard */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = CalcKeyboard;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

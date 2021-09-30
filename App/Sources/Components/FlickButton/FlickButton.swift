@@ -188,3 +188,35 @@ public struct FlickButton: View {
       .accessibilityAddTraits(.isButton)
   }
 }
+
+#if DEBUG
+  struct FlickButton_Preview: PreviewProvider {
+    static var previews: some View {
+      HStack(spacing: 0.0) {
+        Divider()
+        VStack(spacing: 0.0) {
+          Divider()
+          FlickButton(
+            title: "Title",
+            subtitle: "Subtitle",
+            voiceOverTitle: "",
+            action: {},
+            actionWhilePressing: false,
+            onDrag: {},
+            backgroundColor: .white,
+            directions: [
+              .up: (title: "Up", voiceOverTitle: "", action: {}),
+              .down: (title: "Down", voiceOverTitle: "", action: {}),
+              .left: (title: "Left", voiceOverTitle: "", action: {}),
+              .right: (title: "Right", voiceOverTitle: "", action: {}),
+            ]
+          )
+          Divider()
+        }
+        Divider()
+      }
+      .frame(width: 80.0, height: 80.0)
+      .previewLayout(.fixed(width: 80.0, height: 80.0))
+    }
+  }
+#endif

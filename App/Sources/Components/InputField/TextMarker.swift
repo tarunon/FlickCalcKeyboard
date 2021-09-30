@@ -50,3 +50,20 @@ struct TextMarker: View {
     .animation(Animation.easeInOut(duration: 0.1), value: blink.hide)
   }
 }
+
+#if DEBUG
+
+  public struct TextMarker_Preview: PreviewProvider {
+    public static var previews: some View {
+      Group {
+        TextMarker(flushing: false)
+          .frame(width: 40.0, height: 20.0, alignment: .center)
+
+        TextMarker(flushing: true)
+          .frame(width: 2.0, height: 20.0, alignment: .center)
+      }
+      .previewLayout(.fixed(width: 40.0, height: 20.0))
+    }
+  }
+
+#endif

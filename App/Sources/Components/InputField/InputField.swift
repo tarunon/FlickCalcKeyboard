@@ -66,3 +66,19 @@ public struct InputField: View {
     InputFieldBody(text: text, placeholder: placeholder, cursor: $cursor)
   }
 }
+
+#if DEBUG
+
+  public struct InputField_Preview: PreviewProvider {
+    public static var previews: some View {
+      InputField(
+        text: "currentText",
+        placeholder: nil,
+        cursor: .constant(.init(location: 0, length: 7))
+      )
+      .frame(width: .infinity, height: 30.0, alignment: .center)
+      .previewLayout(.fixed(width: 320.0, height: 30.0))
+    }
+  }
+
+#endif

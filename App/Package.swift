@@ -16,9 +16,14 @@ let package = Package(
       targets: ["App"]
     ),
     .library(
-      name: "CalcKeyboard",
+      name: "KeyboardExtension",
       type: .static,
-      targets: ["CalcKeyboard"]
+      targets: ["KeyboardExtension"]
+    ),
+    .library(
+      name: "Preview",
+      type: .dynamic,
+      targets: ["CalcEditorView", "CalcKeyboard", "FlickButton", "InputField"]
     ),
   ],
   dependencies: [
@@ -99,6 +104,12 @@ let package = Package(
                 "Core"
               ]
             ),
+          ]
+        ),
+        .target(
+          name: "KeyboardExtension",
+          dependencies: [
+            "CalcKeyboard"
           ]
         ),
         .directory(

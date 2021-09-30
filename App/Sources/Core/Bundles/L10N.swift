@@ -12,11 +12,11 @@ public struct L10N {
   var rawValue: String
 
   public var text: Text {
-    .init(.init(rawValue), tableName: nil, bundle: .module, comment: nil)
+    .init(.init(rawValue), tableName: nil, bundle: .moduleOrMain, comment: nil)
   }
 
   public var localizedString: String {
-    NSLocalizedString(rawValue, tableName: nil, bundle: .module, value: "", comment: "")
+    NSLocalizedString(rawValue, tableName: nil, bundle: .moduleOrMain, value: "", comment: "")
   }
 
   public enum ErrorMessage {
