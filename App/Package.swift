@@ -85,12 +85,7 @@ let package = Package(
           name: "Core",
           [
             .target(
-              name: "Bundles",
-              resources: [
-                .process("Assets.xcassets"),
-                .process("en.lproj/Localizable.strings", localization: .init(rawValue: "en")),
-                .process("ja.lproj/Localizable.strings", localization: .init(rawValue: "ja")),
-              ]
+              name: "Bundles"
             ),
             .target(
               name: "Core",
