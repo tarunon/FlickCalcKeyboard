@@ -16,18 +16,18 @@ public struct FlickButton: View {
     case left
     case right
 
-    func buttonLocation(on geometry: GeometryProxy) -> CGPoint {
-      let center = CGPoint(x: geometry.size.width / 2, y: geometry.size.height / 2)
+    func buttonLocation(on buttonSize: CGSize) -> CGPoint {
+      let center = CGPoint(x: buttonSize.width / 2, y: buttonSize.height / 2)
       return build {
         switch self {
         case .up:
-          center.applying(.identity.translatedBy(x: 0, y: -geometry.size.height))
+          center.applying(.identity.translatedBy(x: 0, y: -buttonSize.height))
         case .down:
-          center.applying(.identity.translatedBy(x: 0, y: geometry.size.height))
+          center.applying(.identity.translatedBy(x: 0, y: buttonSize.height))
         case .left:
-          center.applying(.identity.translatedBy(x: -geometry.size.width, y: 0))
+          center.applying(.identity.translatedBy(x: -buttonSize.width, y: 0))
         case .right:
-          center.applying(.identity.translatedBy(x: geometry.size.width, y: 0))
+          center.applying(.identity.translatedBy(x: buttonSize.width, y: 0))
         }
       }
     }
@@ -175,7 +175,7 @@ public struct FlickButton: View {
         }
       }
       if let direction = currentDirection, let title = directions[direction]?.title {
-        FlickChip(direction: direction, geometry: geometry, title: title)
+        FlickChip(direction: direction, buttonSize: geometry.size, title: title)
       }
     }.zIndex(isDragging ? 1 : 0)
       .accessibilityElement()

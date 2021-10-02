@@ -28,3 +28,11 @@ public struct CalcEditorView: View {
     }
   }
 }
+
+#if DEBUG
+  struct CalcEditorView_Preview: PreviewProvider {
+    static var previews: some View {
+      CalcEditorView()
+    }
+  }
+#endif
