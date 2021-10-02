@@ -11,43 +11,63 @@ import Numerics
 
 public enum CalcFormatter {
   public static func format(_ complex: Complex<Double>) -> String {
-    let real = Decimal(complex.real)
-      .formatted(
-        Decimal.FormatStyle.number
-          .precision(
-            .significantDigits(0...10)
-          )
-          .precision(
-            .fractionLength(0...10)
-          )
+    let zeroRange = -Double.pow(10, -12)...Double.pow(10, -12)
+    let notRoundRange = -Double.pow(10, 12)...Double.pow(10, 12)
+    let notRoundFormatter = Decimal.FormatStyle.number
+      .precision(
+        .significantDigits(0...10)
       )
-    let imaginary = Decimal(complex.imaginary)
-      .formatted(
-        Decimal.FormatStyle.number
-          .precision(
-            .significantDigits(0...10)
-          )
-          .precision(
-            .fractionLength(0...10)
-          )
-          .sign(strategy: .never)
+      .precision(
+        .fractionLength(0...10)
       )
+      .sign(strategy: .never)
+    let roundFormatter = Decimal.FormatStyle.number
+      .notation(.scientific)
+      .sign(strategy: .never)
+
+    let realPart = build {
+      switch complex.real {
+      case Double.nan:
+        "NaN"
+      case zeroRange:
+        "0"
+      case notRoundRange:
+        notRoundFormatter.format(Decimal(complex.real))
+      default:
+        roundFormatter.format(Decimal(complex.real))
+      }
+    }
+
+    let imaginalyPart = build {
+      switch complex.imaginary {
+      case Double.nan:
+        "NaN"
+      case zeroRange:
+        "0"
+      case notRoundRange:
+        notRoundFormatter.format(Decimal(complex.imaginary))
+      default:
+        roundFormatter.format(Decimal(complex.imaginary))
+      }
+    }
+
     return build {
-      switch (real, imaginary) {
+      switch (realPart, imaginalyPart) {
       case ("NaN", _), (_, "NaN"):
         "NaN"
-      case ("0", "0"), ("-0", "0"):
+      case ("0", "0"):
         "0"
       case (_, "0"):
-        real
-      case ("0", "1"), ("-0", "1"):
+        (complex.real < 0 ? "-" : "") + realPart
+      case ("0", "1"):
         (complex.imaginary < 0 ? "-" : "") + "i"
-      case ("0", _), ("-0", _):
-        (complex.imaginary < 0 ? "-" : "") + imaginary + "i"
+      case ("0", _):
+        (complex.imaginary < 0 ? "-" : "") + imaginalyPart + "i"
       case (_, "1"):
-        real + (complex.imaginary < 0 ? "-" : "+") + "i"
+        (complex.real < 0 ? "-" : "") + realPart + (complex.imaginary < 0 ? "-" : "+") + "i"
       default:
-        real + (complex.imaginary < 0 ? "-" : "+") + imaginary + "i"
+        (complex.real < 0 ? "-" : "") + realPart + (complex.imaginary < 0 ? "-" : "+")
+          + imaginalyPart + "i"
       }
     }
   }

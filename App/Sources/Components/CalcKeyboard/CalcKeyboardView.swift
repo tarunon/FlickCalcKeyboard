@@ -470,7 +470,7 @@ struct CalcKeyboardView: View {
           title: "⌫",
           voiceOverTitle: L10N.VoiceOverTitle.deleteLeft.localizedString,
           action: {
-            viewModel.deleteLeft(line: false)
+            viewModel.delete(direction: .left, line: false)
           },
           actionWhilePressing: true,
           buttonType: .function,
@@ -479,21 +479,21 @@ struct CalcKeyboardView: View {
               title: "I⌫",
               voiceOverTitle: L10N.VoiceOverTitle.deleteLeftAll.localizedString,
               action: {
-                viewModel.deleteLeft(line: true)
+                viewModel.delete(direction: .left, line: true)
               }
             ),
             .up: (
               title: "⌦",
               voiceOverTitle: L10N.VoiceOverTitle.deleteRight.localizedString,
               action: {
-                viewModel.deleteRight(line: false)
+                viewModel.delete(direction: .right, line: false)
               }
             ),
             .down: (
               title: "⌦I",
               voiceOverTitle: L10N.VoiceOverTitle.deleteRightAll.localizedString,
               action: {
-                viewModel.deleteRight(line: true)
+                viewModel.delete(direction: .right, line: true)
               }
             ),
           ]
@@ -534,7 +534,7 @@ struct CalcKeyboardView: View {
           title: "→",
           voiceOverTitle: L10N.VoiceOverTitle.moveRight.localizedString,
           action: {
-            viewModel.shiftToRight()
+            viewModel.shift(direction: .right)
           },
           actionWhilePressing: true,
           buttonType: .function,
@@ -543,7 +543,7 @@ struct CalcKeyboardView: View {
               title: "←",
               voiceOverTitle: L10N.VoiceOverTitle.moveLeft.localizedString,
               action: {
-                viewModel.shiftToLeft()
+                viewModel.shift(direction: .left)
               }
             )
           ]

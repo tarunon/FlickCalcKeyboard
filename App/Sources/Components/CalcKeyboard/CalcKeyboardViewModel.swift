@@ -88,7 +88,7 @@ final class CalcKeyboardViewModel: ObservableObject {
       }
     }
     if bracket == inputControl.nextToken as? BracketToken {
-      shiftToRight()
+      shift(direction: .right)
     } else {
       input(bracket)
     }
@@ -109,6 +109,8 @@ final class CalcKeyboardViewModel: ObservableObject {
   }
 
   func inputRetry() async {
+    error = nil
+    latestMemoryAction = nil
     inputControl.clearAll()
     inputControl.insert(tokens: memory.getTokens())
     await postVoiceOver(text: inputControl.text)
@@ -180,35 +182,23 @@ final class CalcKeyboardViewModel: ObservableObject {
     }
   }
 
-  func shiftToLeft() {
+  func shift(direction: InputDirection) {
+    error = nil
+    latestMemoryAction = nil
     do {
-      try inputControl.moveCursor(direction: .left)
+      try inputControl.moveCursor(direction: direction)
     } catch {
-      action(.moveCursor(offset: -1))
+      action(.moveCursor(offset: direction == .left ? -1 : 1))
     }
   }
 
-  func shiftToRight() {
+  func delete(direction: InputDirection, line: Bool) {
+    error = nil
+    latestMemoryAction = nil
     do {
-      try inputControl.moveCursor(direction: .right)
+      try inputControl.delete(direction: direction, line: line)
     } catch {
-      action(.moveCursor(offset: 1))
-    }
-  }
-
-  func deleteLeft(line: Bool) {
-    do {
-      try inputControl.delete(direction: .left, line: line)
-    } catch {
-      action(.deleteLeft(line: line))
-    }
-  }
-
-  func deleteRight(line: Bool) {
-    do {
-      try inputControl.delete(direction: .right, line: line)
-    } catch {
-      action(.deleteLeft(line: line))
+      action(direction == .left ? .deleteLeft(line: line) : .deleteRight(line: line))
     }
   }
 

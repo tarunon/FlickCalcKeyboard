@@ -69,6 +69,7 @@ public struct CalcMemory {
   }
 
   public mutating func addTokens(_ tokens: [CalcToken]) {
+    if tokens.isEmpty { return }
     tokensHistory.append(tokens)
   }
 }
