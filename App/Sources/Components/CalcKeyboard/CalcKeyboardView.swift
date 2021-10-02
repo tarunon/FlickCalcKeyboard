@@ -12,11 +12,11 @@ import FlickButton
 import InputField
 import SwiftUI
 
-public struct CalcKeyboardView: View {
+struct CalcKeyboardView: View {
   @State private var draggingLine: Int? = nil
   @ObservedObject private var viewModel: CalcKeyboardViewModel
 
-  public init(
+  init(
     action: @escaping (CalcAction) -> Void
   ) {
     self.viewModel = CalcKeyboardViewModel(
@@ -24,7 +24,7 @@ public struct CalcKeyboardView: View {
     )
   }
 
-  public var body: some View {
+  var body: some View {
     VStack(spacing: 0.0) {
       InputField(
         text: viewModel.text,
@@ -64,17 +64,9 @@ public struct CalcKeyboardView: View {
       }
       .padding(0.0)
       .frame(maxWidth: .infinity, maxHeight: 270.0, alignment: .bottom)
-      if CalcKeyboardView.requireToShowExtraArea {
-        Color.backgroundColor
-          .frame(height: 40.0, alignment: .bottom)
-      }
     }
     .clipped()
     .background(Color.backgroundColor)
-  }
-
-  public static var requireToShowExtraArea: Bool {
-    UIDevice.current.userInterfaceIdiom == .phone && UIApplication.shared.delegate != nil
   }
 
   var buttonParameters: [[ButtonParameter]] {
@@ -576,8 +568,8 @@ public struct CalcKeyboardView: View {
   struct CalcKeyboardView_Preview: PreviewProvider {
     static var previews: some View {
       CalcKeyboardView { _ in }
-        .frame(width: .infinity, height: 300.0, alignment: .bottom)
-        .previewLayout(.fixed(width: 300.0, height: 300.0))
+        .frame(width: .infinity, height: 256.0, alignment: .bottom)
+        .previewLayout(.fixed(width: 300.0, height: 256.0))
     }
   }
 #endif

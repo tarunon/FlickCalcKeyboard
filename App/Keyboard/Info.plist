@@ -18,7 +18,7 @@
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.keyboard-service</string>
 		<key>NSExtensionPrincipalClass</key>
-		<string>KeyboardExtension.CalcKeyboardController</string>
+		<string>CalcKeyboard.CalcKeyboardController</string>
 	</dict>
 </dict>
 </plist>

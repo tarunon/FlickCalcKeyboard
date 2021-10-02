@@ -10,7 +10,14 @@ import SwiftUI
 import UIKit
 
 final public class CalcKeyboardController: UIInputViewController {
-  lazy var minHeight = CalcKeyboardView.requireToShowExtraArea ? 286.0 : 256.0
+  public static var shouldShowBottomMargin: Bool {
+    UIDevice.current.userInterfaceIdiom == .phone && UIDevice.current.orientation.isPortrait
+      && UIApplication.shared.delegate != nil
+  }
+
+  var margin: CGFloat {
+    CalcKeyboardController.shouldShowBottomMargin ? 40.0 : 0.0
+  }
 
   lazy var keyboardViewController = UIHostingController(
     rootView: CalcKeyboardView(
@@ -60,19 +67,22 @@ final public class CalcKeyboardController: UIInputViewController {
   lazy var keyboardHeight: [NSLayoutConstraint] = [
     setup(
       from: self.inputView!.heightAnchor.constraint(
-        lessThanOrEqualToConstant: min(self.minHeight, UIScreen.main.bounds.height * 3.0 / 5.0)
+        lessThanOrEqualToConstant: min(256.0, UIScreen.main.bounds.height * 3.0 / 5.0)
       )
     ) {
       $0.priority = .defaultHigh
     },
     setup(
       from: self.inputView!.heightAnchor.constraint(
-        equalToConstant: min(self.minHeight, UIScreen.main.bounds.height * 3.0 / 5.0)
+        equalToConstant: min(256.0, UIScreen.main.bounds.height * 3.0 / 5.0)
       )
     ) {
       $0.priority = .defaultHigh
     },
   ]
+
+  lazy var bottomMargin: NSLayoutConstraint = self.inputView!.safeAreaLayoutGuide.bottomAnchor
+    .constraint(equalTo: self.keyboardViewController.view.bottomAnchor, constant: self.margin)
 
   public override func viewDidLoad() {
     super.viewDidLoad()
@@ -87,7 +97,7 @@ final public class CalcKeyboardController: UIInputViewController {
       inputView.topAnchor.constraint(equalTo: keyboardViewController.view.topAnchor),
       inputView.leftAnchor.constraint(equalTo: keyboardViewController.view.leftAnchor),
       inputView.rightAnchor.constraint(equalTo: keyboardViewController.view.rightAnchor),
-      inputView.bottomAnchor.constraint(equalTo: keyboardViewController.view.bottomAnchor),
+      self.bottomMargin,
     ])
     didMove(toParent: keyboardViewController)
   }
@@ -103,8 +113,9 @@ final public class CalcKeyboardController: UIInputViewController {
   ) {
     super.viewWillTransition(to: size, with: coordinator)
     keyboardHeight.forEach {
-      $0.constant = min(self.minHeight, (UIScreen.main.bounds.height * 3.0 / 5.0))
+      $0.constant = min(256.0, (UIScreen.main.bounds.height * 3.0 / 5.0))
     }
+    bottomMargin.constant = margin
     self.inputView?.setNeedsLayout()
     coordinator.animate { _ in
       self.inputView?.layoutIfNeeded()
