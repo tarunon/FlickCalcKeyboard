@@ -7,17 +7,18 @@
 
 import SwiftUI
 
+enum Colors: String {
+  case lightButtonColor = "LightButtonColor"
+  case darkButtonColor = "DarkButtonColor"
+  case backgroundColor = "BackgroundColor"
+
+  var color: Color {
+    .init(rawValue, bundle: Bundles.module)
+  }
+}
+
 extension Color {
-  public static let lightButtonColor: Color = .init(
-    uiColor: .init(named: "LightButtonColor", in: Bundles.module, compatibleWith: .current)
-      ?? .systemBackground
-  )
-  public static let darkButtonColor: Color = .init(
-    uiColor: .init(named: "DarkButtonColor", in: Bundles.module, compatibleWith: .current)
-      ?? .systemGroupedBackground
-  )
-  public static let backgroundColor: Color = .init(
-    uiColor: .init(named: "BackgroundColor", in: Bundles.module, compatibleWith: .current)
-      ?? .systemBackground
-  )
+  public static let lightButtonColor = Colors.lightButtonColor.color
+  public static let darkButtonColor = Colors.darkButtonColor.color
+  public static let backgroundColor = Colors.backgroundColor.color
 }
