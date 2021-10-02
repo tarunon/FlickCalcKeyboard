@@ -7,14 +7,23 @@
 
 import SwiftUI
 
-enum Colors: String {
-  case lightButtonColor = "LightButtonColor"
-  case darkButtonColor = "DarkButtonColor"
-  case backgroundColor = "BackgroundColor"
+struct Colors {
+  var key: String
+  var defaultValue: Color? = nil
 
   var color: Color {
-    .init(rawValue, bundle: Bundles.module)
+    Bundles.module.map { Color(key, bundle: $0) } ?? defaultValue ?? .white
   }
+
+  static var lightButtonColor = Colors(key: "LightButtonColor", defaultValue: .white)
+  static var darkButtonColor = Colors(
+    key: "DarkButtonColor",
+    defaultValue: .init(red: 0.710, green: 0.722, blue: 0.761)
+  )
+  static var backgroundColor = Colors(
+    key: "BackgroundColor",
+    defaultValue: .init(red: 0.839, green: 0.847, blue: 0.871)
+  )
 }
 
 extension Color {

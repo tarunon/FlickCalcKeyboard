@@ -1,7 +1,7 @@
 import Foundation
 
 class Bundles {
-  static var module: Bundle = {
+  static var module: Bundle? = {
     let bundleName = "App_Bundles"
 
     let candidates = [
@@ -21,6 +21,6 @@ class Bundles {
         return bundle
       }
     }
-    return Bundle(for: Bundles.self)
+    return nil
   }()
 }
