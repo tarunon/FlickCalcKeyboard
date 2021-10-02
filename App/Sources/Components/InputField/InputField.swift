@@ -72,7 +72,7 @@ public struct InputField: View {
   public struct InputField_Preview: PreviewProvider {
     public static var previews: some View {
       InputField(
-        text: "currentText",
+        text: "currentText `current` is selected.",
         placeholder: nil,
         cursor: .constant(.init(location: 0, length: 7))
       )
