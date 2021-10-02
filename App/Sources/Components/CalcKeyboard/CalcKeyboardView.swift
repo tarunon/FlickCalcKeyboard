@@ -568,7 +568,7 @@ struct CalcKeyboardView: View {
   struct CalcKeyboardView_Preview: PreviewProvider {
     static var previews: some View {
       CalcKeyboardView { _ in }
-        .frame(width: .infinity, height: 256.0, alignment: .bottom)
+        .frame(height: 256.0, alignment: .bottom)
         .previewLayout(.fixed(width: 300.0, height: 256.0))
     }
   }

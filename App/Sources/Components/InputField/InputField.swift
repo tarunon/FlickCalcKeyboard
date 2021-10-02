@@ -76,7 +76,7 @@ public struct InputField: View {
         placeholder: nil,
         cursor: .constant(.init(location: 0, length: 7))
       )
-      .frame(width: .infinity, height: 30.0, alignment: .center)
+      .frame(height: 30.0, alignment: .center)
       .previewLayout(.fixed(width: 320.0, height: 30.0))
     }
   }

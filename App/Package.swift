@@ -30,6 +30,7 @@ let package = Package(
     // Dependencies declare other packages that this package depends on.
     .package(url: "https://github.com/apple/swift-numerics", from: "1.0.1"),
     .package(url: "https://github.com/tarunon/Builder", .branch("main")),
+    .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", from: "1.9.0"),
   ],
   targets: .tree(
     .directory(
@@ -163,6 +164,21 @@ let package = Package(
         .testTarget(
           name: "InputControlTests",
           dependencies: ["InputControl"]
+        ),
+        .testTarget(
+          name: "ComponentsTests",
+          dependencies: [
+            "CalcEditorView",
+            "CalcKeyboard",
+            "FlickButton",
+            "InputField",
+            .productItem(
+              name: "SnapshotTesting",
+              package: "swift-snapshot-testing",
+              condition: .when(platforms: [.iOS])
+            )
+          ],
+          exclude: ["__Snapshots__"]
         ),
       ]
     )
