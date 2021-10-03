@@ -8,7 +8,7 @@ final class ParserTests: XCTestCase {
     try CalcParsers.calc(tokens.reversed()).value.description
   }
 
-  func testParseTokens() throws {
+  func testParseTokens() {
     XCTAssertEqual(try CalcParsers.digit([DigitToken._0]).value.rawValue, "0")
     XCTAssertEqual(try CalcParsers.const([ConstToken.pi]).value.rawValue, "π")
     XCTAssertEqual(
@@ -32,7 +32,7 @@ final class ParserTests: XCTestCase {
     )
   }
 
-  func testParseNumbers() throws {
+  func testParseNumbers() {
     XCTAssertEqual(try parse(tokens: [DigitToken._0]), "(0)")
     XCTAssertEqual(try parse(tokens: [DigitToken._3, DigitToken._2]), "(32)")
     XCTAssertEqual(
@@ -45,9 +45,11 @@ final class ParserTests: XCTestCase {
       ]),
       "",
       { error in
-        if case ParseError.notComplete(let tokens) = error {
-          XCTAssertEqual(tokens[0] as? DotToken, .instance)
-          XCTAssertEqual(tokens[1] as? DigitToken, ._0)
+        if let error = error as? ParseError<[CalcToken]>,
+          case .notComplete = error.detail
+        {
+          XCTAssertEqual(error.unprocessedInput[0] as? DotToken, .instance)
+          XCTAssertEqual(error.unprocessedInput[1] as? DigitToken, ._0)
         } else {
           XCTFail()
         }
@@ -57,7 +59,9 @@ final class ParserTests: XCTestCase {
       try parse(tokens: [DotToken.instance, DotToken.instance]),
       "",
       { error in
-        if case ParseError.typeMissmatch(_, let actual) = error {
+        if let error = error as? ParseError<[CalcToken]>,
+          case .typeMissmatch(_, let actual) = error.detail
+        {
           XCTAssertEqual(actual as! DotToken, .instance)
         } else {
           XCTFail()
@@ -68,7 +72,7 @@ final class ParserTests: XCTestCase {
     XCTAssertEqual(try parse(tokens: [ConstToken.pi, ConstToken.napier]), "(π*e)")
   }
 
-  func testParseOperators() throws {
+  func testParseOperators() {
     XCTAssertEqual(
       try parse(tokens: [DigitToken._6, AddToken.instance, DigitToken._7]),
       "((6)+(7))"
@@ -160,6 +164,48 @@ final class ParserTests: XCTestCase {
     )
   }
 
+  func testParseOperatorsError() {
+    XCTAssertThrowsError(
+      try parse(tokens: [
+        DigitToken._1, AddToken.instance, AddToken.instance, DigitToken._2,
+      ]),
+      "",
+      { error in
+        if let error = error as? ParseError<[CalcToken]> {
+          XCTAssertEqual(CalcFormatter.format(error.unprocessedInput.reversed()), "1++")
+        } else {
+          XCTFail()
+        }
+      }
+    )
+    XCTAssertThrowsError(
+      try parse(tokens: [
+        AddToken.instance, DigitToken._1,
+      ]),
+      "",
+      { error in
+        if let error = error as? ParseError<[CalcToken]> {
+          XCTAssertEqual(CalcFormatter.format(error.unprocessedInput.reversed()), "+")
+        } else {
+          XCTFail()
+        }
+      }
+    )
+    XCTAssertThrowsError(
+      try parse(tokens: [
+        DigitToken._1, AddToken.instance,
+      ]),
+      "",
+      { error in
+        if let error = error as? ParseError<[CalcToken]> {
+          XCTAssertEqual(CalcFormatter.format(error.unprocessedInput.reversed()), "1+")
+        } else {
+          XCTFail()
+        }
+      }
+    )
+  }
+
   func testBrackets() {
     XCTAssertEqual(
       try parse(tokens: [
@@ -220,7 +266,62 @@ final class ParserTests: XCTestCase {
     )
   }
 
-  func testFunctions() throws {
+  func testBracketsError() {
+    XCTAssertThrowsError(
+      try parse(tokens: [
+        DigitToken._1, BracketToken.open, AddToken.instance, DigitToken._2, BracketToken.close,
+      ]),
+      "",
+      { error in
+        if let error = error as? ParseError<[CalcToken]> {
+          XCTAssertEqual(CalcFormatter.format(error.unprocessedInput.reversed()), "1(+")
+        } else {
+          XCTFail()
+        }
+      }
+    )
+    XCTAssertThrowsError(
+      try parse(tokens: [
+        DigitToken._1, BracketToken.open, AddToken.instance, BracketToken.close, DigitToken._2,
+      ]),
+      "",
+      { error in
+        if let error = error as? ParseError<[CalcToken]> {
+          XCTAssertEqual(CalcFormatter.format(error.unprocessedInput.reversed()), "1(+)")
+        } else {
+          XCTFail()
+        }
+      }
+    )
+    XCTAssertThrowsError(
+      try parse(tokens: [
+        BracketToken.open, DigitToken._1, AddToken.instance, BracketToken.close, DigitToken._2,
+      ]),
+      "",
+      { error in
+        if let error = error as? ParseError<[CalcToken]> {
+          XCTAssertEqual(CalcFormatter.format(error.unprocessedInput.reversed()), "(1+)")
+        } else {
+          XCTFail()
+        }
+      }
+    )
+    XCTAssertThrowsError(
+      try parse(tokens: [
+        BracketToken.open, BracketToken.close,
+      ]),
+      "",
+      { error in
+        if let error = error as? ParseError<[CalcToken]> {
+          XCTAssertEqual(CalcFormatter.format(error.unprocessedInput.reversed()), "(")
+        } else {
+          XCTFail()
+        }
+      }
+    )
+  }
+
+  func testFunctions() {
     XCTAssertEqual(
       try parse(tokens: [FunctionToken.sin, BracketToken.open, DigitToken._0, BracketToken.close]),
       "(sin(0))"
@@ -297,6 +398,35 @@ final class ParserTests: XCTestCase {
         BracketToken.close, FunctionToken.cos, BracketToken.open, DigitToken._0, BracketToken.close,
       ]),
       "((1)÷(sin(0)*cos(0)))"
+    )
+  }
+
+  func testFunctionsError() {
+    XCTAssertThrowsError(
+      try parse(tokens: [
+        FunctionToken.sin, DigitToken._0,
+      ]),
+      "",
+      { error in
+        if let error = error as? ParseError<[CalcToken]> {
+          XCTAssertEqual(CalcFormatter.format(error.unprocessedInput.reversed()), "sin")
+        } else {
+          XCTFail()
+        }
+      }
+    )
+    XCTAssertThrowsError(
+      try parse(tokens: [
+        FunctionToken.sin, FunctionToken.cos, BracketToken.open, DigitToken._0, BracketToken.close,
+      ]),
+      "",
+      { error in
+        if let error = error as? ParseError<[CalcToken]> {
+          XCTAssertEqual(CalcFormatter.format(error.unprocessedInput.reversed()), "sin")
+        } else {
+          XCTFail()
+        }
+      }
     )
   }
 }

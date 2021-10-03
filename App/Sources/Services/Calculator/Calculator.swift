@@ -15,16 +15,9 @@ public enum Calculator {
       return try CalcParsers.calc(tokens.reversed()).value.result()
     } catch (let error) {
       throw build {
-        switch error {
-        case ParseError.isEmpty:
-          CalcError.tokensEmpty
-        case ParseError.typeMissmatch(_, let actual as CalcToken):
-          CalcError.parseError([actual])
-        case ParseError.conditionFailure(let value as CalcToken):
-          CalcError.parseError([value])
-        case ParseError.notComplete(let tokens) where tokens is [CalcToken]:
-          CalcError.parseError(tokens as! [CalcToken])
-        default:
+        if let error = error as? ParseError<[CalcToken]> {
+          CalcError.parseError(Array(error.unprocessedInput.reversed().suffix(2)))
+        } else {
           error
         }
       }

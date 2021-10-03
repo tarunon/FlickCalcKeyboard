@@ -176,7 +176,7 @@ let package = Package(
               name: "SnapshotTesting",
               package: "swift-snapshot-testing",
               condition: .when(platforms: [.iOS])
-            )
+            ),
           ],
           exclude: ["__Snapshots__"]
         ),

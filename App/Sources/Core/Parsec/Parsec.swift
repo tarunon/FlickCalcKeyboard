@@ -7,11 +7,29 @@
 
 import Core
 
-public enum ParseError: Error {
-  case isEmpty
-  case typeMissmatch(expect: Any.Type, actual: Any)
-  case conditionFailure(value: Any)
-  case notComplete(tokens: [Any])
+public struct ParseError<Input: RangeReplaceableCollection>: Error {
+  public enum Detail: Error {
+    case isEmpty
+    case typeMissmatch(expect: Any.Type, actual: Any)
+    case conditionFailure(value: Any)
+    case notComplete
+    case userDefinedError(error: Error)
+  }
+  public var detail: Detail
+  public var unprocessedInput: Input
+}
+
+extension ParseError {
+  init(error: Error, unprocessedInput: Input) {
+    switch error {
+    case let error as ParseError<Input>:
+      self = error
+    case let error as ParseError<Input>.Detail:
+      self = .init(detail: error, unprocessedInput: unprocessedInput)
+    default:
+      self = .init(detail: .userDefinedError(error: error), unprocessedInput: unprocessedInput)
+    }
+  }
 }
 
 public struct ParseResult<Input: RangeReplaceableCollection, Output> {
@@ -22,7 +40,7 @@ public struct ParseResult<Input: RangeReplaceableCollection, Output> {
   public var value: Output {
     get throws {
       guard input.isEmpty else {
-        throw ParseError.notComplete(tokens: input.map { $0 })
+        throw ParseError(detail: .notComplete, unprocessedInput: input)
       }
       return output
     }
@@ -38,7 +56,11 @@ public struct Parser<Input: RangeReplaceableCollection, Output> {
   }
 
   public func callAsFunction(_ input: Input) throws -> Result {
-    try parse(input)
+    do {
+      return try parse(input)
+    } catch (let error) {
+      throw ParseError<Input>(error: error, unprocessedInput: input)
+    }
   }
 }
 
@@ -52,7 +74,8 @@ extension Parser {
   }
 
   public static func empty() -> Parser {
-    return .init(parse: { _ in throw ParseError.isEmpty })
+    return .init(parse: { _ in throw ParseError<Input>(detail: .isEmpty, unprocessedInput: .init())
+      })
   }
 
   public func map<T>(_ f: @escaping (Output) throws -> T) -> Parser<Input, T> {
@@ -61,8 +84,12 @@ extension Parser {
 
   public func flatMap<T>(_ f: @escaping (Output) throws -> Parser<Input, T>) -> Parser<Input, T> {
     return Parser<Input, T> { input throws in
-      let result = try self(input)
-      return try f(result.output)(result.input)
+      do {
+        let result = try self.parse(input)
+        return try f(result.output).parse(result.input)
+      } catch (let error) {
+        throw ParseError<Input>(error: error, unprocessedInput: input)
+      }
     }
   }
 
@@ -73,9 +100,19 @@ extension Parser {
   public func flatMapError(_ f: @escaping (Error) throws -> Parser) -> Parser {
     .init(parse: { input throws in
       do {
-        return try self(input)
-      } catch (let error) {
-        return try f(error)(input)
+        return try self.parse(input)
+      } catch (let lError) {
+        do {
+          return try f(lError).parse(input)
+        } catch (let rError) {
+          let lError = ParseError<Input>(error: lError, unprocessedInput: input)
+          let rError = ParseError<Input>(error: rError, unprocessedInput: input)
+          if lError.unprocessedInput.count < rError.unprocessedInput.count {
+            throw lError
+          } else {
+            throw rError
+          }
+        }
       }
     })
   }
@@ -83,7 +120,7 @@ extension Parser {
   public func assert(_ condition: @escaping (Output) -> Bool) -> Parser {
     self.map {
       guard condition($0) else {
-        throw ParseError.conditionFailure(value: $0)
+        throw ParseError<Input>.Detail.conditionFailure(value: $0)
       }
       return $0
     }
@@ -96,12 +133,12 @@ extension Parser {
   public static func satisfy(to type: Output.Type = Output.self) -> Parser {
     return Parser { input throws in
       if input.isEmpty {
-        throw ParseError.isEmpty
+        throw ParseError<Input>(detail: .isEmpty, unprocessedInput: .init())
       }
       var tail = input
       let head = tail.removeFirst()
       guard let head = head as? Output else {
-        throw ParseError.typeMissmatch(expect: Output.self, actual: head)
+        throw ParseError<Input>.Detail.typeMissmatch(expect: Output.self, actual: head)
       }
       return .init(output: head, input: tail)
     }
@@ -121,16 +158,15 @@ extension Parser {
 }
 
 extension Parser where Input.Element == Output {
-
   public static func satisfy(_ isSatisfy: @escaping (Input.Element) -> Bool) -> Parser {
     return Parser { input throws in
       if input.isEmpty {
-        throw ParseError.isEmpty
+        throw ParseError<Input>(detail: .isEmpty, unprocessedInput: .init())
       }
       var tail = input
       let head = tail.removeFirst()
       guard isSatisfy(head) else {
-        throw ParseError.conditionFailure(value: head)
+        throw ParseError<Input>.Detail.conditionFailure(value: head)
       }
       return .init(output: head, input: tail)
     }

@@ -28,8 +28,11 @@ class ParsecTests: XCTestCase {
       try TestParser.satisfy(to: "b")("abc"),
       "",
       { error in
-        if case ParseError.conditionFailure(let value) = error {
+        if let error = error as? ParseError<String>,
+          case .conditionFailure(let value) = error.detail
+        {
           XCTAssertEqual(value as! Character, "a")
+          XCTAssertEqual(error.unprocessedInput, "abc")
         } else {
           XCTFail()
         }
@@ -40,9 +43,12 @@ class ParsecTests: XCTestCase {
       try TestCastParser.satisfy(to: Int.self)(["a", 1, 0.5]),
       "",
       { error in
-        if case ParseError.typeMissmatch(let expect, let actual) = error {
+        if let error = error as? ParseError<[Any]>,
+          case .typeMissmatch(let expect, let actual) = error.detail
+        {
           XCTAssertEqual(actual as! String, "a")
           XCTAssertTrue(expect is Int.Type)
+          XCTAssertEqual(error.unprocessedInput.count, 3)
         } else {
           XCTFail()
         }
@@ -64,8 +70,11 @@ class ParsecTests: XCTestCase {
       try TestParser.satisfy(to: "1").map { try Int("\($0)").tryUnwrapped }("abc"),
       "",
       { error in
-        if case ParseError.conditionFailure(let value) = error {
+        if let error = error as? ParseError<String>,
+          case .conditionFailure(let value) = error.detail
+        {
           XCTAssertEqual(value as! Character, "a")
+          XCTAssertEqual(error.unprocessedInput, "abc")
         } else {
           XCTFail()
         }
@@ -75,10 +84,13 @@ class ParsecTests: XCTestCase {
       try TestParser.satisfy(to: "a").map { try Int("\($0)").tryUnwrapped }("abc"),
       "",
       { error in
-        guard error is NilError else {
+        guard let error = error as? ParseError<String>,
+          case .userDefinedError(_ as NilError) = error.detail
+        else {
           XCTFail()
           return
         }
+        XCTAssertEqual(error.unprocessedInput, "abc")
       }
     )
 
@@ -107,8 +119,11 @@ class ParsecTests: XCTestCase {
       }("123"),
       "",
       { error in
-        if case ParseError.conditionFailure(let value) = error {
+        if let error = error as? ParseError<String>,
+          case .conditionFailure(let value) = error.detail
+        {
           XCTAssertEqual(value as! Character, "2")
+          XCTAssertEqual(error.unprocessedInput, "23")
         } else {
           XCTFail()
         }
@@ -123,10 +138,13 @@ class ParsecTests: XCTestCase {
       }("abc"),
       "",
       { error in
-        guard error is NilError else {
+        guard let error = error as? ParseError<String>,
+          case .userDefinedError(_ as NilError) = error.detail
+        else {
           XCTFail()
           return
         }
+        XCTAssertEqual(error.unprocessedInput, "bc")
       }
     )
 
@@ -153,8 +171,11 @@ class ParsecTests: XCTestCase {
         .assert { $0 % 2 == 0 }("123"),
       "",
       { (error) in
-        if case ParseError.conditionFailure(let value) = error {
+        if let error = error as? ParseError<String>,
+          case .conditionFailure(let value) = error.detail
+        {
           XCTAssertEqual(value as! Int, 1)
+          XCTAssertEqual(error.unprocessedInput, "123")
         } else {
           XCTFail()
         }
@@ -171,10 +192,13 @@ class ParsecTests: XCTestCase {
       try TestParser.satisfy(to: "1").mapError { _ in TestError() }("abc"),
       "",
       { error in
-        guard error is TestError else {
+        guard let error = error as? ParseError<String>,
+          case .userDefinedError(_ as TestError) = error.detail
+        else {
           XCTFail()
           return
         }
+        XCTAssertEqual(error.unprocessedInput, "abc")
       }
     )
   }
@@ -192,10 +216,13 @@ class ParsecTests: XCTestCase {
       }("abc"),
       "",
       { error in
-        guard case ParseError.isEmpty = error else {
+        guard let error = error as? ParseError<String>,
+          case .isEmpty = error.detail
+        else {
           XCTFail()
           return
         }
+        XCTAssertEqual(error.unprocessedInput, "")
       }
     )
     XCTAssertEqual(
@@ -219,8 +246,11 @@ class ParsecTests: XCTestCase {
       try TestParser.satisfy { ("0"..."9").contains($0) }.many(allowEmpty: false)("abc123"),
       "",
       { error in
-        if case ParseError.conditionFailure(let value) = error {
+        if let error = error as? ParseError<String>,
+          case .conditionFailure(let value) = error.detail
+        {
           XCTAssertEqual(value as! Character, "a")
+          XCTAssertEqual(error.unprocessedInput, "abc123")
         } else {
           XCTFail()
         }
@@ -247,8 +277,11 @@ class ParsecTests: XCTestCase {
         || TestParser.satisfy { ("a"..."z").contains($0) }.many(allowEmpty: false))("ABC"),
       "",
       { error in
-        if case ParseError.conditionFailure(let value) = error {
+        if let error = error as? ParseError<String>,
+          case .conditionFailure(let value) = error.detail
+        {
           XCTAssertEqual(value as! Character, "A")
+          XCTAssertEqual(error.unprocessedInput, "ABC")
         } else {
           XCTFail()
         }
