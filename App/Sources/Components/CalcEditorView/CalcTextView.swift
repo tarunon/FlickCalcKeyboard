@@ -74,6 +74,7 @@ struct CalcTextView: UIViewRepresentable {
       $0.adjustsFontForContentSizeCategory = true
       $0.delegate = context.coordinator
       $0.becomeFirstResponder()
+      $0.spellCheckingType = .no
       $0.verticalSizeClass = verticalSizeClass
     }
   }
