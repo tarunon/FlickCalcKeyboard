@@ -6,12 +6,13 @@
 //
 
 import Core
+import Foundation
 import Numerics
 
 public struct CalcToken: Equatable {
   var value: CalcTokenProtocol
   public var rawValue: String { value.rawValue }
-  
+
   public static func == (lhs: CalcToken, rhs: CalcToken) -> Bool {
     lhs.value.isEqual(to: rhs.value)
   }
@@ -31,7 +32,7 @@ extension CalcToken {
     public static let _9 = CalcToken(value: DigitToken._9)
     public static let dot = CalcToken(value: DotToken.instance)
   }
-  
+
   public enum Const {
     public static let pi = CalcToken(value: ConstToken.pi)
     public static let napier = CalcToken(value: ConstToken.napier)
@@ -40,12 +41,12 @@ extension CalcToken {
       .init(value: ConstToken.answer(answer: answer))
     }
   }
-  
+
   public enum Bracket {
     public static let open = CalcToken(value: BracketToken.open)
     public static let close = CalcToken(value: BracketToken.close)
   }
-  
+
   public enum Operator {
     public static let add = CalcToken(value: AddToken.instance)
     public static let sub = CalcToken(value: SubToken.instance)
@@ -56,7 +57,7 @@ extension CalcToken {
     public static let root = CalcToken(value: RootToken.instance)
     public static let gamma = CalcToken(value: GammaToken.instance)
   }
-  
+
   public enum Function {
     public static let sin = CalcToken(value: FunctionToken.sin)
     public static let asin = CalcToken(value: FunctionToken.asin)
@@ -74,22 +75,23 @@ extension CalcToken {
     public static let ln = CalcToken(value: FunctionToken.ln)
     public static let lg = CalcToken(value: FunctionToken.lg)
   }
-  
+
   public var isDigit: Bool {
     value is DigitToken
   }
-  
+
   public var isNumber: Bool {
     value is NumberToken
   }
-  
+
   public var isBracket: Bool {
     value is BracketToken
   }
-  
+
   public var isAnswer: Bool {
     if let const = value as? ConstToken,
-       case .answer = const {
+      case .answer = const
+    {
       return true
     } else {
       return false

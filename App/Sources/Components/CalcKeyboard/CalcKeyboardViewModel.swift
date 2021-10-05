@@ -94,7 +94,7 @@ final class CalcKeyboardViewModel: ObservableObject {
         CalcToken.Bracket.open
       }
     }
-      
+
     if bracket == inputControl.nextToken {
       shift(direction: .right)
     } else {
@@ -273,7 +273,7 @@ final class CalcKeyboardViewModel: ObservableObject {
           String?.none
         case .parseError(let tokens):
           String?.some(
-            L10N.ErrorMessage.parseError.localizedString + "(\(tokens.text)"
+            L10N.ErrorMessage.parseError.localizedString + "(\(tokens.text))"
           )
         case .runtimeError(let reason):
           String?.some(L10N.ErrorMessage.runtimeError.localizedString + "(\(reason))")

@@ -11,7 +11,8 @@ import UIKit
 
 final public class CalcKeyboardController: UIInputViewController {
   public static var shouldShowBottomMargin: Bool {
-    UIDevice.current.userInterfaceIdiom == .phone && UIDevice.current.orientation.isPortrait
+    UIDevice.current.userInterfaceIdiom == .phone
+      && (UIScreen.main.bounds.size.height > UIScreen.main.bounds.size.width)
       && UIApplication.shared.delegate != nil
   }
 
