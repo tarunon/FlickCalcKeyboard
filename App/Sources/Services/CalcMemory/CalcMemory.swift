@@ -23,7 +23,7 @@ public struct CalcMemory {
   }
 
   public func getMemory() -> CalcToken {
-    return ConstToken.answer(answer: memory)
+    return .Const.answer(memory)
   }
 
   public mutating func memoryAdd(_ complex: Complex<Double>) {
@@ -40,7 +40,7 @@ public struct CalcMemory {
 
   public mutating func getAnswer() -> CalcToken {
     if answerHistory.isEmpty {
-      return ConstToken.answer(answer: 0)
+      return .Const.answer(0)
     }
     if answerCursor < 0 {
       answerCursor = answerHistory.count - 1
@@ -48,7 +48,7 @@ public struct CalcMemory {
     defer {
       answerCursor -= 1
     }
-    return ConstToken.answer(answer: answerHistory[answerCursor])
+    return .Const.answer(answerHistory[answerCursor])
   }
 
   public mutating func addAnswer(_ complex: Complex<Double>) {

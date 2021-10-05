@@ -6,7 +6,6 @@
 //
 
 import Bundles
-import Calculator
 import Core
 import Foundation
 import UIKit
@@ -20,20 +19,20 @@ public enum InputDirection {
   case right
 }
 
-public struct InputControl {
-  public internal(set) var tokens: [CalcToken] = []
+public struct InputControl<Token: TokenProtocol> {
+  public internal(set) var tokens: [Token] = []
   public internal(set) var startPosition: Int = 0
   public internal(set) var endPosition: Int = 0
 
   public init() {}
 
-  public mutating func insert(tokens: [CalcToken]) {
+  public mutating func insert(tokens: [Token]) {
     self.tokens.replaceSubrange(startPosition..<endPosition, with: tokens)
     endPosition = startPosition + tokens.count
     startPosition = endPosition
   }
 
-  public mutating func insert(tokens: [CalcToken], at index: Int) {
+  public mutating func insert(tokens: [Token], at index: Int) {
     self.tokens.insert(contentsOf: tokens, at: index)
     endPosition += tokens.count
     startPosition += tokens.count
@@ -104,17 +103,17 @@ public struct InputControl {
   }
 
   public var text: String {
-    CalcFormatter.format(tokens)
+    tokens.text
   }
 
-  public var previousToken: CalcToken? {
+  public var previousToken: Token? {
     if startPosition == 0 {
       return nil
     }
     return tokens[startPosition - 1]
   }
 
-  public var nextToken: CalcToken? {
+  public var nextToken: Token? {
     if endPosition == tokens.count {
       return nil
     }
@@ -124,15 +123,15 @@ public struct InputControl {
   public var cursor: NSRange {
     get {
       return NSRange(
-        location: CalcFormatter.format(tokens[0..<startPosition]).count,
-        length: CalcFormatter.format(tokens[startPosition..<endPosition]).count
+        location: tokens[0..<startPosition].text.count,
+        length: tokens[startPosition..<endPosition].text.count
       )
     }
     set {
       setStart: do {
         for i in 0...tokens.count {
           if newValue.lowerBound
-            <= CalcFormatter.format(tokens[0..<i]).count
+            <= tokens[0..<i].text.count
           {
             startPosition = i
             break setStart
@@ -144,7 +143,7 @@ public struct InputControl {
       setEnd: do {
         for i in 0..<tokens.count {
           if newValue.upperBound
-            <= CalcFormatter.format(tokens[0..<i]).count
+            <= tokens[0..<i].text.count
           {
             endPosition = i
             break setEnd

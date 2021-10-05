@@ -75,7 +75,7 @@ extension Parser {
 
   public static func empty() -> Parser {
     return .init(parse: { _ in throw ParseError<Input>(detail: .isEmpty, unprocessedInput: .init())
-      })
+    })
   }
 
   public func map<T>(_ f: @escaping (Output) throws -> T) -> Parser<Input, T> {

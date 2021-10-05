@@ -47,9 +47,13 @@ enum LatestMemoryAction {
   case clear
 }
 
+extension CalcToken: TokenProtocol {
+  public var text: String { rawValue }
+}
+
 @MainActor
 final class CalcKeyboardViewModel: ObservableObject {
-  @Published private var inputControl = InputControl()
+  @Published private var inputControl = InputControl<CalcToken>()
   @Published private var error: CalcError?
   @Published private var latestMemoryAction: LatestMemoryAction?
   private var memory = CalcMemory()
@@ -69,43 +73,47 @@ final class CalcKeyboardViewModel: ObservableObject {
   }
 
   func inputAutoDot() {
-    if inputControl.previousToken is DigitToken {
-      input(DotToken.instance)
+    if inputControl.previousToken?.isDigit == true {
+      input(.Digit.dot)
     } else {
-      input(DigitToken._0, DotToken.instance)
+      input(.Digit._0, .Digit.dot)
     }
   }
 
   func inputAutoBracket() {
     let bracket = build {
-      switch inputControl.previousToken {
-      case is NumberToken:
-        BracketToken.close
-      case let bracket as BracketToken:
-        bracket
-      default:
-        BracketToken.open
+      if let previousToken = inputControl.previousToken {
+        if previousToken.isNumber {
+          CalcToken.Bracket.close
+        } else if previousToken.isBracket {
+          previousToken
+        } else {
+          CalcToken.Bracket.open
+        }
+      } else {
+        CalcToken.Bracket.open
       }
     }
-    if bracket == inputControl.nextToken as? BracketToken {
+      
+    if bracket == inputControl.nextToken {
       shift(direction: .right)
     } else {
       input(bracket)
     }
   }
 
-  func inputFunction(token: FunctionToken) {
-    input(token, BracketToken.open, BracketToken.close)
+  func inputFunction(token: CalcToken) {
+    input(token, .Bracket.open, .Bracket.close)
     try! inputControl.moveCursor(direction: .left)
   }
 
   func inputAnswer() async {
-    if case .answer = inputControl.previousToken as? ConstToken {
+    if inputControl.previousToken?.isAnswer == true {
       try! inputControl.delete(direction: .left, line: false)
     }
-    let answer = memory.getAnswer()
-    await postVoiceOver(text: CalcFormatter.format([answer]))
-    inputControl.insert(tokens: [answer])
+    let result = [memory.getAnswer()]
+    await postVoiceOver(text: result.text)
+    inputControl.insert(tokens: result)
   }
 
   func inputRetry() async {
@@ -117,9 +125,9 @@ final class CalcKeyboardViewModel: ObservableObject {
   }
 
   func inputMemory() async {
-    let memory = self.memory.getMemory()
-    await postVoiceOver(text: CalcFormatter.format([memory]))
-    input(memory)
+    let result = [memory.getMemory()]
+    await postVoiceOver(text: result.text)
+    inputControl.insert(tokens: result)
   }
 
   func memoryAdd() async {
@@ -165,19 +173,26 @@ final class CalcKeyboardViewModel: ObservableObject {
 
   func formatBrackets(withCompletion: Bool) {
     let checkTarget = inputControl.tokens[0..<inputControl.startPosition]
-    let numberOfOpen = checkTarget.filter { ($0 as? BracketToken) == BracketToken.open }.count
-    let numberOfClose = checkTarget.filter { ($0 as? BracketToken) == BracketToken.close }.count
+    let numberOfOpen = checkTarget.filter { $0 == .Bracket.open }.count
+    let numberOfClose = checkTarget.filter { $0 == .Bracket.close }
+      .count
 
     if numberOfClose > numberOfOpen {
       inputControl.insert(
-        tokens: Array(repeating: BracketToken.open, count: numberOfClose - numberOfOpen),
+        tokens: Array(
+          repeating: CalcToken.Bracket.open,
+          count: numberOfClose - numberOfOpen
+        ),
         at: 0
       )
     }
 
     if withCompletion && numberOfOpen > numberOfClose {
       inputControl.insert(
-        tokens: Array(repeating: BracketToken.close, count: numberOfOpen - numberOfClose)
+        tokens: Array(
+          repeating: CalcToken.Bracket.close,
+          count: numberOfOpen - numberOfClose
+        )
       )
     }
   }
@@ -211,7 +226,7 @@ final class CalcKeyboardViewModel: ObservableObject {
     do {
       let answer = try Calculator.calc(tokens: inputControl.tokens)
       let result =
-        "\(CalcFormatter.format(inputControl.tokens)) = \(CalcFormatter.format(answer))\n"
+        "\(inputControl.tokens.text) = \(CalcFormatter.format(answer))\n"
       await postVoiceOver(text: result)
       action(.insertText(result))
       memory.addAnswer(answer)
@@ -258,7 +273,7 @@ final class CalcKeyboardViewModel: ObservableObject {
           String?.none
         case .parseError(let tokens):
           String?.some(
-            L10N.ErrorMessage.parseError.localizedString + "(\(CalcFormatter.format(tokens)))"
+            L10N.ErrorMessage.parseError.localizedString + "(\(tokens.text)"
           )
         case .runtimeError(let reason):
           String?.some(L10N.ErrorMessage.runtimeError.localizedString + "(\(reason))")

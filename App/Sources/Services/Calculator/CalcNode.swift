@@ -50,7 +50,7 @@ struct DigitsNode: CalcNode {
 
   var description: String {
     digits.split(separator: nil).map { part in
-      CalcFormatter.format(part.compactMap { $0 })
+      part.compactMap { $0 }.text
     }.joined(separator: ".")
   }
 }

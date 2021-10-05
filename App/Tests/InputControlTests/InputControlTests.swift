@@ -10,59 +10,64 @@ import XCTest
 
 @testable import InputControl
 
+enum TestToken: String, TokenProtocol {
+  case a
+  case br
+  case cad
+}
+
 final class InuptControlTests: XCTestCase {
   func testInsert() {
-    var inputControl = InputControl()
+    var inputControl = InputControl<TestToken>()
 
-    inputControl.insert(tokens: [DigitToken._0, DigitToken._1, DigitToken._2])
+    inputControl.insert(tokens: [.a, .a, .a])
     XCTAssertEqual(inputControl.startPosition, 3)
     XCTAssertEqual(inputControl.endPosition, 3)
-    XCTAssertEqual(inputControl.text, "012")
+    XCTAssertEqual(inputControl.text, "aaa")
 
     inputControl.startPosition = 1
     inputControl.endPosition = 2
-    inputControl.insert(tokens: [DigitToken._3, DigitToken._4])
+    inputControl.insert(tokens: [.br, .cad])
     XCTAssertEqual(inputControl.startPosition, 3)
     XCTAssertEqual(inputControl.endPosition, 3)
-    XCTAssertEqual(inputControl.text, "0342")
+    XCTAssertEqual(inputControl.text, "abrcada")
   }
 
   func testDelete() throws {
-    var inputControl = InputControl()
+    var inputControl = InputControl<TestToken>()
 
     inputControl.insert(tokens: [
-      DigitToken._0, DigitToken._1, DigitToken._2, DigitToken._3, DigitToken._4, DigitToken._5,
-      DigitToken._6, DigitToken._7,
+      .a, .br, .a, .cad, .a, .br, .a,
     ])
     inputControl.startPosition = 3
-    inputControl.endPosition = 5
+    inputControl.endPosition = 4
 
-    XCTAssertEqual(inputControl.text, "01234567")
+    XCTAssertEqual(inputControl.text, "abracadabra")
     try inputControl.delete(direction: .left, line: true)
     XCTAssertEqual(inputControl.startPosition, 3)
     XCTAssertEqual(inputControl.endPosition, 3)
-    XCTAssertEqual(inputControl.text, "012567")
+    XCTAssertEqual(inputControl.text, "abraabra")
 
     try inputControl.delete(direction: .right, line: false)
     XCTAssertEqual(inputControl.startPosition, 3)
     XCTAssertEqual(inputControl.endPosition, 3)
-    XCTAssertEqual(inputControl.text, "01267")
+    XCTAssertEqual(inputControl.text, "abrabra")
 
     try inputControl.delete(direction: .left, line: false)
     XCTAssertEqual(inputControl.startPosition, 2)
     XCTAssertEqual(inputControl.endPosition, 2)
-    XCTAssertEqual(inputControl.text, "0167")
+    XCTAssertEqual(inputControl.text, "abrbra")
 
     try inputControl.delete(direction: .left, line: true)
     XCTAssertEqual(inputControl.startPosition, 0)
     XCTAssertEqual(inputControl.endPosition, 0)
-    XCTAssertEqual(inputControl.text, "67")
+    XCTAssertEqual(inputControl.text, "bra")
 
-    inputControl.insert(tokens: [DigitToken._0, DigitToken._1])
+    inputControl.insert(tokens: [.a, .br])
     try inputControl.delete(direction: .right, line: true)
     XCTAssertEqual(inputControl.startPosition, 2)
     XCTAssertEqual(inputControl.endPosition, 2)
-    XCTAssertEqual(inputControl.text, "01")
+    XCTAssertEqual(inputControl.text, "abr")
 
     inputControl.clearAll()
     XCTAssertEqual(inputControl.startPosition, 0)
@@ -81,31 +86,40 @@ final class InuptControlTests: XCTestCase {
   }
 
   func testMoveCursor() throws {
-    var inputControl = InputControl()
+    var inputControl = InputControl<TestToken>()
 
     inputControl.insert(tokens: [
-      DigitToken._0, DigitToken._1, DigitToken._2, DigitToken._3, DigitToken._4, DigitToken._5,
-      DigitToken._6, DigitToken._7,
+      .a, .br, .a, .cad, .a, .br, .a,
     ])
     inputControl.startPosition = 3
-    inputControl.endPosition = 5
+    inputControl.endPosition = 4
 
     try inputControl.moveCursor(direction: .left)
     XCTAssertEqual(inputControl.startPosition, 2)
     XCTAssertEqual(inputControl.endPosition, 2)
-    XCTAssertEqual(inputControl.text, "01234567")
+    XCTAssertEqual(inputControl.text, "abracadabra")
+
+    try inputControl.moveCursor(direction: .left)
+    XCTAssertEqual(inputControl.startPosition, 1)
+    XCTAssertEqual(inputControl.endPosition, 1)
+    XCTAssertEqual(inputControl.text, "abracadabra")
 
     inputControl.startPosition = 3
-    inputControl.endPosition = 5
+    inputControl.endPosition = 4
+    try inputControl.moveCursor(direction: .right)
+    XCTAssertEqual(inputControl.startPosition, 5)
+    XCTAssertEqual(inputControl.endPosition, 5)
+    XCTAssertEqual(inputControl.text, "abracadabra")
+
     try inputControl.moveCursor(direction: .right)
     XCTAssertEqual(inputControl.startPosition, 6)
     XCTAssertEqual(inputControl.endPosition, 6)
-    XCTAssertEqual(inputControl.text, "01234567")
+    XCTAssertEqual(inputControl.text, "abracadabra")
 
     inputControl.moveCusorToEnd()
-    XCTAssertEqual(inputControl.startPosition, 8)
-    XCTAssertEqual(inputControl.endPosition, 8)
-    XCTAssertEqual(inputControl.text, "01234567")
+    XCTAssertEqual(inputControl.startPosition, 7)
+    XCTAssertEqual(inputControl.endPosition, 7)
+    XCTAssertEqual(inputControl.text, "abracadabra")
 
     inputControl.clearAll()
     XCTAssertThrowsError(
@@ -120,28 +134,27 @@ final class InuptControlTests: XCTestCase {
   }
 
   func testConvertRange() throws {
-    var inputControl = InputControl()
+    var inputControl = InputControl<TestToken>()
 
     inputControl.insert(tokens: [
-      FunctionToken.sin, BracketToken.open, DigitToken._0, BracketToken.close, AddToken.instance,
-      FunctionToken.cos, BracketToken.open, DigitToken._0, BracketToken.close,
+      .a, .br, .a, .cad, .a, .br, .a,
     ])
 
-    XCTAssertEqual(inputControl.startPosition, 9)
-    XCTAssertEqual(inputControl.endPosition, 9)
-    XCTAssertEqual(inputControl.text, "sin(0)+cos(0)")
-    XCTAssertEqual(inputControl.cursor, NSRange(location: 13, length: 0))
+    XCTAssertEqual(inputControl.startPosition, 7)
+    XCTAssertEqual(inputControl.endPosition, 7)
+    XCTAssertEqual(inputControl.text, "abracadabra")
+    XCTAssertEqual(inputControl.cursor, NSRange(location: 11, length: 0))
 
     inputControl.startPosition = 5
-    XCTAssertEqual(inputControl.cursor, NSRange(location: 7, length: 6))
+    XCTAssertEqual(inputControl.cursor, NSRange(location: 8, length: 3))
 
     inputControl.cursor = NSRange(location: 0, length: 6)
     XCTAssertEqual(inputControl.startPosition, 0)
     XCTAssertEqual(inputControl.endPosition, 4)
 
-    inputControl.cursor = NSRange(location: 7, length: 1)
-    XCTAssertEqual(inputControl.startPosition, 5)
-    XCTAssertEqual(inputControl.endPosition, 6)
-    XCTAssertEqual(inputControl.cursor, NSRange(location: 7, length: 3))
+    inputControl.cursor = NSRange(location: 4, length: 2)
+    XCTAssertEqual(inputControl.startPosition, 3)
+    XCTAssertEqual(inputControl.endPosition, 4)
+    XCTAssertEqual(inputControl.cursor, NSRange(location: 4, length: 3))
   }
 }

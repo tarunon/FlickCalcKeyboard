@@ -4,7 +4,7 @@ import XCTest
 @testable import Calculator
 
 final class ParserTests: XCTestCase {
-  func parse(tokens: [CalcToken]) throws -> String {
+  func parse(tokens: [CalcTokenProtocol]) throws -> String {
     try CalcParsers.calc(tokens.reversed()).value.description
   }
 
@@ -45,7 +45,7 @@ final class ParserTests: XCTestCase {
       ]),
       "",
       { error in
-        if let error = error as? ParseError<[CalcToken]>,
+        if let error = error as? ParseError<[CalcTokenProtocol]>,
           case .notComplete = error.detail
         {
           XCTAssertEqual(error.unprocessedInput[0] as? DotToken, .instance)
@@ -59,7 +59,7 @@ final class ParserTests: XCTestCase {
       try parse(tokens: [DotToken.instance, DotToken.instance]),
       "",
       { error in
-        if let error = error as? ParseError<[CalcToken]>,
+        if let error = error as? ParseError<[CalcTokenProtocol]>,
           case .typeMissmatch(_, let actual) = error.detail
         {
           XCTAssertEqual(actual as! DotToken, .instance)
@@ -171,8 +171,8 @@ final class ParserTests: XCTestCase {
       ]),
       "",
       { error in
-        if let error = error as? ParseError<[CalcToken]> {
-          XCTAssertEqual(CalcFormatter.format(error.unprocessedInput.reversed()), "1++")
+        if let error = error as? ParseError<[CalcTokenProtocol]> {
+          XCTAssertEqual(error.unprocessedInput.reversed().text, "1++")
         } else {
           XCTFail()
         }
@@ -184,8 +184,8 @@ final class ParserTests: XCTestCase {
       ]),
       "",
       { error in
-        if let error = error as? ParseError<[CalcToken]> {
-          XCTAssertEqual(CalcFormatter.format(error.unprocessedInput.reversed()), "+")
+        if let error = error as? ParseError<[CalcTokenProtocol]> {
+          XCTAssertEqual(error.unprocessedInput.reversed().text, "+")
         } else {
           XCTFail()
         }
@@ -197,8 +197,8 @@ final class ParserTests: XCTestCase {
       ]),
       "",
       { error in
-        if let error = error as? ParseError<[CalcToken]> {
-          XCTAssertEqual(CalcFormatter.format(error.unprocessedInput.reversed()), "1+")
+        if let error = error as? ParseError<[CalcTokenProtocol]> {
+          XCTAssertEqual(error.unprocessedInput.reversed().text, "1+")
         } else {
           XCTFail()
         }
@@ -273,8 +273,8 @@ final class ParserTests: XCTestCase {
       ]),
       "",
       { error in
-        if let error = error as? ParseError<[CalcToken]> {
-          XCTAssertEqual(CalcFormatter.format(error.unprocessedInput.reversed()), "1(+")
+        if let error = error as? ParseError<[CalcTokenProtocol]> {
+          XCTAssertEqual(error.unprocessedInput.reversed().text, "1(+")
         } else {
           XCTFail()
         }
@@ -286,8 +286,8 @@ final class ParserTests: XCTestCase {
       ]),
       "",
       { error in
-        if let error = error as? ParseError<[CalcToken]> {
-          XCTAssertEqual(CalcFormatter.format(error.unprocessedInput.reversed()), "1(+)")
+        if let error = error as? ParseError<[CalcTokenProtocol]> {
+          XCTAssertEqual(error.unprocessedInput.reversed().text, "1(+)")
         } else {
           XCTFail()
         }
@@ -299,8 +299,8 @@ final class ParserTests: XCTestCase {
       ]),
       "",
       { error in
-        if let error = error as? ParseError<[CalcToken]> {
-          XCTAssertEqual(CalcFormatter.format(error.unprocessedInput.reversed()), "(1+)")
+        if let error = error as? ParseError<[CalcTokenProtocol]> {
+          XCTAssertEqual(error.unprocessedInput.reversed().text, "(1+)")
         } else {
           XCTFail()
         }
@@ -312,8 +312,8 @@ final class ParserTests: XCTestCase {
       ]),
       "",
       { error in
-        if let error = error as? ParseError<[CalcToken]> {
-          XCTAssertEqual(CalcFormatter.format(error.unprocessedInput.reversed()), "(")
+        if let error = error as? ParseError<[CalcTokenProtocol]> {
+          XCTAssertEqual(error.unprocessedInput.reversed().text, "(")
         } else {
           XCTFail()
         }
@@ -408,8 +408,8 @@ final class ParserTests: XCTestCase {
       ]),
       "",
       { error in
-        if let error = error as? ParseError<[CalcToken]> {
-          XCTAssertEqual(CalcFormatter.format(error.unprocessedInput.reversed()), "sin")
+        if let error = error as? ParseError<[CalcTokenProtocol]> {
+          XCTAssertEqual(error.unprocessedInput.reversed().text, "sin")
         } else {
           XCTFail()
         }
@@ -421,8 +421,8 @@ final class ParserTests: XCTestCase {
       ]),
       "",
       { error in
-        if let error = error as? ParseError<[CalcToken]> {
-          XCTAssertEqual(CalcFormatter.format(error.unprocessedInput.reversed()), "sin")
+        if let error = error as? ParseError<[CalcTokenProtocol]> {
+          XCTAssertEqual(error.unprocessedInput.reversed().text, "sin")
         } else {
           XCTFail()
         }

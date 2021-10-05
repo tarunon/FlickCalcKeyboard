@@ -8,21 +8,129 @@
 import Core
 import Numerics
 
-public protocol CalcToken {
-  var rawValue: String { get }
+public struct CalcToken: Equatable {
+  var value: CalcTokenProtocol
+  public var rawValue: String { value.rawValue }
+  
+  public static func == (lhs: CalcToken, rhs: CalcToken) -> Bool {
+    lhs.value.isEqual(to: rhs.value)
+  }
 }
 
-public protocol NumberToken: CalcToken {
+extension CalcToken {
+  public enum Digit {
+    public static let _0 = CalcToken(value: DigitToken._0)
+    public static let _1 = CalcToken(value: DigitToken._1)
+    public static let _2 = CalcToken(value: DigitToken._2)
+    public static let _3 = CalcToken(value: DigitToken._3)
+    public static let _4 = CalcToken(value: DigitToken._4)
+    public static let _5 = CalcToken(value: DigitToken._5)
+    public static let _6 = CalcToken(value: DigitToken._6)
+    public static let _7 = CalcToken(value: DigitToken._7)
+    public static let _8 = CalcToken(value: DigitToken._8)
+    public static let _9 = CalcToken(value: DigitToken._9)
+    public static let dot = CalcToken(value: DotToken.instance)
+  }
+  
+  public enum Const {
+    public static let pi = CalcToken(value: ConstToken.pi)
+    public static let napier = CalcToken(value: ConstToken.napier)
+    public static let imaginaly = CalcToken(value: ConstToken.imaginaly)
+    public static func answer(_ answer: Complex<Double>) -> CalcToken {
+      .init(value: ConstToken.answer(answer: answer))
+    }
+  }
+  
+  public enum Bracket {
+    public static let open = CalcToken(value: BracketToken.open)
+    public static let close = CalcToken(value: BracketToken.close)
+  }
+  
+  public enum Operator {
+    public static let add = CalcToken(value: AddToken.instance)
+    public static let sub = CalcToken(value: SubToken.instance)
+    public static let mul = CalcToken(value: MulToken.instance)
+    public static let div = CalcToken(value: DivToken.instance)
+    public static let mod = CalcToken(value: ModToken.instance)
+    public static let pow = CalcToken(value: PowToken.instance)
+    public static let root = CalcToken(value: RootToken.instance)
+    public static let gamma = CalcToken(value: GammaToken.instance)
+  }
+  
+  public enum Function {
+    public static let sin = CalcToken(value: FunctionToken.sin)
+    public static let asin = CalcToken(value: FunctionToken.asin)
+    public static let sinh = CalcToken(value: FunctionToken.sinh)
+    public static let asinh = CalcToken(value: FunctionToken.asinh)
+    public static let cos = CalcToken(value: FunctionToken.cos)
+    public static let acos = CalcToken(value: FunctionToken.acos)
+    public static let cosh = CalcToken(value: FunctionToken.cosh)
+    public static let acosh = CalcToken(value: FunctionToken.acosh)
+    public static let tan = CalcToken(value: FunctionToken.tan)
+    public static let atan = CalcToken(value: FunctionToken.atan)
+    public static let tanh = CalcToken(value: FunctionToken.tanh)
+    public static let atanh = CalcToken(value: FunctionToken.atanh)
+    public static let log = CalcToken(value: FunctionToken.log)
+    public static let ln = CalcToken(value: FunctionToken.ln)
+    public static let lg = CalcToken(value: FunctionToken.lg)
+  }
+  
+  public var isDigit: Bool {
+    value is DigitToken
+  }
+  
+  public var isNumber: Bool {
+    value is NumberToken
+  }
+  
+  public var isBracket: Bool {
+    value is BracketToken
+  }
+  
+  public var isAnswer: Bool {
+    if let const = value as? ConstToken,
+       case .answer = const {
+      return true
+    } else {
+      return false
+    }
+  }
+}
+
+protocol CalcTokenProtocol {
+  var rawValue: String { get }
+  func isEqual(to: CalcTokenProtocol) -> Bool
+}
+
+extension CalcTokenProtocol where Self: Equatable {
+  func isEqual(to other: CalcTokenProtocol) -> Bool {
+    self == other as? Self
+  }
+}
+
+extension CalcTokenProtocol {
+  func isEqual(to other: CalcTokenProtocol) -> Bool {
+    false
+  }
+}
+
+extension Sequence where Element == CalcTokenProtocol {
+  var text: String {
+    map { $0.rawValue }.joined()
+  }
+}
+
+protocol NumberToken: CalcTokenProtocol {
   func number() throws -> Complex<Double>
 }
 
-public enum Precedence: Int {
+enum Precedence: Int, Equatable {
   case low
   case middle
   case high
 }
 
-public enum DigitToken: String, NumberToken {
+enum DigitToken: String, NumberToken {
   case _0 = "0"
   case _1 = "1"
   case _2 = "2"
@@ -34,23 +142,23 @@ public enum DigitToken: String, NumberToken {
   case _8 = "8"
   case _9 = "9"
 
-  public func number() throws -> Complex<Double> {
+  func number() throws -> Complex<Double> {
     return .init(Double(rawValue)!)
   }
 }
 
-public struct DotToken: CalcToken, Equatable {
-  public let rawValue: String = "."
-  public static let instance = DotToken()
+struct DotToken: CalcTokenProtocol, Equatable {
+  let rawValue: String = "."
+  static let instance = DotToken()
 }
 
-public enum ConstToken: NumberToken {
+enum ConstToken: NumberToken {
   case pi
   case napier
   case imaginaly
   case answer(answer: Complex<Double>)
 
-  public var rawValue: String {
+  var rawValue: String {
     build {
       switch self {
       case .pi: "π"
@@ -62,7 +170,7 @@ public enum ConstToken: NumberToken {
     }
   }
 
-  public func number() throws -> Complex<Double> {
+  func number() throws -> Complex<Double> {
     build {
       switch self {
       case .pi:
@@ -78,79 +186,79 @@ public enum ConstToken: NumberToken {
   }
 }
 
-public protocol InfixOperatorToken: CalcToken {
+protocol InfixOperatorToken: CalcTokenProtocol {
   var precedence: Precedence { get }
 
   func operation(lhs: Complex<Double>, rhs: Complex<Double>) throws -> Complex<Double>
 }
 
-public protocol PrefixOperatorToken: CalcToken {
+protocol PrefixOperatorToken: CalcTokenProtocol {
   var precedence: Precedence { get }
 
   func operation(rhs: Complex<Double>) throws -> Complex<Double>
 }
 
-public protocol PostfixOperatorToken: CalcToken {
+protocol PostfixOperatorToken: CalcTokenProtocol {
   var precedence: Precedence { get }
 
   func operation(lhs: Complex<Double>) throws -> Complex<Double>
 }
 
-public struct AddToken: InfixOperatorToken {
-  public let precedence = Precedence.low
-  public let rawValue: String = "+"
+struct AddToken: InfixOperatorToken, Equatable {
+  let precedence = Precedence.low
+  let rawValue: String = "+"
 
-  public static let instance = Self()
+  static let instance = Self()
 
-  public func operation(lhs: Complex<Double>, rhs: Complex<Double>) throws -> Complex<Double> {
+  func operation(lhs: Complex<Double>, rhs: Complex<Double>) throws -> Complex<Double> {
     lhs + rhs
   }
 }
 
-public struct SubToken: InfixOperatorToken, PrefixOperatorToken {
-  public let precedence = Precedence.low
-  public let rawValue: String = "-"
+struct SubToken: InfixOperatorToken, PrefixOperatorToken, Equatable {
+  let precedence = Precedence.low
+  let rawValue: String = "-"
 
-  public static let instance = Self()
+  static let instance = Self()
 
-  public func operation(lhs: Complex<Double>, rhs: Complex<Double>) throws -> Complex<Double> {
+  func operation(lhs: Complex<Double>, rhs: Complex<Double>) throws -> Complex<Double> {
     lhs - rhs
   }
 
-  public func operation(rhs: Complex<Double>) throws -> Complex<Double> {
+  func operation(rhs: Complex<Double>) throws -> Complex<Double> {
     try operation(lhs: 0, rhs: rhs)
   }
 }
 
-public struct MulToken: InfixOperatorToken {
-  public let precedence = Precedence.middle
-  public let rawValue: String = "×"
+struct MulToken: InfixOperatorToken, Equatable {
+  let precedence = Precedence.middle
+  let rawValue: String = "×"
 
-  public static let instance = Self()
+  static let instance = Self()
 
-  public func operation(lhs: Complex<Double>, rhs: Complex<Double>) throws -> Complex<Double> {
+  func operation(lhs: Complex<Double>, rhs: Complex<Double>) throws -> Complex<Double> {
     lhs * rhs
   }
 }
 
-public struct DivToken: InfixOperatorToken {
-  public let precedence = Precedence.middle
-  public let rawValue: String = "÷"
+struct DivToken: InfixOperatorToken, Equatable {
+  let precedence = Precedence.middle
+  let rawValue: String = "÷"
 
-  public static let instance = Self()
+  static let instance = Self()
 
-  public func operation(lhs: Complex<Double>, rhs: Complex<Double>) throws -> Complex<Double> {
+  func operation(lhs: Complex<Double>, rhs: Complex<Double>) throws -> Complex<Double> {
     return lhs / rhs
   }
 }
 
-public struct ModToken: InfixOperatorToken {
-  public let precedence = Precedence.high
-  public let rawValue: String = "%"
+struct ModToken: InfixOperatorToken, Equatable {
+  let precedence = Precedence.high
+  let rawValue: String = "%"
 
-  public static let instance = Self()
+  static let instance = Self()
 
-  public func operation(lhs: Complex<Double>, rhs: Complex<Double>) throws -> Complex<Double> {
+  func operation(lhs: Complex<Double>, rhs: Complex<Double>) throws -> Complex<Double> {
     guard
       (lhs.imaginary.isZero || lhs.imaginary.isSubnormal)
         && (rhs.imaginary.isZero || rhs.imaginary.isSubnormal)
@@ -161,24 +269,24 @@ public struct ModToken: InfixOperatorToken {
   }
 }
 
-public struct PowToken: InfixOperatorToken {
-  public let precedence = Precedence.high
-  public let rawValue: String = "^"
+struct PowToken: InfixOperatorToken, Equatable {
+  let precedence = Precedence.high
+  let rawValue: String = "^"
 
-  public static let instance = Self()
+  static let instance = Self()
 
-  public func operation(lhs: Complex<Double>, rhs: Complex<Double>) throws -> Complex<Double> {
+  func operation(lhs: Complex<Double>, rhs: Complex<Double>) throws -> Complex<Double> {
     .pow(lhs, rhs)
   }
 }
 
-public struct RootToken: InfixOperatorToken, PrefixOperatorToken {
-  public let precedence = Precedence.high
-  public let rawValue: String = "√"
+struct RootToken: InfixOperatorToken, PrefixOperatorToken, Equatable {
+  let precedence = Precedence.high
+  let rawValue: String = "√"
 
-  public static let instance = Self()
+  static let instance = Self()
 
-  public func operation(lhs: Complex<Double>, rhs: Complex<Double>) throws -> Complex<Double> {
+  func operation(lhs: Complex<Double>, rhs: Complex<Double>) throws -> Complex<Double> {
     guard
       (lhs.imaginary.isZero || lhs.imaginary.isSubnormal)
         && (lhs.real.truncatingRemainder(dividingBy: 1).isZero
@@ -189,18 +297,18 @@ public struct RootToken: InfixOperatorToken, PrefixOperatorToken {
     return .root(rhs, Int(lhs.real))
   }
 
-  public func operation(rhs: Complex<Double>) throws -> Complex<Double> {
+  func operation(rhs: Complex<Double>) throws -> Complex<Double> {
     try operation(lhs: 2, rhs: rhs)
   }
 }
 
-public struct GammaToken: PostfixOperatorToken {
-  public let precedence = Precedence.high
-  public let rawValue: String = "!"
+struct GammaToken: PostfixOperatorToken, Equatable {
+  let precedence = Precedence.high
+  let rawValue: String = "!"
 
-  public static let instance = Self()
+  static let instance = Self()
 
-  public func operation(lhs: Complex<Double>) throws -> Complex<Double> {
+  func operation(lhs: Complex<Double>) throws -> Complex<Double> {
     guard lhs.imaginary.isZero || lhs.imaginary.isSubnormal else {
       throw CalcError.runtimeError("(\(CalcFormatter.format(lhs)))!")
     }
@@ -208,34 +316,34 @@ public struct GammaToken: PostfixOperatorToken {
   }
 }
 
-public enum BracketToken: String, Equatable, CalcToken {
+enum BracketToken: String, Equatable, CalcTokenProtocol {
   case open = "("
   case close = ")"
 }
 
-public struct FunctionToken: CalcToken {
-  public static let sin = Self(rawValue: "sin", operation: Complex.sin)
-  public static let sinh = Self(rawValue: "sinh", operation: Complex.sinh)
-  public static let asin = Self(rawValue: "asin", operation: Complex.asin)
-  public static let asinh = Self(rawValue: "asinh", operation: Complex.asinh)
-  public static let cos = Self(rawValue: "cos", operation: Complex.cos)
-  public static let cosh = Self(rawValue: "cosh", operation: Complex.cosh)
-  public static let acos = Self(rawValue: "acos", operation: Complex.acos)
-  public static let acosh = Self(rawValue: "acosh", operation: Complex.acosh)
-  public static let tan = Self(rawValue: "tan", operation: Complex.tan)
-  public static let tanh = Self(rawValue: "tanh", operation: Complex.tanh)
-  public static let atan = Self(rawValue: "atan", operation: Complex.atan)
-  public static let atanh = Self(rawValue: "atanh", operation: Complex.atanh)
-  public static let log = Self(
+struct FunctionToken: CalcTokenProtocol {
+  static let sin = Self(rawValue: "sin", operation: Complex.sin)
+  static let sinh = Self(rawValue: "sinh", operation: Complex.sinh)
+  static let asin = Self(rawValue: "asin", operation: Complex.asin)
+  static let asinh = Self(rawValue: "asinh", operation: Complex.asinh)
+  static let cos = Self(rawValue: "cos", operation: Complex.cos)
+  static let cosh = Self(rawValue: "cosh", operation: Complex.cosh)
+  static let acos = Self(rawValue: "acos", operation: Complex.acos)
+  static let acosh = Self(rawValue: "acosh", operation: Complex.acosh)
+  static let tan = Self(rawValue: "tan", operation: Complex.tan)
+  static let tanh = Self(rawValue: "tanh", operation: Complex.tanh)
+  static let atan = Self(rawValue: "atan", operation: Complex.atan)
+  static let atanh = Self(rawValue: "atanh", operation: Complex.atanh)
+  static let log = Self(
     rawValue: "log",
     operation: { Complex.log($0) / Complex.log(10) }
   )
-  public static let lg = Self(
+  static let lg = Self(
     rawValue: "lg",
     operation: { Complex.log($0) / Complex.log(2) }
   )
-  public static let ln = Self(rawValue: "ln", operation: Complex.log(_:))
+  static let ln = Self(rawValue: "ln", operation: Complex.log(_:))
 
-  public let rawValue: String
-  var operation: (Complex<Double>) -> Complex<Double>
+  let rawValue: String
+  let operation: (Complex<Double>) -> Complex<Double>
 }
