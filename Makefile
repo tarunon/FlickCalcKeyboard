@@ -17,7 +17,9 @@ format:
 		${SWIFTRUN} -c release swift-format format -p -i  -r ${APP_DIR}/Sources
 		${SWIFTRUN} -c release swift-format format -p -i  -r ${APP_DIR}/Tests
 test:
-		xcodebuild -sdk iphonesimulator -configuration Debug -workspace App.xcworkspace -scheme Stg -destination 'platform=iOS Simulator,name=iPhone 13' clean test -quiet
+		rm -rf .build/TestResults
+		rm -rf .build/TestResults.xcresult
+		xcodebuild -sdk iphonesimulator -configuration Debug -workspace App.xcworkspace -scheme Stg -destination 'platform=iOS Simulator,name=iPhone 13' -resultBundlePath .build/TestResults clean test
 license:
 		${SWIFTRUN} license-plist --swift-package-path ${APP_DIR}/Package.swift --swift-package-path ${BUILD_TOOLS_DIR}/Package.swift --output-path ${APP_DIR}/App/Settings.bundle
 archive:

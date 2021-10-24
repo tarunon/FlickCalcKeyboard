@@ -25,3 +25,7 @@ jobs:
       run: make lint
     - name: Test
       run: make test
+    - uses: kishikawakatsumi/xcresulttool@v1.0.3
+      with:
+        path: .build/TestResults.xcresult
+      if: success() || failure()
