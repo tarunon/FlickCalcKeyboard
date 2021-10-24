@@ -23,6 +23,7 @@ final class InputTextField: UITextField {
   }
 }
 
+@MainActor
 @objc protocol InputFieldControllerDelegate: NSObjectProtocol {
   @objc optional func inputFieldDidChangeSelection(_ controller: InputFieldController)
 }

@@ -10,7 +10,7 @@ import Numerics
 import Parsec
 
 enum CalcParsers {
-  typealias CalcParser<Output> = Parser<[CalcTokenProtocol], Output>
+  typealias CalcParser<Output: Sendable> = Parser<[CalcTokenProtocol], Output>
 
   static let digit = CalcParser<DigitToken>.satisfy()
   static let dot = CalcParser<DotToken>.satisfy()

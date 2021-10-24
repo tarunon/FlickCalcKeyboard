@@ -7,11 +7,12 @@
 
 import Core
 
-public struct ParseError<Input: RangeReplaceableCollection>: Error {
+public struct ParseError<Input: RangeReplaceableCollection & Sendable>: Error
+where Input.Element: Sendable {
   public enum Detail: Error {
     case isEmpty
-    case typeMissmatch(expect: Any.Type, actual: Any)
-    case conditionFailure(value: Any)
+    case typeMissmatch(expect: Sendable.Type, actual: Sendable)
+    case conditionFailure(value: Sendable)
     case notComplete
     case userDefinedError(error: Error)
   }
@@ -32,7 +33,8 @@ extension ParseError {
   }
 }
 
-public struct ParseResult<Input: RangeReplaceableCollection, Output> {
+public struct ParseResult<Input: RangeReplaceableCollection & Sendable, Output: Sendable>
+where Input.Element: Sendable {
   var output: Output
   var input: Input
 
@@ -47,9 +49,10 @@ public struct ParseResult<Input: RangeReplaceableCollection, Output> {
   }
 }
 
-public struct Parser<Input: RangeReplaceableCollection, Output> {
+public struct Parser<Input: RangeReplaceableCollection & Sendable, Output: Sendable>: Sendable
+where Input.Element: Sendable {
   public typealias Result = ParseResult<Input, Output>
-  var parse: (Input) throws -> Result
+  var parse: @Sendable (Input) throws -> Result
 
   public init(parse: @escaping @Sendable (Input) throws -> Result) {
     self.parse = parse
@@ -78,11 +81,13 @@ extension Parser {
     })
   }
 
-  public func map<T>(_ f: @escaping (Output) throws -> T) -> Parser<Input, T> {
+  public func map<T>(_ f: @Sendable @escaping (Output) throws -> T) -> Parser<Input, T> {
     flatMap { try Parser<Input, T>.pure(f($0)) }
   }
 
-  public func flatMap<T>(_ f: @escaping (Output) throws -> Parser<Input, T>) -> Parser<Input, T> {
+  public func flatMap<T>(_ f: @Sendable @escaping (Output) throws -> Parser<Input, T>) -> Parser<
+    Input, T
+  > {
     return Parser<Input, T> { input throws in
       do {
         let result = try self.parse(input)
@@ -93,11 +98,11 @@ extension Parser {
     }
   }
 
-  public func mapError(_ f: @escaping (Error) -> Error) -> Parser {
+  public func mapError(_ f: @Sendable @escaping (Error) -> Error) -> Parser {
     flatMapError { throw f($0) }
   }
 
-  public func flatMapError(_ f: @escaping (Error) throws -> Parser) -> Parser {
+  public func flatMapError(_ f: @Sendable @escaping (Error) throws -> Parser) -> Parser {
     .init(parse: { input throws in
       do {
         return try self.parse(input)
@@ -117,7 +122,7 @@ extension Parser {
     })
   }
 
-  public func assert(_ condition: @escaping (Output) -> Bool) -> Parser {
+  public func assert(_ condition: @Sendable @escaping (Output) -> Bool) -> Parser {
     self.map {
       guard condition($0) else {
         throw ParseError<Input>.Detail.conditionFailure(value: $0)
@@ -126,7 +131,8 @@ extension Parser {
     }
   }
 
-  public static func || (lhs: Parser, rhs: @autoclosure @escaping () -> Parser) -> Parser {
+  public static func || (lhs: Parser, rhs: @Sendable @autoclosure @escaping () -> Parser) -> Parser
+  {
     return lhs.flatMapError { _ in rhs() }
   }
 
@@ -158,7 +164,7 @@ extension Parser {
 }
 
 extension Parser where Input.Element == Output {
-  public static func satisfy(_ isSatisfy: @escaping (Input.Element) -> Bool) -> Parser {
+  public static func satisfy(_ isSatisfy: @Sendable @escaping (Input.Element) -> Bool) -> Parser {
     return Parser { input throws in
       if input.isEmpty {
         throw ParseError<Input>(detail: .isEmpty, unprocessedInput: .init())

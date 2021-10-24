@@ -15,14 +15,15 @@ final class TextView: UITextView {
 
   var keyboardSize: CGSize {
     let windowSize = window?.frame.size ?? UIScreen.main.bounds.size
+    let iPadKeyboardHeight: CGFloat = 260.0
+    let keyboardHeight = min(256.0, windowSize.height * 3.0 / 5.0)
+    let bottomMargin = CGFloat(CalcKeyboardController.shouldShowBottomMargin ? 40.0 : 0.0)
+    let safeAreaMargin = (window?.safeAreaInsets.bottom ?? 0.0)
     return .init(
       width: windowSize.width,
       height:
         UIDevice.current.userInterfaceIdiom == .pad
-        ? CGFloat(260.0)
-        : (min(256.0, windowSize.height * 3.0 / 5.0)
-          + CGFloat(CalcKeyboardController.shouldShowBottomMargin ? 40.0 : 0.0)
-          + (window?.safeAreaInsets.bottom ?? 0.0))
+        ? iPadKeyboardHeight : keyboardHeight + bottomMargin + safeAreaMargin
     )
   }
 

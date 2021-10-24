@@ -3,6 +3,12 @@
 
 import PackageDescription
 
+let defaultSwiftSettings: [SwiftSetting] = [
+  .unsafeFlags(["-Xfrontend", "-warn-long-function-bodies=200"]),
+  .unsafeFlags(["-Xfrontend", "-warn-concurrency"]),
+  .unsafeFlags(["-Xfrontend", "-enable-actor-data-race-checks"]),
+]
+
 let package = Package(
   name: "App",
   defaultLocalization: "en",
@@ -151,19 +157,23 @@ let package = Package(
       [
         .testTarget(
           name: "AppTests",
-          dependencies: ["App"]
+          dependencies: ["App"],
+          swiftSettings: []
         ),
         .testTarget(
           name: "CalculatorTests",
-          dependencies: ["Calculator"]
+          dependencies: ["Calculator"],
+          swiftSettings: []
         ),
         .testTarget(
           name: "ParsecTests",
-          dependencies: ["Parsec"]
+          dependencies: ["Parsec"],
+          swiftSettings: []
         ),
         .testTarget(
           name: "InputControlTests",
-          dependencies: ["InputControl"]
+          dependencies: ["InputControl"],
+          swiftSettings: []
         ),
         .testTarget(
           name: "ComponentsTests",
@@ -178,7 +188,8 @@ let package = Package(
               condition: .when(platforms: [.iOS])
             ),
           ],
-          exclude: ["__Snapshots__"]
+          exclude: ["__Snapshots__"],
+          swiftSettings: []
         ),
       ]
     )
@@ -199,7 +210,7 @@ indirect enum DirectoryTree {
     publicHeadersPath: String? = nil,
     cSettings: [CSetting]? = nil,
     cxxSettings: [CXXSetting]? = nil,
-    swiftSettings: [SwiftSetting]? = nil,
+    swiftSettings: [SwiftSetting] = defaultSwiftSettings,
     linkerSettings: [LinkerSetting]? = nil,
     plugins: [Target.PluginUsage]? = nil
   ) -> DirectoryTree {
@@ -230,7 +241,7 @@ indirect enum DirectoryTree {
     resources: [Resource]? = nil,
     cSettings: [CSetting]? = nil,
     cxxSettings: [CXXSetting]? = nil,
-    swiftSettings: [SwiftSetting]? = nil,
+    swiftSettings: [SwiftSetting] = defaultSwiftSettings,
     linkerSettings: [LinkerSetting]? = nil,
     plugins: [Target.PluginUsage]? = nil
   ) -> DirectoryTree {

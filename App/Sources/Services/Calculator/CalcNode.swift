@@ -8,7 +8,7 @@
 import Core
 import Numerics
 
-protocol CalcNode: CustomStringConvertible {
+protocol CalcNode: CustomStringConvertible, Sendable {
   func result() throws -> Complex<Double>
 }
 
@@ -35,15 +35,17 @@ struct DigitsNode: CalcNode {
 
   func result() throws -> Complex<Double> {
     let segments = digits.split(separator: nil)
+    let ten = Complex<Double>(10.0)
     if segments.count > 2 {
       throw CalcError.runtimeError(description)
     }
     let result = try segments[0]
-      .compactMap { try $0?.number() }.reduce(0) { $0 * 10 + $1 }
+      .compactMap { try $0?.number() }.reduce(Complex<Double>.zero) { $0 * ten + $1 }
     if segments.count == 2 {
       return result
-        + (try segments[1].compactMap { try $0?.number() }.reversed().reduce(0) { $0 / 10 + $1 })
-        / 10
+        + (try segments[1].compactMap { try $0?.number() }.reversed().reduce(Complex<Double>.zero) {
+          $0 / ten + $1
+        } / ten)
     }
     return result
   }

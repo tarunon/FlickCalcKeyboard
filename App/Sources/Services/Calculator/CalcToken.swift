@@ -9,7 +9,7 @@ import Core
 import Foundation
 import Numerics
 
-public struct CalcToken: Equatable {
+public struct CalcToken: Sendable, Equatable {
   var value: CalcTokenProtocol
   public var rawValue: String { value.rawValue }
 
@@ -99,7 +99,7 @@ extension CalcToken {
   }
 }
 
-protocol CalcTokenProtocol {
+protocol CalcTokenProtocol: Sendable {
   var rawValue: String { get }
   func isEqual(to: CalcTokenProtocol) -> Bool
 }
@@ -324,18 +324,18 @@ enum BracketToken: String, Equatable, CalcTokenProtocol {
 }
 
 struct FunctionToken: CalcTokenProtocol {
-  static let sin = Self(rawValue: "sin", operation: Complex.sin)
-  static let sinh = Self(rawValue: "sinh", operation: Complex.sinh)
-  static let asin = Self(rawValue: "asin", operation: Complex.asin)
-  static let asinh = Self(rawValue: "asinh", operation: Complex.asinh)
-  static let cos = Self(rawValue: "cos", operation: Complex.cos)
-  static let cosh = Self(rawValue: "cosh", operation: Complex.cosh)
-  static let acos = Self(rawValue: "acos", operation: Complex.acos)
-  static let acosh = Self(rawValue: "acosh", operation: Complex.acosh)
-  static let tan = Self(rawValue: "tan", operation: Complex.tan)
-  static let tanh = Self(rawValue: "tanh", operation: Complex.tanh)
-  static let atan = Self(rawValue: "atan", operation: Complex.atan)
-  static let atanh = Self(rawValue: "atanh", operation: Complex.atanh)
+  static let sin = Self(rawValue: "sin", operation: { Complex.sin($0) })
+  static let sinh = Self(rawValue: "sinh", operation: { Complex.sinh($0) })
+  static let asin = Self(rawValue: "asin", operation: { Complex.asin($0) })
+  static let asinh = Self(rawValue: "asinh", operation: { Complex.asinh($0) })
+  static let cos = Self(rawValue: "cos", operation: { Complex.cos($0) })
+  static let cosh = Self(rawValue: "cosh", operation: { Complex.cosh($0) })
+  static let acos = Self(rawValue: "acos", operation: { Complex.acos($0) })
+  static let acosh = Self(rawValue: "acosh", operation: { Complex.acosh($0) })
+  static let tan = Self(rawValue: "tan", operation: { Complex.tan($0) })
+  static let tanh = Self(rawValue: "tanh", operation: { Complex.tanh($0) })
+  static let atan = Self(rawValue: "atan", operation: { Complex.atan($0) })
+  static let atanh = Self(rawValue: "atanh", operation: { Complex.atanh($0) })
   static let log = Self(
     rawValue: "log",
     operation: { Complex.log($0) / Complex.log(10) }
@@ -344,8 +344,8 @@ struct FunctionToken: CalcTokenProtocol {
     rawValue: "lg",
     operation: { Complex.log($0) / Complex.log(2) }
   )
-  static let ln = Self(rawValue: "ln", operation: Complex.log(_:))
+  static let ln = Self(rawValue: "ln", operation: { Complex.log($0) })
 
   let rawValue: String
-  let operation: (Complex<Double>) -> Complex<Double>
+  let operation: @Sendable (Complex<Double>) -> Complex<Double>
 }

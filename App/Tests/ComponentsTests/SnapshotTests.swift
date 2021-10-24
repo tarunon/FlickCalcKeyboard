@@ -14,6 +14,7 @@ import XCTest
 @testable import FlickButton
 @testable import InputField
 
+@MainActor
 class SnapshotTests: XCTestCase {
   func snapshotTest<V: View>(_ view: V, function: String = #function, line: UInt = #line) {
     for colorScheme in [ColorScheme.light, .dark] {

@@ -6,10 +6,10 @@ BUILD_NUMBER_FILE=${PWD}/.build_number
 init:;	swift package resolve --package-path ${BUILD_TOOLS_DIR}; swift package resolve --package-path ${APP_DIR}
 clean:;	rm -rf ${BUILD_TOOLS_DIR}/.build; rm -rf ${APP_DIR}/.build;
 lint:
-		${SWIFTRUN} swift-format lint ${BUILD_TOOLS_DIR}/Package.swift
-		${SWIFTRUN} swift-format lint ${APP_DIR}/Package.swift
-		${SWIFTRUN} swift-format lint -r ${APP_DIR}/Sources
-		${SWIFTRUN} swift-format lint -r ${APP_DIR}/Tests
+		${SWIFTRUN} swift-format lint --strict ${BUILD_TOOLS_DIR}/Package.swift
+		${SWIFTRUN} swift-format lint --strict ${APP_DIR}/Package.swift
+		${SWIFTRUN} swift-format lint -r --strict ${APP_DIR}/Sources
+		${SWIFTRUN} swift-format lint -r --strict ${APP_DIR}/Tests
 format:
 
 		${SWIFTRUN} -c release swift-format format -p -i  ${BUILD_TOOLS_DIR}/Package.swift

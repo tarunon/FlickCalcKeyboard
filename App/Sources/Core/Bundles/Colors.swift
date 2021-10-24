@@ -26,6 +26,7 @@ struct Colors {
   )
 }
 
+// swift-format-ignore
 extension Color {
   public static let lightButtonColor = Colors.lightButtonColor.color
   public static let darkButtonColor = Colors.darkButtonColor.color

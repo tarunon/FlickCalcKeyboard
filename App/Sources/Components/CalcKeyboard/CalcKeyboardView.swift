@@ -36,37 +36,41 @@ struct CalcKeyboardView: View {
       )
       .padding(4.0)
       .frame(height: 36.0, alignment: .top)
-      HStack(spacing: 0.0) {
-        ForEach(Array(buttonParameters.enumerated()), id: \.offset) { (hOffset, line) in
-          VStack(spacing: 0.0) {
-            ForEach(Array(line.enumerated()), id: \.offset) { (vOffset, parameter) in
-              FlickButton(
-                title: parameter.title,
-                subtitle: parameter.subtitle,
-                voiceOverTitle: parameter.voiceOverTitle,
-                action: parameter.action,
-                actionWhilePressing: parameter.actionWhilePressing,
-                onDrag: {
-                  draggingLine = hOffset
-                },
-                backgroundColor: parameter.buttonType.buttonColor,
-                directions: parameter.directions
-              )
-              if vOffset != 3 {
-                Divider().background(.secondary)
-              }
-            }
-          }.zIndex(draggingLine == hOffset ? 1 : 0)
-          if hOffset != 4 {
-            Divider().background(.secondary)
-          }
-        }
-      }
-      .padding(0.0)
-      .frame(maxWidth: .infinity, maxHeight: 270.0, alignment: .bottom)
+      keyboardButtons
     }
     .clipped()
     .background(Color.backgroundColor)
+  }
+
+  var keyboardButtons: some View {
+    HStack(spacing: 0.0) {
+      ForEach(Array(buttonParameters.enumerated()), id: \.offset) { (hOffset, line) in
+        VStack(spacing: 0.0) {
+          ForEach(Array(line.enumerated()), id: \.offset) { (vOffset, parameter) in
+            FlickButton(
+              title: parameter.title,
+              subtitle: parameter.subtitle,
+              voiceOverTitle: parameter.voiceOverTitle,
+              action: parameter.action,
+              actionWhilePressing: parameter.actionWhilePressing,
+              onDrag: {
+                draggingLine = hOffset
+              },
+              backgroundColor: parameter.buttonType.buttonColor,
+              directions: parameter.directions
+            )
+            if vOffset != 3 {
+              Divider().background(.secondary)
+            }
+          }
+        }.zIndex(draggingLine == hOffset ? 1 : 0)
+        if hOffset != 4 {
+          Divider().background(.secondary)
+        }
+      }
+    }
+    .padding(0.0)
+    .frame(maxWidth: .infinity, maxHeight: 270.0, alignment: .bottom)
   }
 
   var buttonParameters: [[ButtonParameter]] {
@@ -77,8 +81,8 @@ struct CalcKeyboardView: View {
           subtitle: "M- MR MC",
           voiceOverTitle: L10N.VoiceOverTitle.memoryPlus.localizedString,
           action: {
-            Task {
-              await viewModel.memoryAdd()
+            Task { [self] in
+              await self.viewModel.memoryAdd()
             }
           },
           buttonType: .function,
@@ -87,8 +91,8 @@ struct CalcKeyboardView: View {
               title: "M-",
               voiceOverTitle: L10N.VoiceOverTitle.memoryMinus.localizedString,
               action: {
-                Task {
-                  await viewModel.memorySub()
+                Task { [self] in
+                  await self.viewModel.memorySub()
                 }
               }
             ),
@@ -96,8 +100,8 @@ struct CalcKeyboardView: View {
               title: "MR",
               voiceOverTitle: L10N.VoiceOverTitle.memoryRecall.localizedString,
               action: {
-                Task {
-                  await viewModel.inputMemory()
+                Task { [self] in
+                  await self.viewModel.inputMemory()
                 }
               }
             ),
@@ -180,8 +184,8 @@ struct CalcKeyboardView: View {
               title: "ans",
               voiceOverTitle: L10N.VoiceOverTitle.ans.localizedString,
               action: {
-                Task {
-                  await viewModel.inputAnswer()
+                Task { [self] in
+                  await self.viewModel.inputAnswer()
                 }
               }
             ),
@@ -189,8 +193,8 @@ struct CalcKeyboardView: View {
               title: "ret",
               voiceOverTitle: L10N.VoiceOverTitle.ret.localizedString,
               action: {
-                Task {
-                  await viewModel.inputRetry()
+                Task { [self] in
+                  await self.viewModel.inputRetry()
                 }
               }
             ),
@@ -552,8 +556,8 @@ struct CalcKeyboardView: View {
           title: "=",
           voiceOverTitle: "=",
           action: {
-            Task {
-              await viewModel.calculate()
+            Task { [self] in
+              await self.viewModel.calculate()
             }
           },
           buttonType: .equal,

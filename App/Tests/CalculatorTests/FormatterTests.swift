@@ -11,7 +11,7 @@ import XCTest
 @testable import Calculator
 
 final class FormatterTests: XCTestCase {
-  func testTokenParameters() throws {
+  func testFormatter() throws {
     XCTAssertEqual(CalcFormatter.format(0), "0")
     XCTAssertEqual(CalcFormatter.format(1), "1")
     XCTAssertEqual(CalcFormatter.format(-1), "-1")

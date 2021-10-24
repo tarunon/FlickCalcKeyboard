@@ -8,5 +8,5 @@
 public enum CalcError: Error {
   case tokensEmpty
   case parseError([CalcToken])
-  case runtimeError(CustomStringConvertible)
+  case runtimeError(CustomStringConvertible & Sendable)
 }
